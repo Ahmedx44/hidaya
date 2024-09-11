@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "430195649102",
+    "project_id": "hidaya-9b888",
+    "storage_bucket": "hidaya-9b888.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430195649102:android:2a9d9601f0a4cda80e311f",
+        "android_client_info": {
+          "package_name": "com.example.hidaya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_zMMN5n-q3aWTHjj3cLsoO9fkavMJusM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
