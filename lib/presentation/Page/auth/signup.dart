@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hidaya/core/config/assets/vector/app_vector.dart';
+import 'package:hidaya/data/model/auth/create_user_req.dart';
+import 'package:hidaya/domain/usecase/auth/signup_usecase.dart';
 import 'package:hidaya/presentation/Page/auth/sigin.dart';
+import 'package:hidaya/service_locator.dart';
 
 class SignUpScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
 
   SignUpScreen({super.key});
   @override
@@ -33,6 +40,7 @@ class SignUpScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         TextFormField(
+                          controller: _emailController,
                           decoration: const InputDecoration(
                             hintText: 'Email',
                             filled: true,
@@ -53,6 +61,7 @@ class SignUpScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           child: TextFormField(
+                            controller: _usernameController,
                             decoration: const InputDecoration(
                               hintText: 'Username',
                               filled: true,
@@ -74,6 +83,7 @@ class SignUpScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5.0),
                           child: TextFormField(
+                            controller: _passwordController,
                             obscureText: true,
                             decoration: const InputDecoration(
                               hintText: 'Password',
@@ -94,11 +104,44 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 16.0),
                         ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                              // Navigate to the main screen
-                            }
+                          onPressed: () async {
+                            print(_emailController.text);
+
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                                );
+                              },
+                            );
+
+                            var result = await sl<SignupUsecase>().call(
+                                params: CreateUserReq(
+                                    fullname: _usernameController.text,
+                                    email: _emailController.text,
+                                    password: _passwordController.text));
+
+                            Navigator.pop(context);
+
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return SignInScreen();
+                              },
+                            ));
+
+                            result.fold((ifLeft) {
+                              var snackbar = SnackBar(content: Text(ifLeft));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackbar);
+                            }, (ifRight) {
+                              var snackbar = SnackBar(content: Text(ifRight));
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackbar);
+                            });
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
