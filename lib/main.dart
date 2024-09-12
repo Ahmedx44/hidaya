@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:hidaya/core/config/assets/theme/app_theme.dart';
 import 'package:hidaya/firebase_options.dart';
 import 'package:hidaya/presentation/Page/onboarding_Screen/onboarding_screen.dart';
+import 'package:hidaya/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await initializedDependency();
   runApp(const MyApp());
 }
 

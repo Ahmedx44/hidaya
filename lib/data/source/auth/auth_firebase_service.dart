@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hidaya/data/model/auth/create_user_req.dart';
@@ -32,6 +33,11 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: createinUserReq.email, password: createinUserReq.password);
+
+      await FirebaseFirestore.instance.collection('User').add({
+        'fullname': createinUserReq.fullname,
+        'email': createinUserReq.email
+      });
       return const Right('Succefully created');
     } on FirebaseAuthException catch (e) {
       String message = '';

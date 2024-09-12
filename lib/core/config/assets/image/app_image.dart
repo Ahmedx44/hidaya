@@ -3,6 +3,7 @@ class AppImage {
   static const String format = '.png';
 
   static String quran = '${address}quran${format}';
-  static String patter = '${address}pattern${format}';
+  static String pattern_right = '${address}pattern${format}';
   static String mesjid = '${address}mesjid${format}';
+  static String pattern_left = '${address}pattern-left${format}';
 }

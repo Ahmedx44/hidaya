@@ -40,8 +40,10 @@ dependencies:
   path_provider: ^2.1.4
   get_it: ^7.7.0
   dartz: ^0.10.1
+  cloud_firestore: ^4.17.5
   firebase_core: ^2.24.2
   firebase_auth: ^4.20.0
+  flutter_islamic_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
