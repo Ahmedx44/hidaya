@@ -5,4 +5,5 @@ class Appvector {
   static String quran = '${address}quran${format}';
   static String patter = '${address}pattern${format}';
   static String mesjid = '${address}mesjid${format}';
+  static String bismillah = '${address}bismillah${format}';
 }
