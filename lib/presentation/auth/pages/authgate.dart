@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hidaya/presentation/Page/home/home.dart';
-import 'package:hidaya/presentation/Page/onboarding_Screen/onboarding_screen.dart';
+import 'package:hidaya/presentation/home/page/home.dart';
+import 'package:hidaya/presentation/onboarding_Screen/onboarding_screen.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});

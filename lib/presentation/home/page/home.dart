@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hidaya/core/config/assets/image/app_image.dart';
-import 'package:hidaya/presentation/Page/home/widget/features.dart';
-import 'package:hidaya/presentation/Page/home/widget/home_card.dart';
+import 'package:hidaya/presentation/home/widget/features.dart';
+import 'package:hidaya/presentation/home/widget/home_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

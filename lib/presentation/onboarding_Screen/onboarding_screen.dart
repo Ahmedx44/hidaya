@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hidaya/core/config/assets/image/app_image.dart';
-import 'package:hidaya/presentation/Page/auth/sigin.dart';
+import 'package:hidaya/presentation/auth/pages/sigin.dart';
 import 'package:intro_screen_onboarding_flutter/introduction.dart';
 import 'package:intro_screen_onboarding_flutter/introscreenonboarding.dart';
 

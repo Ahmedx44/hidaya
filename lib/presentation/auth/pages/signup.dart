@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hidaya/core/config/assets/vector/app_vector.dart';
 import 'package:hidaya/data/model/auth/create_user_req.dart';
 import 'package:hidaya/domain/usecase/auth/signup_usecase.dart';
-import 'package:hidaya/presentation/Page/auth/sigin.dart';
+import 'package:hidaya/presentation/auth/pages/sigin.dart';
 import 'package:hidaya/service_locator.dart';
 
 class SignUpScreen extends StatelessWidget {

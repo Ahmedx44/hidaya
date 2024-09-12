@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:hidaya/presentation/Page/home/widget/mini_card.dart';
+import 'package:hidaya/presentation/home/widget/mini_card.dart';
+import 'package:hidaya/presentation/quran_surah/page/quran_surah_list.dart';
 
 class Features extends StatelessWidget {
   const Features({super.key});
@@ -32,9 +33,18 @@ class Features extends StatelessWidget {
           Expanded(
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: const [
-                MiniCard(
-                    icon: FlutterIslamicIcons.solidQuran2, feature: 'Quran'),
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return QuranSurahList();
+                      },
+                    ));
+                  },
+                  child: MiniCard(
+                      icon: FlutterIslamicIcons.solidQuran2, feature: 'Quran'),
+                ),
                 MiniCard(icon: Icons.audio_file, feature: 'Hadith'),
                 MiniCard(
                     icon: Icons.edit_calendar_outlined, feature: 'Reminder'),
