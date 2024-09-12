@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 
 class MiniCard extends StatelessWidget {
   final IconData icon;
@@ -11,6 +10,7 @@ class MiniCard extends StatelessWidget {
     return Column(
       children: [
         Container(
+          margin: const EdgeInsets.symmetric(horizontal: 15),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               border: Border.all(

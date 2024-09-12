@@ -376,6 +376,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+  quran_flutter:
+    dependency: "direct main"
+    description:
+      name: quran_flutter
+      sha256: e3dfb9a5b6db265b182d815f9a5f73e6da68f30040d10020e43164fc4a20e2dc
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   sky_engine:
     dependency: transitive
     description: flutter

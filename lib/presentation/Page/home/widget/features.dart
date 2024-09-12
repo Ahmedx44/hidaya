@@ -9,23 +9,25 @@ class Features extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Features',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.inversePrimary),
-              ),
-              Text('See all',
+          Padding(
+            padding: EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Features',
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.inversePrimary)),
-            ],
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.inversePrimary),
+                ),
+                Text('See all',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.inversePrimary)),
+              ],
+            ),
           ),
           Expanded(
             child: ListView(
@@ -33,22 +35,10 @@ class Features extends StatelessWidget {
               children: const [
                 MiniCard(
                     icon: FlutterIslamicIcons.solidQuran2, feature: 'Quran'),
-                SizedBox(
-                  width: 20,
-                ),
                 MiniCard(icon: Icons.audio_file, feature: 'Hadith'),
-                SizedBox(
-                  width: 20,
-                ),
                 MiniCard(
                     icon: Icons.edit_calendar_outlined, feature: 'Reminder'),
-                SizedBox(
-                  width: 20,
-                ),
                 MiniCard(icon: Icons.handshake, feature: 'Charity'),
-                SizedBox(
-                  width: 20,
-                ),
                 MiniCard(
                     icon: FlutterIslamicIcons.qibla, feature: 'Qibla Direction')
               ],
