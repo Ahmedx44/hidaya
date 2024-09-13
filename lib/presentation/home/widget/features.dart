@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:hidaya/presentation/home/widget/mini_card.dart';
-import 'package:hidaya/presentation/quran_surah/page/quran_surah_list.dart';
+import 'package:hidaya/presentation/quran_surah_list/page/quran_surah_list.dart';
 
 class Features extends StatelessWidget {
   const Features({super.key});
