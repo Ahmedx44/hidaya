@@ -13,8 +13,16 @@ class QuranSurahList extends StatelessWidget {
     return BlocProvider(
       create: (context) => SurahListCubit(sl<SurahUsecase>())..fetchSurah(),
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
-          title: const Text('Surahs List'),
+          centerTitle: true,
+          title: Text(
+            'Surahs List',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         body: BlocBuilder<SurahListCubit, SurahListState>(
           builder: (context, state) {
@@ -25,12 +33,46 @@ class QuranSurahList extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final surah = successState.surhas[index + 1];
 
-                  return ListTile(
-                    title: Row(
-                      children: [
-                        Text('${index + 1}:'),
-                        Text(surah?.name ?? 'Unkown'),
-                      ],
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    color: Theme.of(context).colorScheme.onTertiary,
+                    child: ListTile(
+                      title: Row(
+                        children: [
+                          Text(
+                            '${index + 1}:',
+                            style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary),
+                          ),
+                          const SizedBox(
+                            width: 150,
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                surah?.name ?? 'Unkown',
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                              Text(
+                                surah?.nameEnglish ?? 'Unkown',
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
