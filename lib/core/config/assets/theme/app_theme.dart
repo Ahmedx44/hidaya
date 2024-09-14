@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hidaya/core/config/assets/theme/app_color.dart';
 
 ThemeData lightMode = ThemeData(
@@ -12,11 +13,7 @@ ThemeData lightMode = ThemeData(
     tertiary: AppColors.tertiary,
     onTertiary: Colors.grey.shade100,
   ),
-  textTheme: const TextTheme(
-    titleLarge: TextStyle(color: AppColors.background),
-    titleMedium: TextStyle(color: AppColors.background),
-    titleSmall: TextStyle(color: AppColors.background),
-  ),
+  textTheme: GoogleFonts.amiriTextTheme(),
 );
 
 ThemeData darkMode = ThemeData(
