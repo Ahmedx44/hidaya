@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:quran_flutter/models/surah.dart';
 import 'package:quran_flutter/models/verse.dart';
 import 'package:quran_flutter/quran.dart';
 import 'package:quran/quran.dart' as quran;
 
 class QuranPage extends StatefulWidget {
   final int surahNumber;
-  const QuranPage({super.key, required this.surahNumber});
+  final Surah surah;
+  const QuranPage({super.key, required this.surahNumber, required this.surah});
 
   @override
   State<QuranPage> createState() => _QuranPageState();
@@ -33,11 +36,16 @@ class _QuranPageState extends State<QuranPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(widget.surah.nameEnglish),
+        ),
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              width: 500,
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
               child: _showAllVerses(surahVerse, context),
             ),
           ),
@@ -53,18 +61,10 @@ Widget _showAllVerses(List<Verse> surah, BuildContext context) {
       .values
       .join();
 
-  return Center(
-    child: Text(
-      joinedVerses,
-      textAlign: TextAlign.center,
-      softWrap: true,
-      style: TextStyle(
-        fontSize: 24,
-        color: Theme.of(context).colorScheme.inversePrimary,
-        fontWeight: FontWeight.bold,
-        fontFamily: 'Uthmanic',
-        height: 1.5,
-      ),
-    ),
+  return Text(
+    joinedVerses,
+    textAlign: TextAlign.justify,
+    style: TextStyle(
+        color: Theme.of(context).colorScheme.inversePrimary, fontSize: 25),
   );
 }

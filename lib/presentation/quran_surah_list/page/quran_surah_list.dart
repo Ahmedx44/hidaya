@@ -41,7 +41,8 @@ class QuranSurahList extends StatelessWidget {
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return QuranPage(surahNumber: index + 1);
+                            return QuranPage(
+                                surahNumber: index + 1, surah: surah!);
                           },
                         ));
                       },
@@ -58,7 +59,7 @@ class QuranSurahList extends StatelessWidget {
                                       .inversePrimary),
                             ),
                             const SizedBox(
-                              width: 150,
+                              width: 100,
                             ),
                             Column(
                               children: [
