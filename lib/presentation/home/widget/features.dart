@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:hidaya/presentation/home/widget/mini_card.dart';
 import 'package:hidaya/presentation/quran_surah_list/page/quran_surah_list.dart';
@@ -13,7 +12,7 @@ class Features extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -38,18 +37,18 @@ class Features extends StatelessWidget {
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return QuranSurahList();
+                        return const QuranSurahList();
                       },
                     ));
                   },
-                  child: MiniCard(
+                  child: const MiniCard(
                       icon: FlutterIslamicIcons.solidQuran2, feature: 'Quran'),
                 ),
-                MiniCard(icon: Icons.audio_file, feature: 'Hadith'),
-                MiniCard(
+                const MiniCard(icon: Icons.audio_file, feature: 'Hadith'),
+                const MiniCard(
                     icon: Icons.edit_calendar_outlined, feature: 'Reminder'),
-                MiniCard(icon: Icons.handshake, feature: 'Charity'),
-                MiniCard(
+                const MiniCard(icon: Icons.handshake, feature: 'Charity'),
+                const MiniCard(
                     icon: FlutterIslamicIcons.qibla, feature: 'Qibla Direction')
               ],
             ),

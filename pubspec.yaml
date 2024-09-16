@@ -49,6 +49,7 @@ dependencies:
   bloc: ^8.1.4
   flutter_bloc: ^8.1.6
   quran: ^1.2.9
+  arabic_font: ^0.0.9
 
 dev_dependencies:
   flutter_test:

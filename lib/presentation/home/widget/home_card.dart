@@ -17,7 +17,7 @@ class HomeCard extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.circular(20)),
         child: Padding(
-          padding: EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -60,7 +60,7 @@ class HomeCard extends StatelessWidget {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 50),
+                    padding: const EdgeInsets.only(right: 50),
                     child: SvgPicture.asset(height: 80, Appvector.quran),
                   ),
                   const Padding(

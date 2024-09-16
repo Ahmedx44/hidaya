@@ -28,7 +28,7 @@ class QuranSurahList extends StatelessWidget {
         body: BlocBuilder<SurahListCubit, SurahListState>(
           builder: (context, state) {
             if (state is SurahListLoaded) {
-              final successState = state as SurahListLoaded;
+              final successState = state;
               return ListView.builder(
                 itemCount: successState.surhas.length,
                 itemBuilder: (context, index) {
