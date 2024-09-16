@@ -1,12 +1,15 @@
 import 'package:arabic_font/arabic_font.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hidaya/core/config/assets/vector/app_vector.dart';
-import 'package:quran_flutter/models/surah.dart';
-import 'package:quran_flutter/models/verse.dart';
-import 'package:quran_flutter/quran.dart';
+import 'package:hidaya/data/model/surah/verse_Model.dart';
+import 'package:hidaya/domain/usecase/quran/allverse_useCase.dart';
+import 'package:hidaya/presentation/quran/Bloc/quran_page_cubit.dart';
+import 'package:hidaya/presentation/quran/Bloc/quran_page_state.dart';
+import 'package:hidaya/service_locator.dart';
 import 'package:quran/quran.dart' as quran;
+import 'package:quran_flutter/quran_flutter.dart';
 
 class QuranPage extends StatefulWidget {
   final int surahNumber;
@@ -18,80 +21,76 @@ class QuranPage extends StatefulWidget {
 }
 
 class _QuranPageState extends State<QuranPage> {
-  var surahVerse;
-
-  List<Verse> getSurahverse() {
-    final result = Quran.getSurahVersesAsList(
-      widget.surahNumber,
-    );
-    return result;
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    final quran = getSurahverse();
-    print(quran[widget.surahNumber].text);
-    surahVerse = quran;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          title: Text(widget.surah.nameEnglish),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              child: Column(children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.play_arrow,
-                          color: Theme.of(context).colorScheme.primary,
+    return BlocProvider(
+      create: (context) => QuranPageCubit(sl<AllverseUsecase>())
+        ..fetchQuranVerse(widget.surahNumber),
+      child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            title: Text(widget.surah.nameEnglish),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          body: BlocBuilder<QuranPageCubit, QuranPageState>(
+            builder: (context, state) {
+              if (state is QuranPageLoaded) {
+                var sucessState = state as QuranPageLoaded;
+                return SafeArea(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 20),
+                      child: Column(children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.play_arrow,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  'Play Audio',
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                         const SizedBox(
-                          width: 5,
+                          height: 20,
                         ),
-                        Text(
-                          'Play Audio',
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.bold),
+                        SvgPicture.asset(
+                          height: 50,
+                          Appvector.bismillah,
+                          color: Theme.of(context).colorScheme.inversePrimary,
                         ),
-                      ],
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        _showAllVerses(sucessState.verse, context),
+                      ]),
                     ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SvgPicture.asset(
-                  height: 50,
-                  Appvector.bismillah,
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                _showAllVerses(surahVerse, context),
-              ]),
-            ),
-          ),
-        ));
+                  ),
+                );
+              } else
+                return Container();
+            },
+          )),
+    );
   }
 }
 
@@ -99,7 +98,11 @@ Widget _showAllVerses(List<Verse> surah, BuildContext context) {
   String joinedVerses = surah
       .asMap()
       .map((index, verse) => MapEntry(
-          index, "${verse.text}${quran.getVerseEndSymbol(verse.verseNumber)}"))
+          index,
+          "${verse.text}${quran.getVerseEndSymbol(
+            verse.verseNumber,
+            arabicNumeral: true,
+          )}"))
       .values
       .join();
 
@@ -109,7 +112,8 @@ Widget _showAllVerses(List<Verse> surah, BuildContext context) {
       style: ArabicTextStyle(
           arabicFont: ArabicFont.scheherazade,
           color: Theme.of(context).colorScheme.inversePrimary,
-          fontSize: 26,
-          wordSpacing: -1,
-          letterSpacing: -0.5));
+          fontSize: 29,
+          wordSpacing: -4,
+          fontWeight: FontWeight.w500,
+          letterSpacing: -1));
 }

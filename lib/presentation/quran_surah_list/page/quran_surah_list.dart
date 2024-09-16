@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hidaya/domain/usecase/surah/surah_usecase.dart';
+import 'package:hidaya/domain/usecase/quran/surah_usecase.dart';
 import 'package:hidaya/presentation/quran/page/quran.dart';
 import 'package:hidaya/presentation/quran_surah_list/Bloc/quran_list_cubit.dart';
 import 'package:hidaya/presentation/quran_surah_list/Bloc/quran_list_state.dart';
