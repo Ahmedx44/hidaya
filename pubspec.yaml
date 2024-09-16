@@ -50,6 +50,11 @@ dependencies:
   flutter_bloc: ^8.1.6
   quran: ^1.2.9
   arabic_font: ^0.0.9
+  awesome_bottom_bar: ^1.2.4
+  just_audio: ^0.9.40
+
+ 
+
 
 dev_dependencies:
   flutter_test:

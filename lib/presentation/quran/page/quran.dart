@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hidaya/core/config/assets/vector/app_vector.dart';
-import 'package:hidaya/data/model/surah/verse_Model.dart';
 import 'package:hidaya/domain/usecase/quran/allverse_useCase.dart';
 import 'package:hidaya/presentation/quran/Bloc/quran_page_cubit.dart';
 import 'package:hidaya/presentation/quran/Bloc/quran_page_state.dart';
@@ -82,12 +81,19 @@ class _QuranPageState extends State<QuranPage> {
                           height: 20,
                         ),
                         _showAllVerses(sucessState.verse, context),
+                        // Container(
+                        //   child: Column(
+                        //     children: sucessState.verse
+                        //         .map((e) => Text(e.text))
+                        //         .toList(),
+                        //   ),
+                        // )
                       ]),
                     ),
                   ),
                 );
               } else
-                return Container();
+                return SizedBox();
             },
           )),
     );
@@ -112,8 +118,8 @@ Widget _showAllVerses(List<Verse> surah, BuildContext context) {
       style: ArabicTextStyle(
           arabicFont: ArabicFont.scheherazade,
           color: Theme.of(context).colorScheme.inversePrimary,
-          fontSize: 29,
-          wordSpacing: -4,
+          fontSize: 36,
+          wordSpacing: -6,
           fontWeight: FontWeight.w500,
-          letterSpacing: -1));
+          letterSpacing: -1.1));
 }
