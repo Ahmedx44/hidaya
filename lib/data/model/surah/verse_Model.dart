@@ -1,5 +1,5 @@
 class GetPageModel {
-  final int pageNUmber;
+  final int surahNumber;
 
-  GetPageModel({required this.pageNUmber});
+  GetPageModel({required this.surahNumber});
 }

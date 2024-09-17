@@ -7,11 +7,11 @@ class QuranPageCubit extends Cubit<QuranPageState> {
   final GetPageDataUseCase getPageDataUseCase;
   QuranPageCubit(this.getPageDataUseCase) : super(QuranPageIntitial());
 
-  Future<void> loadQuranPage(int pageNumber) async {
+  Future<void> getSurahVerse(int surahNumber) async {
     try {
       emit(QuranPageLoading());
       final quranPage =
-          await getPageDataUseCase(GetPageModel(pageNUmber: pageNumber));
+          await getPageDataUseCase(GetPageModel(surahNumber: surahNumber));
       emit(QuranPageLoaded(verse: quranPage));
     } catch (e) {
       print('error');

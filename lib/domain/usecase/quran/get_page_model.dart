@@ -4,6 +4,6 @@ import 'package:hidaya/service_locator.dart';
 
 class GetPageDataUseCase {
   Future<List> call(GetPageModel getpagemodel) async {
-    return sl<QuranReposiotry>().getPageData(getpagemodel.pageNUmber);
+    return sl<QuranReposiotry>().getSurahVerse(getpagemodel.surahNumber);
   }
 }

@@ -17,6 +17,18 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     int pageIndex = 0;
     return Scaffold(
+      drawer: Drawer(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Hidaya',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 26,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+      ),
       bottomNavigationBar: BottomBarInspiredFancy(
         items: const [
           TabItem(icon: FlutterIslamicIcons.kaaba, title: 'Home'),
@@ -38,18 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Stack(
             children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Image(
-                    height: 200, image: AssetImage(AppImage.pattern_left)),
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Image(
-                    height: 200, image: AssetImage(AppImage.pattern_right)),
-              ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 70),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Align(
                   alignment: Alignment.center,
                   child: Column(
@@ -58,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         '4:41',
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.inversePrimary,
-                            fontSize: 50,
+                            fontSize: 70,
                             fontWeight: FontWeight.bold),
                       ),
                       Text(

@@ -7,11 +7,11 @@ ThemeData lightMode = ThemeData(
   colorScheme: ColorScheme.light(
     surface: const Color.fromRGBO(255, 255, 255, 1),
     onPrimary: Colors.grey.shade800,
-    primary: AppColors.primary,
+    primary: Color.fromARGB(255, 80, 199, 0),
     inversePrimary: AppColors.background,
     secondary: AppColors.secondary,
     tertiary: AppColors.tertiary,
-    onTertiary: Colors.grey.shade100,
+    onTertiary: Color.fromARGB(255, 212, 247, 202),
   ),
   textTheme: GoogleFonts.amiriTextTheme(),
 );
@@ -29,6 +29,6 @@ ThemeData darkMode = ThemeData(
     inversePrimary: AppColors.white,
     secondary: AppColors.secondary,
     tertiary: AppColors.tertiary,
-    onTertiary: Colors.grey.shade900,
+    onTertiary: Color.fromARGB(255, 13, 17, 10),
   ),
 );

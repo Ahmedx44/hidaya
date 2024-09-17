@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:arabic_font/arabic_font.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,9 +5,9 @@ import 'package:hidaya/domain/usecase/quran/surah_usecase.dart';
 import 'package:hidaya/presentation/quran/page/quran.dart';
 import 'package:hidaya/presentation/quran_surah_list/Bloc/quran_list_cubit.dart';
 import 'package:hidaya/presentation/quran_surah_list/Bloc/quran_list_state.dart';
+import 'package:hidaya/presentation/quran_surah_list/widget/audio_player.dart';
 import 'package:hidaya/service_locator.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:quran/quran.dart' as quran;
 
 class QuranSurahList extends StatefulWidget {
   const QuranSurahList({super.key});
@@ -56,9 +54,8 @@ class _QuranSurahListState extends State<QuranSurahList> {
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            List<int> page = quran.getSurahPages(surah!.number);
                             return QuranPage(
-                              surahPage: page,
+                              surahNumber: surah!.number,
                             );
                           },
                         ));
@@ -100,107 +97,19 @@ class _QuranSurahListState extends State<QuranSurahList> {
                               ],
                             ),
                             GestureDetector(
-                              onTap: () async {
-                                String url =
-                                    quran.getAudioURLBySurah(surah!.number);
-                                print(url);
-
-                                final audioSource =
-                                    LockCachingAudioSource(Uri.parse(url));
-                                await player.setAudioSource(audioSource);
-
-                                showModalBottomSheet(
-                                  context: context,
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(
                                   builder: (context) {
-                                    return Container(
-                                      height: 200,
-                                      padding: const EdgeInsets.all(16),
-                                      child: Column(
-                                        children: [
-                                          Slider(
-                                            value: songPosition.inSeconds
-                                                .toDouble(),
-                                            min: 0.0,
-                                            max: songDuration.inSeconds
-                                                .toDouble(),
-                                            onChanged: (double val) async {
-                                              final newPos = Duration(
-                                                  seconds: val.toInt());
-                                              await player.seek(newPos);
-                                            },
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              IconButton(
-                                                icon: const Icon(
-                                                    Icons.fast_rewind,
-                                                    size: 50),
-                                                onPressed: () {
-                                                  // Handle rewind action
-                                                },
-                                              ),
-                                              IconButton(
-                                                onPressed: () async {
-                                                  if (isPlaying) {
-                                                    await player.pause();
-                                                    setState(() {
-                                                      isPlaying = false;
-                                                    });
-                                                  } else {
-                                                    await player.play();
-                                                    setState(() {
-                                                      isPlaying = true;
-                                                    });
-                                                  }
-                                                },
-                                                icon: isPlaying
-                                                    ? const Icon(
-                                                        Icons
-                                                            .pause_circle_filled_outlined,
-                                                        size: 50,
-                                                      )
-                                                    : const Icon(
-                                                        Icons
-                                                            .play_circle_fill_rounded,
-                                                        size: 50,
-                                                      ),
-                                              ),
-                                              IconButton(
-                                                icon: const Icon(
-                                                    Icons.fast_forward,
-                                                    size: 50),
-                                                onPressed: () {
-                                                  // Handle forward action
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                          // Display duration and position
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 8.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(formatDuration(
-                                                    songPosition)),
-                                                Text(formatDuration(
-                                                    songDuration)),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                    return QuranAudio(
+                                      isPlaying: true,
+                                      surahNumber: surah!.number,
                                     );
                                   },
-                                );
+                                ));
                               },
-                              child: const Icon(
+                              child: Icon(
                                 Icons.play_circle_fill_outlined,
+                                color: Theme.of(context).colorScheme.primary,
                                 size: 40,
                               ),
                             )
