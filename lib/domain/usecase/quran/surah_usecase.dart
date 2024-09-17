@@ -4,6 +4,6 @@ import 'package:quran_flutter/models/surah.dart';
 
 class SurahUsecase {
   Future<Map<int, Surah>> call() async {
-    return sl<SurahReposiotry>().getSurahAsMap();
+    return sl<QuranReposiotry>().getSurahAsMap();
   }
 }

@@ -1,19 +1,19 @@
 import 'package:quran_flutter/models/surah.dart';
-import 'package:quran_flutter/models/verse.dart';
 import 'package:quran_flutter/quran.dart';
+import 'package:quran/quran.dart' as quran;
 
-abstract class SurahService {
+abstract class QuranService {
   Future<Map<int, Surah>> fetchSurah();
-  Future<List<Verse>> fetchQuranVerse(int surahNumber);
+  Future<List> getPageData(int surahNumber);
 }
 
-class SurahServiceImpl extends SurahService {
+class QuranServiceImpl extends QuranService {
   @override
   Future<Map<int, Surah>> fetchSurah() async {
     return Quran.getSurahAsMap();
   }
 
-  Future<List<Verse>> fetchQuranVerse(int surahNumber) async {
-    return Quran.getSurahVersesAsList(surahNumber);
+  Future<List<dynamic>> getPageData(int pageNumber) async {
+    return quran.getVersesTextByPage(pageNumber, verseEndSymbol: true);
   }
 }

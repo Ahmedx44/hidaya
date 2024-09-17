@@ -7,7 +7,7 @@ import 'package:hidaya/domain/respository/auth/auth_repsoitory.dart';
 import 'package:hidaya/domain/respository/quran/surah_reposiotry.dart';
 import 'package:hidaya/domain/usecase/auth/siginin_usecase.dart';
 import 'package:hidaya/domain/usecase/auth/signup_usecase.dart';
-import 'package:hidaya/domain/usecase/quran/allverse_useCase.dart';
+import 'package:hidaya/domain/usecase/quran/get_page_model.dart';
 import 'package:hidaya/domain/usecase/quran/surah_usecase.dart';
 
 final sl = GetIt.instance;
@@ -28,17 +28,17 @@ Future<void> initializedDependency() async {
     SigininUsecase(),
   );
 
-  sl.registerSingleton<SurahReposiotry>(
-    SurahRepositoryImpl(),
+  sl.registerSingleton<QuranReposiotry>(
+    QuranReposiotryImpl(),
   );
 
   sl.registerSingleton<SurahUsecase>(
     SurahUsecase(),
   );
-  sl.registerSingleton<SurahService>(
-    SurahServiceImpl(),
+  sl.registerSingleton<QuranService>(
+    QuranServiceImpl(),
   );
-  sl.registerSingleton<AllverseUsecase>(
-    AllverseUsecase(),
+  sl.registerSingleton<GetPageDataUseCase>(
+    GetPageDataUseCase(),
   );
 }

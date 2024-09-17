@@ -1,6 +1,6 @@
 import 'package:quran_flutter/models/surah.dart';
 
-abstract class SurahReposiotry {
+abstract class QuranReposiotry {
   Future<Map<int, Surah>> getSurahAsMap();
-  Future<List> getQuranVerse(int surahNumber);
+  Future<List> getPageData(int pageNumber);
 }
