@@ -56,8 +56,25 @@ class HadithsList extends StatelessWidget {
                             onTap: () {
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) {
-                                  return const HadithBooksList(
-                                    collection: Collections.tirmidhi,
+                                  late Collections collections =
+                                      Collections.abudawud;
+
+                                  if (hadith.name == 'tirmidhi') {
+                                    collections = Collections.tirmidhi;
+                                  } else if (hadith.name == 'abudawud') {
+                                    collections = Collections.abudawud;
+                                  } else if (hadith.name == 'bukhari') {
+                                    collections = Collections.bukhari;
+                                  } else if (hadith.name == 'ibnmajah') {
+                                    collections = Collections.ibnmajah;
+                                  } else if (hadith.name == 'nasai') {
+                                    collections = Collections.nasai;
+                                  } else if (hadith.name == 'muslim') {
+                                    collections = Collections.muslim;
+                                  }
+
+                                  return HadithBooksList(
+                                    collection: collections,
                                   );
                                 },
                               ));
