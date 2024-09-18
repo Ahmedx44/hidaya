@@ -4,6 +4,7 @@ import 'package:hadith/hadith.dart';
 import 'package:hidaya/domain/usecase/hadith/get_books.dart';
 import 'package:hidaya/presentation/hadith/bloc/hadith_book_bloc/hadith_book_cubit.dart';
 import 'package:hidaya/presentation/hadith/bloc/hadith_book_bloc/hadith_book_state.dart';
+import 'package:hidaya/presentation/hadith/page/hadith_book.dart';
 import 'package:hidaya/service_locator.dart';
 
 class HadithBooksList extends StatelessWidget {
@@ -32,10 +33,40 @@ class HadithBooksList extends StatelessWidget {
                 itemCount: successState.collection.length,
                 itemBuilder: (context, index) {
                   final book = successState.collection[index];
-                  return ListTile(
-                    title: Text(book.book[0].name),
-                    subtitle:
-                        Text('Hadith End Number: ${book.hadithEndNumber}'),
+                  return Container(
+                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Theme.of(context).colorScheme.tertiary),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return HadithBook(
+                              hadithBook: book.book[0].name,
+                              bookNumber: book.bookNumber,
+                              collection: collection,
+                            );
+                          },
+                        ));
+                      },
+                      child: ListTile(
+                        leading: Text(book.bookNumber,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 25)),
+                        title: Text(book.book[0].name,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        subtitle: Row(
+                          children: [
+                            Text('Hadith start: ${book.hadithStartNumber}'),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Text('Hadith start: ${book.hadithEndNumber}')
+                          ],
+                        ),
+                      ),
+                    ),
                   );
                 },
               );
