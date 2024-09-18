@@ -46,6 +46,14 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
     emit(AudioPlayerLoaded());
   }
 
+  void perviousAudio() {
+    audioPlayer.seekToPrevious();
+  }
+
+  void nextAudio() {
+    audioPlayer.seekToNext();
+  }
+
   @override
   Future<void> close() {
     audioPlayer.dispose();

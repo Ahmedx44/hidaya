@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
+import 'package:hidaya/presentation/hadith/page/hadiths_list.dart';
 import 'package:hidaya/presentation/home/widget/mini_card.dart';
 import 'package:hidaya/presentation/quran_surah_list/page/quran_surah_list.dart';
 
@@ -44,7 +45,16 @@ class Features extends StatelessWidget {
                   child: const MiniCard(
                       icon: FlutterIslamicIcons.solidQuran2, feature: 'Quran'),
                 ),
-                const MiniCard(icon: Icons.audio_file, feature: 'Hadith'),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return HadithsList();
+                        },
+                      ));
+                    },
+                    child: const MiniCard(
+                        icon: Icons.audio_file, feature: 'Hadith')),
                 const MiniCard(
                     icon: Icons.edit_calendar_outlined, feature: 'Reminder'),
                 const MiniCard(icon: Icons.handshake, feature: 'Charity'),

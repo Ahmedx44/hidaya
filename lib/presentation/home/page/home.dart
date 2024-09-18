@@ -1,7 +1,6 @@
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
-import 'package:hidaya/core/config/assets/image/app_image.dart';
 import 'package:hidaya/presentation/home/widget/features.dart';
 import 'package:hidaya/presentation/home/widget/home_card.dart';
 
@@ -18,17 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
     int pageIndex = 0;
     return Scaffold(
       drawer: Drawer(),
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Hidaya',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 26,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-      ),
+      appBar: AppBar(),
       bottomNavigationBar: BottomBarInspiredFancy(
         items: const [
           TabItem(icon: FlutterIslamicIcons.kaaba, title: 'Home'),

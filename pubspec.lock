@@ -272,6 +272,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.2.1"
+  hadith:
+    dependency: "direct main"
+    description:
+      name: hadith
+      sha256: fd7648b53227a5ed3afa366faef031f1677d91826922c5f272cf7961e40b75f3
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   http:
     dependency: transitive
     description:

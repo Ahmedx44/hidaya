@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hidaya/core/config/assets/theme/app_theme.dart';
 import 'package:hidaya/firebase_options.dart';
 import 'package:hidaya/presentation/auth/pages/authgate.dart';
-
 import 'package:hidaya/service_locator.dart';
 import 'package:quran_flutter/quran.dart';
 

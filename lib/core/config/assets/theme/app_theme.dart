@@ -3,27 +3,33 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hidaya/core/config/assets/theme/app_color.dart';
 
 ThemeData lightMode = ThemeData(
+  appBarTheme: const AppBarTheme(
+      titleTextStyle: TextStyle(color: Colors.black),
+      iconTheme: IconThemeData(color: Colors.black)),
   brightness: Brightness.light,
   colorScheme: ColorScheme.light(
     surface: const Color.fromRGBO(255, 255, 255, 1),
     onPrimary: Colors.grey.shade800,
-    primary: Color.fromARGB(255, 80, 199, 0),
+    primary: const Color.fromARGB(255, 80, 199, 0),
     inversePrimary: AppColors.background,
     secondary: AppColors.secondary,
     tertiary: AppColors.tertiary,
-    onTertiary: Color.fromARGB(255, 212, 247, 202),
+    onTertiary: const Color.fromARGB(255, 212, 247, 202),
   ),
   textTheme: GoogleFonts.amiriTextTheme(),
 );
 
 ThemeData darkMode = ThemeData(
+  appBarTheme: const AppBarTheme(
+      titleTextStyle: TextStyle(color: Colors.white),
+      iconTheme: IconThemeData(color: Colors.white)),
   brightness: Brightness.light,
   textTheme: const TextTheme(
     titleLarge: TextStyle(color: AppColors.white),
     titleMedium: TextStyle(color: AppColors.white),
     titleSmall: TextStyle(color: AppColors.white),
   ),
-  colorScheme: ColorScheme.light(
+  colorScheme: const ColorScheme.light(
     surface: AppColors.background,
     primary: AppColors.primary,
     inversePrimary: AppColors.white,

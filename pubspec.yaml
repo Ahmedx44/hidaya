@@ -52,6 +52,7 @@ dependencies:
   arabic_font: ^0.0.9
   awesome_bottom_bar: ^1.2.4
   just_audio: ^0.9.40
+  hadith: ^1.0.0
 
  
 
