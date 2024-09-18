@@ -8,6 +8,7 @@ import 'package:hidaya/domain/respository/auth/auth_repsoitory.dart';
 import 'package:hidaya/domain/respository/quran/surah_reposiotry.dart';
 import 'package:hidaya/domain/usecase/auth/siginin_usecase.dart';
 import 'package:hidaya/domain/usecase/auth/signup_usecase.dart';
+import 'package:hidaya/domain/usecase/hadith/get_books.dart';
 import 'package:hidaya/domain/usecase/hadith/get_collection.dart';
 import 'package:hidaya/domain/usecase/quran/get_page_model.dart';
 import 'package:hidaya/domain/usecase/quran/surah_usecase.dart';
@@ -48,5 +49,8 @@ Future<void> initializedDependency() async {
   );
   sl.registerSingleton<GetCollectionUseCase>(
     GetCollectionUseCase(),
+  );
+  sl.registerSingleton<GetBooksUseCase>(
+    GetBooksUseCase(),
   );
 }

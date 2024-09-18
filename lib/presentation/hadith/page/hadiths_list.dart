@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hadith/classes.dart';
+import 'package:hadith/hadith.dart';
 import 'package:hidaya/domain/usecase/hadith/get_collection.dart';
-import 'package:hidaya/presentation/hadith/bloc/hadit_list_bloc/hadith_list_cubit.dart';
-import 'package:hidaya/presentation/hadith/bloc/hadit_list_bloc/hadith_list_state.dart';
+import 'package:hidaya/presentation/hadith/bloc/hadith_list/hadith_list_cubit.dart';
+import 'package:hidaya/presentation/hadith/bloc/hadith_list/hadith_list_state.dart';
+import 'package:hidaya/presentation/hadith/page/hadith_books_list.dart';
 import 'package:hidaya/service_locator.dart';
 
 class HadithsList extends StatelessWidget {
@@ -16,7 +18,16 @@ class HadithsList extends StatelessWidget {
           HadithListCubit(sl<GetCollectionUseCase>())..getCollections(),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: AppBar(),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            'Hadiths',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: Theme.of(context).colorScheme.inversePrimary),
+          ),
+        ),
         body: BlocBuilder<HadithListCubit, HadithListState>(
           builder: (context, state) {
             if (state is HadithListLoadind) {
@@ -32,6 +43,8 @@ class HadithsList extends StatelessWidget {
                       itemCount: successState.collection.length,
                       itemBuilder: (context, index) {
                         Collection hadith = successState.collection[index];
+
+                        print(getBooks(Collections.muslim));
                         return Container(
                           margin: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 10),
@@ -39,15 +52,40 @@ class HadithsList extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                               color: Theme.of(context).colorScheme.onTertiary),
                           padding: const EdgeInsets.all(10),
-                          child: ListTile(
-                            title: Text(
-                              '${hadith.name[0].toUpperCase()}${hadith.name.substring(1)}',
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .inversePrimary,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return const HadithBooksList(
+                                    collection: Collections.tirmidhi,
+                                  );
+                                },
+                              ));
+                            },
+                            child: ListTile(
+                              subtitle: Row(
+                                children: [
+                                  const Text(
+                                    'Hadiths:',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(hadith.totalAvailableHadith.toString(),
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                              title: Text(
+                                '${hadith.name[0].toUpperCase()}${hadith.name.substring(1)}',
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .inversePrimary,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
                             ),
                           ),
                         );

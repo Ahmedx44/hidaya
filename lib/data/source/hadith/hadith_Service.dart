@@ -3,6 +3,7 @@ import 'package:hadith/hadith.dart';
 
 abstract class HadithService {
   List<Collection> getCollection();
+  List<Book> getBookss(Collections collection);
 }
 
 class HadithServiceImpl extends HadithService {
@@ -10,5 +11,11 @@ class HadithServiceImpl extends HadithService {
   List<Collection> getCollection() {
     List<Collection> colleciton = getCollections();
     return colleciton;
+  }
+
+  @override
+  List<Book> getBookss(Collections collection) {
+    List<Book> books = getBooks(collection);
+    return books;
   }
 }

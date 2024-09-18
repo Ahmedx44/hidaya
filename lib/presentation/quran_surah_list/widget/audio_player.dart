@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:hidaya/core/config/assets/image/app_image.dart';
+import 'package:hidaya/core/config/assets/vector/app_vector.dart';
 
 import 'package:hidaya/presentation/quran_surah_list/Bloc/audio_plaer_bloc/audio_player_cubit.dart';
 import 'package:hidaya/presentation/quran_surah_list/Bloc/audio_plaer_bloc/audio_player_state.dart';
@@ -42,8 +44,8 @@ class QuranAudio extends StatelessWidget {
                           color: Theme.of(context).colorScheme.onTertiary,
                           borderRadius: BorderRadius.circular(12), // Optional
                         ),
-                        child: Image.asset(
-                          AppImage.quran,
+                        child: SvgPicture.asset(
+                          Appvector.quran,
                           fit: BoxFit.contain,
                         ),
                       ),
