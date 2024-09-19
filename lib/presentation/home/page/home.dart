@@ -12,8 +12,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String timezone = DateTime.now().timeZoneName;
+
   @override
   Widget build(BuildContext context) {
+    print(timezone);
     int pageIndex = 0;
     return Scaffold(
       drawer: Drawer(),

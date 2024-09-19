@@ -17,6 +17,7 @@ class HadithBooksList extends StatelessWidget {
       create: (context) =>
           HadithBookCubit(sl<GetBooksUseCase>())..getBooks(collection),
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           title: const Text('Hadith Books'),
         ),
@@ -34,7 +35,8 @@ class HadithBooksList extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final book = successState.collection[index];
                   return Container(
-                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Theme.of(context).colorScheme.tertiary),
@@ -52,10 +54,11 @@ class HadithBooksList extends StatelessWidget {
                       },
                       child: ListTile(
                         leading: Text(book.bookNumber,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 25)),
                         title: Text(book.book[0].name,
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                         subtitle: Row(
                           children: [
                             Text('Hadith start: ${book.hadithStartNumber}'),

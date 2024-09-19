@@ -280,6 +280,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  hijri:
+    dependency: transitive
+    description:
+      name: hijri
+      sha256: "203eb7341e32789af6429877e88411b1526ef44c5d157ce4d3b930dd32c37ef1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   http:
     dependency: transitive
     description:
@@ -296,6 +304,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.18.1"
   intro_screen_onboarding_flutter:
     dependency: "direct main"
     description:
@@ -488,6 +504,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.2"
+  quiver:
+    dependency: transitive
+    description:
+      name: quiver
+      sha256: ea0b925899e64ecdfbf9c7becb60d5b50e706ade44a85b2363be2a22d88117d2
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.2"
   quran:
     dependency: "direct main"
     description:
@@ -512,6 +536,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
+  salat:
+    dependency: "direct main"
+    description:
+      name: salat
+      sha256: "22c7b9c1ff78a8145febb2ed44faf7ce88c197aadd11cd81a47f5a801ff70213"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -557,6 +589,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  tabular:
+    dependency: transitive
+    description:
+      name: tabular
+      sha256: "2aa49351db5c2a9911dbedeb09dca6ccb812f25b6ad8b9b556c6e35321ed79f4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.3+1"
   term_glyph:
     dependency: transitive
     description:
@@ -573,6 +613,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.0"
+  timezone:
+    dependency: transitive
+    description:
+      name: timezone
+      sha256: "2236ec079a174ce07434e89fcd3fcda430025eb7692244139a9cf54fdcf1fc7d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.4"
   typed_data:
     dependency: transitive
     description:

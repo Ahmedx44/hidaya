@@ -43,14 +43,12 @@ class HadithsList extends StatelessWidget {
                       itemCount: successState.collection.length,
                       itemBuilder: (context, index) {
                         Collection hadith = successState.collection[index];
-
-                        print(getBooks(Collections.muslim));
                         return Container(
                           margin: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              color: Theme.of(context).colorScheme.onTertiary),
+                              color: Theme.of(context).colorScheme.tertiary),
                           padding: const EdgeInsets.all(10),
                           child: GestureDetector(
                             onTap: () {
@@ -82,10 +80,13 @@ class HadithsList extends StatelessWidget {
                             child: ListTile(
                               subtitle: Row(
                                 children: [
-                                  const Text(
+                                  Text(
                                     'Hadiths:',
                                     style: TextStyle(
                                         fontSize: 16,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
                                         fontWeight: FontWeight.w500),
                                   ),
                                   Text(hadith.totalAvailableHadith.toString(),
@@ -97,9 +98,8 @@ class HadithsList extends StatelessWidget {
                               title: Text(
                                 '${hadith.name[0].toUpperCase()}${hadith.name.substring(1)}',
                                 style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .inversePrimary,
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20),
                               ),
