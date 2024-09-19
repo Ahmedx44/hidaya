@@ -4,6 +4,7 @@ import 'package:hadith/hadith.dart';
 abstract class HadithService {
   List<Collection> getCollection();
   List<Book> getBookss(Collections collection);
+  List<Hadith> getHadiths(Collections collection, int bookNum);
 }
 
 class HadithServiceImpl extends HadithService {
@@ -17,5 +18,11 @@ class HadithServiceImpl extends HadithService {
   List<Book> getBookss(Collections collection) {
     List<Book> books = getBooks(collection);
     return books;
+  }
+
+  @override
+  List<Hadith> getHadiths(Collections collection, int bookNum) {
+    final hadith = getHadiths(collection, bookNum);
+    return hadith;
   }
 }

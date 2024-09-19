@@ -1,7 +1,8 @@
 import 'package:hadith/hadith.dart';
 
-class BookModel {
+class HadithModel {
   final Collections collection;
+  final int bookNum;
 
-  BookModel({required this.collection});
+  HadithModel({required this.collection, required this.bookNum});
 }

@@ -10,6 +10,7 @@ import 'package:hidaya/domain/usecase/auth/siginin_usecase.dart';
 import 'package:hidaya/domain/usecase/auth/signup_usecase.dart';
 import 'package:hidaya/domain/usecase/hadith/get_books.dart';
 import 'package:hidaya/domain/usecase/hadith/get_collection.dart';
+import 'package:hidaya/domain/usecase/hadith/get_hadith.dart';
 import 'package:hidaya/domain/usecase/quran/get_page_model.dart';
 import 'package:hidaya/domain/usecase/quran/surah_usecase.dart';
 
@@ -52,5 +53,8 @@ Future<void> initializedDependency() async {
   );
   sl.registerSingleton<GetBooksUseCase>(
     GetBooksUseCase(),
+  );
+  sl.registerSingleton<GetHadithUseCase>(
+    GetHadithUseCase(),
   );
 }

@@ -55,6 +55,7 @@ dependencies:
   just_audio: ^0.9.40
   hadith: ^1.0.0
   salat: ^1.0.4
+  geolocator: ^12.0.0
 
  
 

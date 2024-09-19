@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hadith/hadith.dart';
 import 'package:hidaya/domain/usecase/hadith/get_books.dart';
-import 'package:hidaya/presentation/hadith/bloc/hadith_book_bloc/hadith_book_cubit.dart';
-import 'package:hidaya/presentation/hadith/bloc/hadith_book_bloc/hadith_book_state.dart';
-import 'package:hidaya/presentation/hadith/page/hadith_book.dart';
+import 'package:hidaya/presentation/hadith/bloc/hadit_list_book_bloc/hadith_book_list_cubit.dart';
+import 'package:hidaya/presentation/hadith/bloc/hadit_list_book_bloc/hadith_book_list_state.dart';
+import 'package:hidaya/presentation/hadith/page/hadith_book_hadith.dart';
 import 'package:hidaya/service_locator.dart';
 
 class HadithBooksList extends StatelessWidget {
@@ -15,20 +15,20 @@ class HadithBooksList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          HadithBookCubit(sl<GetBooksUseCase>())..getBooks(collection),
+          HadithListBookCubit(sl<GetBooksUseCase>())..getBooks(collection),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           title: const Text('Hadith Books'),
         ),
-        body: BlocBuilder<HadithBookCubit, HadithBookState>(
+        body: BlocBuilder<HadithListBookCubit, HadithListBookState>(
           builder: (context, state) {
-            if (state is HadithBookLoading) {
+            if (state is HadithListBookLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (state is HadithBookLoaded) {
-              final successState = state as HadithBookLoaded;
+            } else if (state is HadithListBookLoaded) {
+              final successState = state as HadithListBookLoaded;
 
               return ListView.builder(
                 itemCount: successState.collection.length,
