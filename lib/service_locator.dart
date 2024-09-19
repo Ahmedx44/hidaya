@@ -3,6 +3,7 @@ import 'package:hidaya/data/repository/auth/auth_repository_impl.dart';
 import 'package:hidaya/data/repository/quran/surah_repository_impl.dart';
 import 'package:hidaya/data/source/auth/auth_firebase_service.dart';
 import 'package:hidaya/data/source/hadith/hadith_Service.dart';
+import 'package:hidaya/data/source/location/location_service.dart';
 import 'package:hidaya/data/source/quran/quran_service.dart';
 import 'package:hidaya/domain/respository/auth/auth_repsoitory.dart';
 import 'package:hidaya/domain/respository/quran/surah_reposiotry.dart';
@@ -11,19 +12,29 @@ import 'package:hidaya/domain/usecase/auth/signup_usecase.dart';
 import 'package:hidaya/domain/usecase/hadith/get_books.dart';
 import 'package:hidaya/domain/usecase/hadith/get_collection.dart';
 import 'package:hidaya/domain/usecase/hadith/get_hadith.dart';
+import 'package:hidaya/domain/usecase/location/getLocation.dart';
 import 'package:hidaya/domain/usecase/quran/get_page_model.dart';
 import 'package:hidaya/domain/usecase/quran/surah_usecase.dart';
 
 final sl = GetIt.instance;
 
 Future<void> initializedDependency() async {
-  sl.registerSingleton<AuthRepsoitory>(
-    AuthRepositoryImpl(),
-  );
-
+  //SERVICES
   sl.registerSingleton<AuthFirebaseService>(
     AuthFirebaseServiceImpl(),
   );
+  sl.registerSingleton<HadithService>(
+    HadithServiceImpl(),
+  );
+
+  sl.registerSingleton<QuranService>(
+    QuranServiceImpl(),
+  );
+  sl.registerSingleton<LocationService>(
+    LocationServiceImpl(),
+  );
+
+  //USECASES
 
   sl.registerSingleton<SignupUsecase>(
     SignupUsecase(),
@@ -31,22 +42,11 @@ Future<void> initializedDependency() async {
   sl.registerSingleton<SigininUsecase>(
     SigininUsecase(),
   );
-
-  sl.registerSingleton<QuranReposiotry>(
-    QuranReposiotryImpl(),
-  );
-
   sl.registerSingleton<SurahUsecase>(
     SurahUsecase(),
   );
-  sl.registerSingleton<QuranService>(
-    QuranServiceImpl(),
-  );
   sl.registerSingleton<GetPageDataUseCase>(
     GetPageDataUseCase(),
-  );
-  sl.registerSingleton<HadithService>(
-    HadithServiceImpl(),
   );
   sl.registerSingleton<GetCollectionUseCase>(
     GetCollectionUseCase(),
@@ -56,5 +56,16 @@ Future<void> initializedDependency() async {
   );
   sl.registerSingleton<GetHadithUseCase>(
     GetHadithUseCase(),
+  );
+  sl.registerSingleton<GetlocationUseCase>(
+    GetlocationUseCase(),
+  );
+
+//REPOSITORYS
+  sl.registerSingleton<AuthRepsoitory>(
+    AuthRepositoryImpl(),
+  );
+  sl.registerSingleton<QuranReposiotry>(
+    QuranReposiotryImpl(),
   );
 }

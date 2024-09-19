@@ -5,6 +5,6 @@ import 'package:hidaya/service_locator.dart';
 
 class GetHadithUseCase {
   List<Hadith> call(HadithModel params) {
-    return sl<HadithService>().getHadiths(params.collection, params.bookNum);
+    return sl<HadithService>().getHadithss(params.collection, params.bookNum);
   }
 }

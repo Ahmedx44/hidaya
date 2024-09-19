@@ -17,6 +17,6 @@ class HadithReposiotryImpl extends HadithReposiotry {
 
   @override
   List<Hadith> getHadiths(Collections collection, int bookNum) {
-    return sl<HadithService>().getHadiths(collection, bookNum);
+    return sl<HadithService>().getHadithss(collection, bookNum);
   }
 }
