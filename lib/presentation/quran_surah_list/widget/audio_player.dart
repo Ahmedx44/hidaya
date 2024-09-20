@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-
-import 'package:hidaya/core/config/assets/image/app_image.dart';
 import 'package:hidaya/core/config/assets/vector/app_vector.dart';
-
 import 'package:hidaya/presentation/quran_surah_list/Bloc/audio_plaer_bloc/audio_player_cubit.dart';
 import 'package:hidaya/presentation/quran_surah_list/Bloc/audio_plaer_bloc/audio_player_state.dart';
 
 class QuranAudio extends StatelessWidget {
-  bool isPlaying = false;
-  int surahNumber;
-  QuranAudio({super.key, required this.isPlaying, required this.surahNumber});
+  final bool isPlaying = false;
+  final int surahNumber;
+  const QuranAudio({super.key, required this.surahNumber});
 
   @override
   Widget build(BuildContext context) {

@@ -1,12 +1,17 @@
+import 'dart:async';
+
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hidaya/domain/usecase/location/getLocation.dart';
-import 'package:hidaya/presentation/home/bloc/search_bloc/search_cubit.dart';
+import 'package:hidaya/domain/usecase/time/time_usecase.dart';
 import 'package:hidaya/presentation/home/widget/features.dart';
 import 'package:hidaya/presentation/home/widget/home_card.dart';
+import 'package:hidaya/presentation/search/page/search.dart';
 import 'package:hidaya/service_locator.dart';
+import 'package:page_animation_transition/animations/fade_animation_transition.dart';
+import 'package:page_animation_transition/page_animation_transition.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,18 +26,26 @@ class _HomeScreenState extends State<HomeScreen> {
   int pageIndex = 0;
   bool isSearchActive = false;
   final TextEditingController searchController = TextEditingController();
+  String currentTime = '';
 
   @override
   void initState() {
     super.initState();
+    currentTime = sl<TimeUsecase>().getCurrentTIme();
+
     final location = sl<GetlocationUseCase>();
     location().then((value) {
       setState(() {
         position = value;
       });
     }).catchError((error) {
-      // Handle any errors while fetching the location here
       print('Failed to get location: $error');
+    });
+
+    Timer.periodic(Duration(seconds: 1), (Timer t) {
+      setState(() {
+        currentTime = sl<TimeUsecase>().getCurrentTIme();
+      });
     });
   }
 
@@ -41,26 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       drawer: const Drawer(),
       appBar: AppBar(
-        title: !isSearchActive
-            ? const Text('Home')
-            : TextField(
-                controller: searchController,
-                decoration: const InputDecoration(
-                  hintText: "Search Surah...",
-                ),
-                onChanged: (query) {
-                  // context.read<SurahSearchCubit>().searchSurah(query);
-                },
-              ),
         actions: [
           IconButton(
-            icon: Icon(isSearchActive ? Icons.cancel : Icons.search),
             onPressed: () {
-              setState(() {
-                isSearchActive = !isSearchActive;
-                searchController.clear();
-              });
+              Navigator.of(context).push(PageAnimationTransition(
+                  page: const SearchPage(),
+                  pageAnimationType: FadeAnimationTransition()));
             },
+            icon: const Icon(Icons.search),
           ),
         ],
       ),
@@ -93,9 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       children: [
                         Text(
-                          '4:41',
+                          currentTime,
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.inversePrimary,
+                            color: Theme.of(context).colorScheme.primary,
                             fontSize: 70,
                             fontWeight: FontWeight.bold,
                           ),

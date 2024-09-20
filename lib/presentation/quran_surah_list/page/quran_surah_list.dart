@@ -101,7 +101,6 @@ class _QuranSurahListState extends State<QuranSurahList> {
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) {
                                     return QuranAudio(
-                                      isPlaying: true,
                                       surahNumber: surah!.number,
                                     );
                                   },

@@ -14,7 +14,9 @@ import 'package:hidaya/domain/usecase/hadith/get_collection.dart';
 import 'package:hidaya/domain/usecase/hadith/get_hadith.dart';
 import 'package:hidaya/domain/usecase/location/getLocation.dart';
 import 'package:hidaya/domain/usecase/quran/get_page_model.dart';
+import 'package:hidaya/domain/usecase/quran/surah_search_usecase.dart';
 import 'package:hidaya/domain/usecase/quran/surah_usecase.dart';
+import 'package:hidaya/domain/usecase/time/time_usecase.dart';
 
 final sl = GetIt.instance;
 
@@ -59,6 +61,13 @@ Future<void> initializedDependency() async {
   );
   sl.registerSingleton<GetlocationUseCase>(
     GetlocationUseCase(),
+  );
+
+  sl.registerSingleton<TimeUsecase>(
+    TimeUsecase(),
+  );
+  sl.registerSingleton<SurahSearchUsecase>(
+    SurahSearchUsecase(),
   );
 
 //REPOSITORYS
