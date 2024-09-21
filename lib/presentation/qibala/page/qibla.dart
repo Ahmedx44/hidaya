@@ -54,6 +54,7 @@ class _QiblaCompassState extends State<QiblaCompass>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
         child: Transform.rotate(

@@ -1,6 +1,7 @@
 import 'package:hidaya/data/source/quran/quran_service.dart';
 import 'package:hidaya/domain/respository/quran/surah_reposiotry.dart';
 import 'package:hidaya/service_locator.dart';
+import 'package:quran/quran.dart';
 import 'package:quran_flutter/models/surah.dart';
 
 class QuranReposiotryImpl extends QuranReposiotry {
@@ -17,5 +18,15 @@ class QuranReposiotryImpl extends QuranReposiotry {
   @override
   Future<String> getUrlAudio(int surahNumber) {
     return sl<QuranService>().getUrlAudio(surahNumber);
+  }
+
+  @override
+  RandomVerse getRandomVerse() {
+    return sl<QuranService>().getRandoVerse();
+  }
+
+  @override
+  String getSurah(int surahNumber) {
+    return sl<QuranService>().getSurah(surahNumber);
   }
 }

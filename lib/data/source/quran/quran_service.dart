@@ -1,3 +1,4 @@
+import 'package:quran/quran.dart';
 import 'package:quran_flutter/models/surah.dart';
 import 'package:quran_flutter/quran.dart';
 import 'package:quran/quran.dart' as quran;
@@ -6,6 +7,8 @@ abstract class QuranService {
   Future<Map<int, Surah>> fetchSurah();
   Future<List> getSurahVerse(int surahNumber);
   Future<String> getUrlAudio(int surahNumber);
+  String getSurah(int surahNumber);
+  RandomVerse getRandoVerse();
 }
 
 class QuranServiceImpl extends QuranService {
@@ -30,5 +33,17 @@ class QuranServiceImpl extends QuranService {
     print(url);
 
     return url;
+  }
+
+  @override
+  RandomVerse getRandoVerse() {
+    RandomVerse randomVerse = RandomVerse();
+    return randomVerse;
+  }
+
+  @override
+  String getSurah(int surahName) {
+    final String surah = getSurahName(surahName);
+    return surah;
   }
 }

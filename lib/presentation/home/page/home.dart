@@ -8,6 +8,7 @@ import 'package:hidaya/domain/usecase/location/getLocation.dart';
 import 'package:hidaya/domain/usecase/time/time_usecase.dart';
 import 'package:hidaya/presentation/home/widget/features.dart';
 import 'package:hidaya/presentation/home/widget/home_card.dart';
+import 'package:hidaya/presentation/home/widget/randomVerse.dart';
 import 'package:hidaya/presentation/search/page/search.dart';
 import 'package:hidaya/service_locator.dart';
 import 'package:page_animation_transition/animations/fade_animation_transition.dart';
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       print('Failed to get location: $error');
     });
 
-    Timer.periodic(Duration(seconds: 1), (Timer t) {
+    Timer.periodic(Duration(minutes: 1), (Timer t) {
       setState(() {
         currentTime = sl<TimeUsecase>().getCurrentTIme();
       });
@@ -115,7 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const HomeCard(),
-            const SizedBox(height: 200, child: Features()),
+            const SizedBox(height: 150, child: Features()),
+            const RandomVersePage()
           ],
         ),
       ),

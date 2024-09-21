@@ -14,6 +14,7 @@ import 'package:hidaya/domain/usecase/hadith/get_collection.dart';
 import 'package:hidaya/domain/usecase/hadith/get_hadith.dart';
 import 'package:hidaya/domain/usecase/location/getLocation.dart';
 import 'package:hidaya/domain/usecase/quran/get_page_model.dart';
+import 'package:hidaya/domain/usecase/quran/get_random_verse.dart';
 import 'package:hidaya/domain/usecase/quran/surah_search_usecase.dart';
 import 'package:hidaya/domain/usecase/quran/surah_usecase.dart';
 import 'package:hidaya/domain/usecase/time/time_usecase.dart';
@@ -68,6 +69,9 @@ Future<void> initializedDependency() async {
   );
   sl.registerSingleton<SurahSearchUsecase>(
     SurahSearchUsecase(),
+  );
+  sl.registerSingleton<GetRandomVerseUseCase>(
+    GetRandomVerseUseCase(),
   );
 
 //REPOSITORYS
