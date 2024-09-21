@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:hidaya/presentation/hadith/page/hadiths_list.dart';
 import 'package:hidaya/presentation/home/widget/mini_card.dart';
+import 'package:hidaya/presentation/qibala/page/qibla.dart';
 import 'package:hidaya/presentation/quran_surah_list/page/quran_surah_list.dart';
 
 class Features extends StatelessWidget {
@@ -58,8 +59,18 @@ class Features extends StatelessWidget {
                 const MiniCard(
                     icon: Icons.edit_calendar_outlined, feature: 'Reminder'),
                 const MiniCard(icon: Icons.handshake, feature: 'Charity'),
-                const MiniCard(
-                    icon: FlutterIslamicIcons.qibla, feature: 'Qibla Direction')
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return QiblaCompass();
+                      },
+                    ));
+                  },
+                  child: MiniCard(
+                      icon: FlutterIslamicIcons.qibla,
+                      feature: 'Qibla Direction'),
+                )
               ],
             ),
           )

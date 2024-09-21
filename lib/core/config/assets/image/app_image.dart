@@ -6,4 +6,5 @@ class AppImage {
   static String pattern_right = '${address}pattern$format';
   static String mesjid = '${address}mesjid$format';
   static String pattern_left = '${address}pattern-left$format';
+  static String qibla_compass = '${address}qibla$format';
 }
