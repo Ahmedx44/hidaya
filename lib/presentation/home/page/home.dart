@@ -66,18 +66,17 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomBarInspiredFancy(
+      bottomNavigationBar: BottomBarDefault(
         items: const [
           TabItem(icon: FlutterIslamicIcons.kaaba, title: 'Home'),
           TabItem(icon: Icons.message_outlined, title: 'Chat'),
-          TabItem(icon: FlutterIslamicIcons.prayer, title: 'Prayer'),
-          TabItem(icon: FlutterIslamicIcons.community, title: 'Community'),
+          TabItem(icon: Icons.chat, title: 'Prayer'),
+          TabItem(icon: Icons.person, title: 'Profile'),
         ],
         backgroundColor: Theme.of(context).colorScheme.surface,
         color: Theme.of(context).colorScheme.inversePrimary,
         colorSelected: Theme.of(context).colorScheme.primary,
         indexSelected: pageIndex,
-        styleIconFooter: StyleIconFooter.dot,
         onTap: (int index) => setState(() {
           pageIndex = index;
         }),

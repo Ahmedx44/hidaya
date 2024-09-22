@@ -14,6 +14,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await initializedDependency();
   await Quran.initialize();
+  // QuranTool quranTool = QuranTool.init();
   runApp(const MyApp());
 }
 

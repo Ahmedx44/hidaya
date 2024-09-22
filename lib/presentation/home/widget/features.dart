@@ -56,9 +56,6 @@ class Features extends StatelessWidget {
                     },
                     child: const MiniCard(
                         icon: Icons.audio_file, feature: 'Hadith')),
-                const MiniCard(
-                    icon: Icons.edit_calendar_outlined, feature: 'Reminder'),
-                const MiniCard(icon: Icons.handshake, feature: 'Charity'),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
