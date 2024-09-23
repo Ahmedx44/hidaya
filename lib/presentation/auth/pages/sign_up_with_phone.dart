@@ -70,6 +70,17 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
   String? _verificationId;
   String phoneNumberInE164 = "";
 
+  showCircular() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
   Future<void> signUpWithPhone() async {
     if (phoneNumberInE164.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -79,12 +90,14 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
     }
 
     try {
-      print(
-          phoneNumberInE164); // This will show the phone number with country code
+      showCircular();
+
+      print('Phone number: $phoneNumberInE164');
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phoneNumberInE164,
         verificationCompleted: (PhoneAuthCredential credential) async {
           await FirebaseAuth.instance.signInWithCredential(credential);
+          Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 content: Text("Phone number automatically verified.")),
@@ -95,28 +108,31 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
             SnackBar(
                 content: Text("Verification failed. Reason: ${e.message}")),
           );
+          Navigator.pop(context);
+          print('Verification failed: ${e.message}'); // Log the error
         },
         codeSent: (String verificationId, int? resendToken) {
           setState(() {
             _verificationId = verificationId;
           });
+          Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("OTP sent to your phone.")),
           );
+          Navigator.pop(context);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => OtpScreen()));
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           _verificationId = verificationId;
         },
       );
-      Navigator.push(context, MaterialPageRoute(
-        builder: (context) {
-          return OtpScreen();
-        },
-      ));
     } catch (e) {
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: $e")),
       );
+      print('Error: $e'); // Log the error
     }
   }
 
