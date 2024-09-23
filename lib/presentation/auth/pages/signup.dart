@@ -4,6 +4,7 @@ import 'package:hidaya/core/config/assets/vector/app_vector.dart';
 import 'package:hidaya/data/model/auth/create_user_req.dart';
 import 'package:hidaya/domain/usecase/auth/signup_usecase.dart';
 import 'package:hidaya/presentation/auth/pages/sigin.dart';
+import 'package:hidaya/presentation/auth/pages/sign_up_with_phone.dart';
 import 'package:hidaya/service_locator.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -207,6 +208,15 @@ class SignUpScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return SignUpWithPhone();
+                          },
+                        ));
+                      },
+                      child: Text('Sign up with Phone number'))
                 ],
               ),
             );

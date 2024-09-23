@@ -60,6 +60,9 @@ dependencies:
   flutter_qiblah: ^2.2.0
   share_plus: ^10.0.0
   http:
+  firebase_phone_auth_handler:
+  intl_phone_number_input: ^0.7.4
+  pin_code_fields: ^8.0.1
 
 
  

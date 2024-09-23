@@ -16,7 +16,6 @@ ThemeData lightMode = ThemeData(
     tertiary: AppColors.tertiary,
     onTertiary: const Color.fromARGB(255, 212, 247, 202),
   ),
-  textTheme: GoogleFonts.amiriTextTheme(),
 );
 
 ThemeData darkMode = ThemeData(

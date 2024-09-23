@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hidaya/core/config/assets/theme/app_theme.dart';
@@ -23,17 +24,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => SurahSearchCubit(sl<SurahSearchUsecase>()),
+    return FirebasePhoneAuthProvider(
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => SurahSearchCubit(sl<SurahSearchUsecase>()),
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: lightMode,
+          darkTheme: darkMode,
+          home: const AuthGate(),
         ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: lightMode,
-        darkTheme: darkMode,
-        home: const AuthGate(),
       ),
     );
   }
