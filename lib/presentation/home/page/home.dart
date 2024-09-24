@@ -14,6 +14,7 @@ import 'package:hidaya/presentation/search/page/search.dart';
 import 'package:hidaya/service_locator.dart';
 import 'package:page_animation_transition/animations/fade_animation_transition.dart';
 import 'package:page_animation_transition/page_animation_transition.dart';
+import 'package:adhan/adhan.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isSearchActive = false;
   final TextEditingController searchController = TextEditingController();
   String currentTime = '';
+  String nextPrayerText = 'Calculating...';
 
   @override
   void initState() {
@@ -39,6 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
     location().then((value) {
       setState(() {
         position = value;
+        if (position != null) {
+          _calculatePrayerTimes();
+        }
       });
     }).catchError((error) {
       print('Failed to get location: $error');
@@ -47,8 +52,31 @@ class _HomeScreenState extends State<HomeScreen> {
     Timer.periodic(Duration(minutes: 1), (Timer t) {
       setState(() {
         currentTime = sl<TimeUsecase>().getCurrentTIme();
+        if (position != null) {
+          _calculatePrayerTimes();
+        }
       });
     });
+  }
+
+  void _calculatePrayerTimes() {
+    final coordinates = Coordinates(position!.latitude, position!.longitude);
+    final params = CalculationMethod.karachi.getParameters();
+    params.madhab = Madhab.hanafi;
+
+    final prayerTimes = PrayerTimes.today(coordinates, params);
+
+    final currentDateTime = DateTime.now();
+    final nextPrayer = prayerTimes.nextPrayer();
+    final remainingDuration =
+        prayerTimes.timeForPrayer(nextPrayer)?.difference(currentDateTime);
+
+    if (remainingDuration != null && nextPrayer != null) {
+      setState(() {
+        nextPrayerText =
+            '${nextPrayer.name} ${remainingDuration.inHours} hours ${remainingDuration.inMinutes % 60} minutes left';
+      });
+    }
   }
 
   @override
@@ -103,12 +131,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          'Fajr 3 hours 9 minutes left',
+                          nextPrayerText,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.inversePrimary,
                             fontSize: 20,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),

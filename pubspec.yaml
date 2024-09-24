@@ -62,7 +62,7 @@ dependencies:
   http:
   firebase_phone_auth_handler:
   intl_phone_number_input: ^0.7.4
-  pin_code_fields: ^8.0.1
+  adhan:
 
 
  

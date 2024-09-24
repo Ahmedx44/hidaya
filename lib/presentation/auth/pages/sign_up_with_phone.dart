@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hidaya/presentation/auth/pages/forget_password.dart';
 import 'package:hidaya/presentation/auth/pages/otp.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:hidaya/presentation/auth/pages/signup.dart';
 
 class SignUpWithPhone extends StatelessWidget {
   const SignUpWithPhone({super.key});
