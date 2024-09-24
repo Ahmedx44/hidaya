@@ -54,7 +54,7 @@ class _RandomVersePageState extends State<RandomVersePage> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onTertiary,
+              color: Colors.green,
               borderRadius: BorderRadius.circular(10),
             ),
             width: 300,
