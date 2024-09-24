@@ -63,6 +63,7 @@ dependencies:
   firebase_phone_auth_handler:
   intl_phone_number_input: ^0.7.4
   adhan:
+  flutter_heatmap_calendar: ^1.0.5
 
 
  

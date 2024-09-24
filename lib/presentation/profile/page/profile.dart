@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:hidaya/presentation/profile/page/edit_profile.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -17,6 +18,25 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             const ProfilePic(),
+            HeatMap(
+              datasets: {
+                DateTime(2024, 9, 24): 3,
+                DateTime(2024, 9, 23): 8,
+                DateTime(2024, 9, 22): 7,
+                DateTime(2024, 9, 22): 4,
+                DateTime(2024, 9, 21): 2,
+              },
+              colorMode: ColorMode.opacity,
+              showText: false,
+              scrollable: true,
+              colorsets: {
+                1: Color.fromARGB(255, 153, 247, 116),
+              },
+              onClick: (value) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(value.toString())));
+              },
+            ),
             const SizedBox(height: 20),
             ProfileMenu(
               text: "My Account",

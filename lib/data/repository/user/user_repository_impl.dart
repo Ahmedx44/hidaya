@@ -5,7 +5,7 @@ import 'package:hidaya/service_locator.dart';
 
 class UserRepositoryImpl extends UserRepository {
   @override
-  User getUser() {
-    return sl<UserService>().getUser();
+  Future<User> getUser() async {
+    return await sl<UserService>().getUser();
   }
 }

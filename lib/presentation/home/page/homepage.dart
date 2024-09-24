@@ -79,8 +79,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      drawer: MyDrawer(),
       appBar: AppBar(
+        centerTitle: false,
+        title: Text('Hello'),
         actions: [
           IconButton(
             onPressed: () {

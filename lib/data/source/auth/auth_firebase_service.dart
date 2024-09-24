@@ -36,8 +36,11 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
 
       await FirebaseFirestore.instance.collection('User').add({
         'fullname': createinUserReq.fullname,
-        'email': createinUserReq.email
+        'email': createinUserReq.email,
+        'phone': '',
+        'imageUrl': ''
       });
+
       return const Right('Succefully created');
     } on FirebaseAuthException catch (e) {
       String message = '';

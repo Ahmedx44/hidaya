@@ -91,8 +91,6 @@ class SignInScreen extends StatelessWidget {
                               params: SigninUserReq(
                                   email: _emailController.text,
                                   password: _passwordController.text));
-
-                          // ignore: use_build_context_synchronously
                           Navigator.pop(context);
 
                           result.fold((ifLeft) {
@@ -104,7 +102,8 @@ class SignInScreen extends StatelessWidget {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackbar);
 
-                            Navigator.push(context, MaterialPageRoute(
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(
                               builder: (context) {
                                 return const HomeScreen();
                               },

@@ -153,7 +153,7 @@ class SignUpScreen extends StatelessWidget {
                             shape: const StadiumBorder(),
                           ),
                           child: const Text(
-                            "Sign in",
+                            "Sign up",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),

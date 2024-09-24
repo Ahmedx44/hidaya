@@ -3,7 +3,7 @@ import 'package:hidaya/data/source/user/userService.dart';
 import 'package:hidaya/service_locator.dart';
 
 class GetUserUsecase {
-  User call() {
+  Future<User> call() {
     return sl<UserService>().getUser();
   }
 }

@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class UserService {
-  User getUser();
+  Future<User> getUser();
 }
 
 class UserServiceImpl extends UserService {
   @override
-  User getUser() {
+  Future<User> getUser() async {
     final user = FirebaseAuth.instance.currentUser;
+
     return user!;
   }
 }

@@ -10,6 +10,5 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   getUser() {
     emit(EditProfileLoading());
     final result = getUserUsecase();
-    emit(EditProfileLoaded(user: result));
   }
 }
