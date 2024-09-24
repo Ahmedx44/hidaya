@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hidaya/core/config/assets/vector/app_vector.dart';
-import 'package:hidaya/presentation/auth/pages/sigin.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});

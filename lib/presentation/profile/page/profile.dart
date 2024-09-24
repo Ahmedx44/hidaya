@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// TODO: add flutter_svg to pubspec.yaml
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hidaya/presentation/profile/page/edit_profile.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -20,13 +20,14 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ProfileMenu(
               text: "My Account",
-              icon: Icon(Icons.person),
-              press: () => {},
-            ),
-            ProfileMenu(
-              text: "Notifications",
-              icon: Icon(Icons.notifications),
-              press: () {},
+              icon: const Icon(Icons.person),
+              press: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const EditProfileScreen();
+                  },
+                ));
+              },
             ),
             ProfileMenu(
               text: "Settings",
@@ -41,7 +42,9 @@ class ProfileScreen extends StatelessWidget {
             ProfileMenu(
               text: "Log Out",
               icon: Icon(Icons.logout),
-              press: () {},
+              press: () {
+                FirebaseAuth.instance.signOut();
+              },
             ),
           ],
         ),
@@ -57,37 +60,17 @@ class ProfilePic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
       height: 115,
       width: 115,
       child: Stack(
         fit: StackFit.expand,
         clipBehavior: Clip.none,
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             backgroundImage:
                 NetworkImage("https://i.postimg.cc/0jqKB6mS/Profile-Image.png"),
           ),
-          Positioned(
-            right: -16,
-            bottom: 0,
-            child: SizedBox(
-              height: 46,
-              width: 46,
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    side: const BorderSide(color: Colors.white),
-                  ),
-                  backgroundColor: const Color(0xFFF5F6F9),
-                ),
-                onPressed: () {},
-                child: SvgPicture.string(cameraIcon),
-              ),
-            ),
-          )
         ],
       ),
     );

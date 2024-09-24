@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hidaya/core/config/assets/theme/app_color.dart';
 
 ThemeData lightMode = ThemeData(

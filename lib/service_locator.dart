@@ -5,6 +5,7 @@ import 'package:hidaya/data/source/auth/auth_firebase_service.dart';
 import 'package:hidaya/data/source/hadith/hadith_Service.dart';
 import 'package:hidaya/data/source/location/location_service.dart';
 import 'package:hidaya/data/source/quran/quran_service.dart';
+import 'package:hidaya/data/source/user/userService.dart';
 import 'package:hidaya/domain/respository/auth/auth_repsoitory.dart';
 import 'package:hidaya/domain/respository/quran/surah_reposiotry.dart';
 import 'package:hidaya/domain/usecase/auth/siginin_usecase.dart';
@@ -18,6 +19,7 @@ import 'package:hidaya/domain/usecase/quran/get_random_verse.dart';
 import 'package:hidaya/domain/usecase/quran/surah_search_usecase.dart';
 import 'package:hidaya/domain/usecase/quran/surah_usecase.dart';
 import 'package:hidaya/domain/usecase/time/time_usecase.dart';
+import 'package:hidaya/domain/usecase/user/get_user_usecase.dart';
 
 final sl = GetIt.instance;
 
@@ -35,6 +37,10 @@ Future<void> initializedDependency() async {
   );
   sl.registerSingleton<LocationService>(
     LocationServiceImpl(),
+  );
+
+  sl.registerSingleton<UserService>(
+    UserServiceImpl(),
   );
 
   //USECASES
@@ -72,6 +78,9 @@ Future<void> initializedDependency() async {
   );
   sl.registerSingleton<GetRandomVerseUseCase>(
     GetRandomVerseUseCase(),
+  );
+  sl.registerSingleton<GetUserUsecase>(
+    GetUserUsecase(),
   );
 
 //REPOSITORYS
