@@ -28,6 +28,7 @@ class ProfileScreen extends StatelessWidget {
               },
               colorMode: ColorMode.opacity,
               showText: false,
+              textColor: Theme.of(context).colorScheme.inversePrimary,
               scrollable: true,
               colorsets: {
                 1: Color.fromARGB(255, 153, 247, 116),

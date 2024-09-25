@@ -7,8 +7,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   EditProfileCubit(this.getUserUsecase) : super(EditProfileInitial());
 
-  getUser() {
+  getUser() async {
     emit(EditProfileLoading());
-    final result = getUserUsecase();
+    final result = await getUserUsecase();
+    emit(EditProfileLoaded(user: result));
   }
 }
