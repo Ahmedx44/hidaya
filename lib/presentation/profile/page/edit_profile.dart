@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hidaya/data/model/user/userModel.dart';
@@ -207,11 +209,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   onPressed: () async {
                                     showLoadingDialog(context);
                                     try {
+                                      String? imageUrl = '';
+
+                                      if (imagePath != null) {
+                                        // Create a reference to the location you want to upload the image to
+                                        final storageRef = FirebaseStorage
+                                            .instance
+                                            .ref()
+                                            .child(
+                                                'profile_images/${FirebaseAuth.instance.currentUser!.uid}.jpg');
+
+                                        // Upload the file to Firebase Storage
+                                        await storageRef
+                                            .putFile(File(imagePath!));
+
+                                        // Get the download URL
+                                        imageUrl =
+                                            await storageRef.getDownloadURL();
+                                      }
                                       await sl<UpdateUser>().call(Usermodel(
                                           email: _emailController.text,
                                           fullName: _nameController.text,
                                           phoneNumber: _phoneController.text,
-                                          imageUrl: ''));
+                                          imageUrl: imageUrl));
                                       Navigator.pop(
                                           context); // Close the loading dialog
                                       ScaffoldMessenger.of(context)
