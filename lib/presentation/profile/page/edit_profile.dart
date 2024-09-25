@@ -11,6 +11,10 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _nameController = TextEditingController();
+    TextEditingController _emailController = TextEditingController();
+    TextEditingController _phoneController = TextEditingController();
+
     return BlocProvider(
       create: (context) => EditProfileCubit(sl<GetUserUsecase>())..getUser(),
       child: Scaffold(
@@ -38,121 +42,141 @@ class EditProfileScreen extends StatelessWidget {
                   }
                   if (snapshot.hasData && snapshot.data != null) {
                     final userData = snapshot.data!.data();
-                    if (userData != null) {
-                      return SingleChildScrollView(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Column(
-                          children: [
-                            ProfilePic(
-                              image: userData['imageUrl'] ?? '',
-                              imageUploadBtnPress: () {},
-                            ),
-                            const Divider(),
-                            Form(
-                              child: Column(
-                                children: [
-                                  UserInfoEditField(
-                                    text: 'Name',
-                                    child: TextFormField(
-                                      initialValue: userData['fullname'],
-                                      decoration: const InputDecoration(
-                                        filled: true,
-                                        fillColor:
-                                            Color.fromARGB(255, 155, 248, 158),
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 16.0 * 1.5,
-                                            vertical: 16.0),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(50)),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  UserInfoEditField(
-                                    text: "Email",
-                                    child: TextFormField(
-                                      initialValue: userData['email'],
-                                      decoration: const InputDecoration(
-                                        filled: true,
-                                        fillColor:
-                                            Color.fromARGB(255, 155, 248, 158),
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 16.0 * 1.5,
-                                            vertical: 16.0),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(50)),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  UserInfoEditField(
-                                    text: "Phone",
-                                    child: TextFormField(
-                                      initialValue: userData['phone'],
-                                      decoration: const InputDecoration(
-                                        filled: true,
-                                        fillColor:
-                                            Color.fromARGB(255, 155, 248, 158),
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 16.0 * 1.5,
-                                            vertical: 16.0),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(50)),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 16.0),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+
+                    _nameController.text = userData!['fullname'] ?? '';
+                    _emailController.text = userData['email'] ?? '';
+                    _phoneController.text = userData['phone'] ?? '';
+
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        children: [
+                          ProfilePic(
+                            image: userData['imageUrl'] ?? '',
+                            imageUploadBtnPress: () {},
+                          ),
+                          const Divider(),
+                          Form(
+                            child: Column(
                               children: [
-                                SizedBox(
-                                  width: 120,
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .tertiary,
-                                      foregroundColor: Colors.white,
-                                      minimumSize:
-                                          const Size(double.infinity, 48),
-                                      shape: const StadiumBorder(),
+                                UserInfoEditField(
+                                  text: 'Name',
+                                  child: TextFormField(
+                                    controller: _nameController,
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor:
+                                          Color.fromARGB(255, 155, 248, 158),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16.0 * 1.5,
+                                          vertical: 16.0),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(50)),
+                                      ),
                                     ),
-                                    child: const Text("Cancel"),
                                   ),
                                 ),
-                                const SizedBox(width: 16.0),
-                                SizedBox(
-                                  width: 160,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          Theme.of(context).colorScheme.primary,
-                                      foregroundColor: Colors.white,
-                                      minimumSize:
-                                          const Size(double.infinity, 48),
-                                      shape: const StadiumBorder(),
+                                UserInfoEditField(
+                                  text: "Email",
+                                  child: TextFormField(
+                                    controller: _emailController,
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor:
+                                          Color.fromARGB(255, 155, 248, 158),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16.0 * 1.5,
+                                          vertical: 16.0),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(50)),
+                                      ),
                                     ),
-                                    onPressed: () {},
-                                    child: const Text("Save Update"),
+                                  ),
+                                ),
+                                UserInfoEditField(
+                                  text: "Phone",
+                                  child: TextFormField(
+                                    controller: _phoneController,
+                                    decoration: const InputDecoration(
+                                      filled: true,
+                                      fillColor:
+                                          Color.fromARGB(255, 155, 248, 158),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 16.0 * 1.5,
+                                          vertical: 16.0),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(50)),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      );
-                    }
+                          ),
+                          const SizedBox(height: 16.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SizedBox(
+                                width: 120,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context); // Cancel action
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    foregroundColor: Colors.white,
+                                    minimumSize:
+                                        const Size(double.infinity, 48),
+                                    shape: const StadiumBorder(),
+                                  ),
+                                  child: const Text("Cancel"),
+                                ),
+                              ),
+                              const SizedBox(width: 16.0),
+                              SizedBox(
+                                width: 160,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.primary,
+                                    foregroundColor: Colors.white,
+                                    minimumSize:
+                                        const Size(double.infinity, 48),
+                                    shape: const StadiumBorder(),
+                                  ),
+                                  onPressed: () async {
+                                    // Update the user data in Firestore
+                                    try {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                        content: Text(
+                                            "Profile updated successfully"),
+                                      ));
+                                    } catch (e) {
+                                      print("Error updating profile: $e");
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                        content:
+                                            Text("Failed to update profile"),
+                                      ));
+                                    }
+                                  },
+                                  child: const Text("Save Update"),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
                   }
                   return const Center(child: Text("No user data found"));
                 },
