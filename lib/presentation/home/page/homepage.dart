@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
       print('Failed to get location: $error');
     });
 
-    Timer.periodic(const Duration(minutes: 1), (Timer t) {
+    Timer.periodic(const Duration(seconds: 2), (Timer t) {
       setState(() {
         currentTime = sl<TimeUsecase>().getCurrentTIme();
         if (position != null) {
