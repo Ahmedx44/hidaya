@@ -6,7 +6,6 @@ import 'package:hidaya/domain/usecase/location/getLocation.dart';
 import 'package:hidaya/domain/usecase/time/time_usecase.dart';
 import 'package:hidaya/presentation/home/widget/features.dart';
 import 'package:hidaya/presentation/home/widget/home_card.dart';
-import 'package:hidaya/presentation/home/widget/my_drawer.dart';
 import 'package:hidaya/presentation/home/widget/randomVerse.dart';
 import 'package:hidaya/presentation/search/page/search.dart';
 import 'package:hidaya/service_locator.dart';

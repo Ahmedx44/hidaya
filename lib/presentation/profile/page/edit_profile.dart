@@ -1,19 +1,63 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hidaya/data/model/user/userModel.dart';
 import 'package:hidaya/domain/usecase/user/get_user_usecase.dart';
+import 'package:hidaya/domain/usecase/user/update_user.dart';
 import 'package:hidaya/presentation/profile/bloc/edit_profile_bloc/edit_profile_cubit.dart';
 import 'package:hidaya/presentation/profile/bloc/edit_profile_bloc/edit_profile_state.dart';
 import 'package:hidaya/service_locator.dart';
+import 'package:image_picker/image_picker.dart';
 
-class EditProfileScreen extends StatelessWidget {
+class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
   @override
+  _EditProfileScreenState createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+  String? imagePath;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+    _emailController = TextEditingController();
+    _phoneController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    TextEditingController _nameController = TextEditingController();
-    TextEditingController _emailController = TextEditingController();
-    TextEditingController _phoneController = TextEditingController();
+    ImagePicker imagePicker = ImagePicker();
+    XFile imagefile;
 
     return BlocProvider(
       create: (context) => EditProfileCubit(sl<GetUserUsecase>())..getUser(),
@@ -26,9 +70,7 @@ class EditProfileScreen extends StatelessWidget {
         body: BlocBuilder<EditProfileCubit, EditProfileState>(
           builder: (context, state) {
             if (state is EditProfileLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             }
             if (state is EditProfileLoaded) {
               return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
@@ -42,18 +84,28 @@ class EditProfileScreen extends StatelessWidget {
                   }
                   if (snapshot.hasData && snapshot.data != null) {
                     final userData = snapshot.data!.data();
-
-                    _nameController.text = userData!['fullname'] ?? '';
-                    _emailController.text = userData['email'] ?? '';
-                    _phoneController.text = userData['phone'] ?? '';
+                    if (userData != null) {
+                      _nameController.text = userData['fullName'] ?? '';
+                      _emailController.text = userData['email'] ?? '';
+                      _phoneController.text = userData['phone'] ?? '';
+                    }
 
                     return SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Column(
                         children: [
                           ProfilePic(
-                            image: userData['imageUrl'] ?? '',
-                            imageUploadBtnPress: () {},
+                            image: imagePath ?? userData?['imageUrl'] ?? '',
+                            imageUploadBtnPress: () async {
+                              final pickedImage = await imagePicker.pickImage(
+                                  source: ImageSource.gallery);
+                              if (pickedImage != null) {
+                                setState(() {
+                                  imagefile = pickedImage;
+                                  imagePath = pickedImage.path;
+                                });
+                              }
+                            },
                           ),
                           const Divider(),
                           Form(
@@ -153,20 +205,33 @@ class EditProfileScreen extends StatelessWidget {
                                     shape: const StadiumBorder(),
                                   ),
                                   onPressed: () async {
-                                    // Update the user data in Firestore
+                                    showLoadingDialog(context);
                                     try {
+                                      await sl<UpdateUser>().call(Usermodel(
+                                          email: _emailController.text,
+                                          fullName: _nameController.text,
+                                          phoneNumber: _phoneController.text,
+                                          imageUrl: ''));
+                                      Navigator.pop(
+                                          context); // Close the loading dialog
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                        content: Text(
-                                            "Profile updated successfully"),
-                                      ));
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              "Profile updated successfully"),
+                                        ),
+                                      );
                                     } catch (e) {
+                                      Navigator.pop(
+                                          context); // Close the loading dialog
                                       print("Error updating profile: $e");
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                        content:
-                                            Text("Failed to update profile"),
-                                      ));
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text("Failed to update profile"),
+                                        ),
+                                      );
                                     }
                                   },
                                   child: const Text("Save Update"),
@@ -220,7 +285,9 @@ class ProfilePic extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 50,
-            backgroundImage: NetworkImage(image),
+            backgroundImage: image.startsWith('http')
+                ? NetworkImage(image)
+                : FileImage(File(image)) as ImageProvider,
           ),
           InkWell(
             onTap: imageUploadBtnPress,
@@ -233,7 +300,7 @@ class ProfilePic extends StatelessWidget {
                 size: 20,
               ),
             ),
-          )
+          ),
         ],
       ),
     );

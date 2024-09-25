@@ -8,4 +8,8 @@ class UserRepositoryImpl extends UserRepository {
   Future<DocumentReference<Map<String, dynamic>>> getUser() async {
     return await sl<UserService>().getUser();
   }
+
+  // Future updateUser() async {
+  //   return await 
+  // }
 }
