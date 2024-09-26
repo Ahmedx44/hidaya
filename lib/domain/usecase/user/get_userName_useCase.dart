@@ -1,0 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hidaya/data/source/user/userService.dart';
+import 'package:hidaya/service_locator.dart';
+
+class GetUsernameUsecase {
+  Future<DocumentSnapshot<Map<String, dynamic>>> call() {
+    return sl<UserService>().getUserName();
+  }
+}

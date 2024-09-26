@@ -9,7 +9,8 @@ class UserRepositoryImpl extends UserRepository {
     return await sl<UserService>().getUser();
   }
 
-  // Future updateUser() async {
-  //   return await 
-  // }
+  @override
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserName() {
+    return sl<UserService>().getUserName();
+  }
 }

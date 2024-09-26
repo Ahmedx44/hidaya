@@ -20,6 +20,7 @@ import 'package:hidaya/domain/usecase/quran/get_surah_name.dart';
 import 'package:hidaya/domain/usecase/quran/surah_search_usecase.dart';
 import 'package:hidaya/domain/usecase/quran/surah_usecase.dart';
 import 'package:hidaya/domain/usecase/time/time_usecase.dart';
+import 'package:hidaya/domain/usecase/user/get_userName_useCase.dart';
 import 'package:hidaya/domain/usecase/user/get_user_usecase.dart';
 import 'package:hidaya/domain/usecase/user/update_user.dart';
 
@@ -91,6 +92,9 @@ Future<void> initializedDependency() async {
 
   sl.registerSingleton<GetSurahNameUseCase>(
     GetSurahNameUseCase(),
+  );
+  sl.registerSingleton<GetUsernameUsecase>(
+    GetUsernameUsecase(),
   );
 
 //REPOSITORYS

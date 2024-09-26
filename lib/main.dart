@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/foundation.dart';
@@ -5,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hidaya/core/config/assets/theme/app_theme.dart';
 import 'package:hidaya/domain/usecase/quran/surah_search_usecase.dart';
+import 'package:hidaya/domain/usecase/user/get_user_usecase.dart';
 import 'package:hidaya/firebase_options.dart';
 import 'package:hidaya/presentation/auth/pages/authgate.dart';
+import 'package:hidaya/presentation/profile/bloc/edit_profile_bloc/edit_profile_cubit.dart';
 import 'package:hidaya/presentation/quran_surah_list/Bloc/surah_state_cubit.dart';
 import 'package:hidaya/presentation/search/bloc/search_cubit.dart';
 import 'package:hidaya/service_locator.dart';
@@ -25,7 +28,12 @@ void main() async {
   );
   await Quran.initialize();
   // QuranTool quranTool = QuranTool.init();
-  runApp(const MyApp());
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -39,7 +47,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => SurahSearchCubit(sl<SurahSearchUsecase>()),
           ),
-          BlocProvider(create: (_) => SurahCubit())
+          BlocProvider(create: (_) => SurahCubit()),
+          BlocProvider(create: (_) => EditProfileCubit(sl<GetUserUsecase>()))
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
