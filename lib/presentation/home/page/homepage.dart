@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:adhan/adhan.dart';
+import 'package:animated_page_transition/animated_page_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hidaya/domain/usecase/location/getLocation.dart';
@@ -9,8 +10,6 @@ import 'package:hidaya/presentation/home/widget/home_card.dart';
 import 'package:hidaya/presentation/home/widget/randomVerse.dart';
 import 'package:hidaya/presentation/search/page/search.dart';
 import 'package:hidaya/service_locator.dart';
-import 'package:page_animation_transition/animations/fade_animation_transition.dart';
-import 'package:page_animation_transition/page_animation_transition.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,7 +18,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   String timezone = DateTime.now().timeZoneName;
   Position? position;
   bool isSearchActive = false;
@@ -82,14 +81,10 @@ class _HomePageState extends State<HomePage> {
         centerTitle: false,
         title: Text('Hello'),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(PageAnimationTransition(
-                  page: const SearchPage(),
-                  pageAnimationType: FadeAnimationTransition()));
-            },
-            icon: const Icon(Icons.search),
-          ),
+          PageTransitionButton(
+              vsync: this,
+              nextPage: const SearchPage(),
+              child: Icon(Icons.search)),
         ],
       ),
       body: SingleChildScrollView(

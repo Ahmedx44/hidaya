@@ -29,4 +29,9 @@ class QuranReposiotryImpl extends QuranReposiotry {
   String getSurah(int surahNumber) {
     return sl<QuranService>().getSurah(surahNumber);
   }
+
+  @override
+  String getSurahName(int surahNumber) {
+    return sl<QuranService>().getSurahName(surahNumber);
+  }
 }

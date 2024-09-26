@@ -9,6 +9,7 @@ abstract class QuranService {
   Future<String> getUrlAudio(int surahNumber);
   String getSurah(int surahNumber);
   RandomVerse getRandoVerse();
+  String getSurahName(int surahNumber);
 }
 
 class QuranServiceImpl extends QuranService {
@@ -45,5 +46,11 @@ class QuranServiceImpl extends QuranService {
   String getSurah(int surahName) {
     final String surah = getSurahName(surahName);
     return surah;
+  }
+
+  @override
+  String getSurahName(int surahNumber) {
+    final result = quran.getSurahName(surahNumber);
+    return result;
   }
 }

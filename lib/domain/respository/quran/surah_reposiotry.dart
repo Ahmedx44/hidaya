@@ -7,4 +7,5 @@ abstract class QuranReposiotry {
   Future<String> getUrlAudio(int surahNumber);
   RandomVerse getRandomVerse();
   String getSurah(int surahNumber);
+  String getSurahName(int surahNumber);
 }

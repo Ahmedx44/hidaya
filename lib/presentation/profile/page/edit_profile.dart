@@ -232,8 +232,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           fullName: _nameController.text,
                                           phoneNumber: _phoneController.text,
                                           imageUrl: imageUrl));
-                                      Navigator.pop(
-                                          context); // Close the loading dialog
+                                      Navigator.pop(context);
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
@@ -242,9 +241,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         ),
                                       );
                                     } catch (e) {
-                                      Navigator.pop(
-                                          context); // Close the loading dialog
-                                      print("Error updating profile: $e");
+                                      Navigator.pop(context);
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(

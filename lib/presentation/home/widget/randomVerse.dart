@@ -40,11 +40,14 @@ class _RandomVersePageState extends State<RandomVersePage> {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
               Text(
                 'Message of the Day',
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.inversePrimary),
               ),
             ],
           ),

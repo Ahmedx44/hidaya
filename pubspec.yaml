@@ -55,7 +55,6 @@ dependencies:
   just_audio: ^0.9.40
   hadith: ^1.0.0
   geolocator: ^9.0.1
-  page_animation_transition: ^1.0.0
   permission_handler: ^11.3.1
   flutter_qiblah: ^2.2.0
   share_plus: ^10.0.0
@@ -66,6 +65,9 @@ dependencies:
   flutter_heatmap_calendar: ^1.0.5
   image_picker: ^1.1.2
   firebase_storage: ^11.7.7
+  hydrated_bloc: ^9.1.5
+  animated_page_transition: ^0.0.1+2
+
 
 
  
