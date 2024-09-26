@@ -3,18 +3,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hidaya/data/model/user/userModel.dart';
 
 abstract class UserService {
-  Future<DocumentReference<Map<String, dynamic>>> getUser();
+  DocumentReference<Map<String, dynamic>> getUser();
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserData();
   Future updateUser(Usermodel userModel);
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserName();
 }
 
 class UserServiceImpl extends UserService {
   @override
-  Future<DocumentReference<Map<String, dynamic>>> getUser() async {
+  DocumentReference<Map<String, dynamic>> getUser() {
     final user = FirebaseAuth.instance.currentUser;
 
-    final result =
-        await FirebaseFirestore.instance.collection('User').doc(user!.uid);
+    final result = FirebaseFirestore.instance.collection('User').doc(user!.uid);
 
     return result;
   }
@@ -38,5 +38,15 @@ class UserServiceImpl extends UserService {
         .doc(userId.currentUser!.uid)
         .get();
     return user;
+  }
+
+  @override
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserData() {
+    final user = FirebaseAuth.instance.currentUser;
+
+    final result =
+        FirebaseFirestore.instance.collection('User').doc(user!.uid).get();
+
+    return result;
   }
 }

@@ -1,99 +1,136 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
+import 'package:hidaya/domain/usecase/user/get_user_data_usecase.dart';
+import 'package:hidaya/presentation/profile/bloc/profile_bloc/profile_cubit.dart';
+import 'package:hidaya/presentation/profile/bloc/profile_bloc/profile_state.dart';
 import 'package:hidaya/presentation/profile/page/edit_profile.dart';
+import 'package:hidaya/service_locator.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        title: const Text("Profile"),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          children: [
-            const ProfilePic(),
-            HeatMap(
-              datasets: {
-                DateTime(2024, 9, 24): 3,
-                DateTime(2024, 9, 23): 8,
-                DateTime(2024, 9, 22): 7,
-                DateTime(2024, 9, 22): 4,
-                DateTime(2024, 9, 21): 2,
-              },
-              colorMode: ColorMode.opacity,
-              showText: false,
-              textColor: Theme.of(context).colorScheme.inversePrimary,
-              scrollable: true,
-              colorsets: {
-                1: Color.fromARGB(255, 153, 247, 116),
-              },
-              onClick: (value) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(value.toString())));
-              },
-            ),
-            const SizedBox(height: 20),
-            ProfileMenu(
-              text: "My Account",
-              icon: const Icon(Icons.person),
-              press: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return const EditProfileScreen();
-                  },
-                ));
-              },
-            ),
-            ProfileMenu(
-              text: "Settings",
-              icon: Icon(Icons.settings),
-              press: () {},
-            ),
-            ProfileMenu(
-              text: "Help Center",
-              icon: Icon(Icons.help),
-              press: () {},
-            ),
-            ProfileMenu(
-              text: "Log Out",
-              icon: Icon(Icons.logout),
-              press: () {
-                FirebaseAuth.instance.signOut();
-              },
-            ),
-          ],
-        ),
+    return BlocProvider(
+      create: (context) => ProfileCubit(sl<GetUserDataUsecase>())..getUser(),
+      child: BlocBuilder<ProfileCubit, ProfileState>(
+        builder: (context, state) {
+          if (state is ProfileStateLoaded) {
+            return FutureBuilder(
+                future: state.user,
+                builder: (context, snapshot) {
+                  return Scaffold(
+                    backgroundColor: Theme.of(context).colorScheme.surface,
+                    appBar: AppBar(
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      title: const Text("Profile"),
+                    ),
+                    body: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Column(
+                        children: [
+                          ProfilePic(
+                            profile: snapshot.hasData
+                                ? snapshot.data!['imageUrl']
+                                : '',
+                            name: snapshot.hasData
+                                ? snapshot.data!['fullName']
+                                : '',
+                          ),
+                          HeatMap(
+                            datasets: {
+                              DateTime(2024, 9, 24): 3,
+                              DateTime(2024, 9, 23): 8,
+                              DateTime(2024, 9, 22): 7,
+                              DateTime(2024, 9, 22): 4,
+                              DateTime(2024, 9, 21): 2,
+                            },
+                            colorMode: ColorMode.opacity,
+                            showText: false,
+                            textColor:
+                                Theme.of(context).colorScheme.inversePrimary,
+                            scrollable: true,
+                            colorsets: {
+                              1: Color.fromARGB(255, 153, 247, 116),
+                            },
+                            onClick: (value) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(value.toString())));
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          ProfileMenu(
+                            text: "My Account",
+                            icon: const Icon(Icons.person),
+                            press: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return const EditProfileScreen();
+                                },
+                              ));
+                            },
+                          ),
+                          ProfileMenu(
+                            text: "Settings",
+                            icon: Icon(Icons.settings),
+                            press: () {},
+                          ),
+                          ProfileMenu(
+                            text: "Help Center",
+                            icon: Icon(Icons.help),
+                            press: () {},
+                          ),
+                          ProfileMenu(
+                            text: "Log Out",
+                            icon: Icon(Icons.logout),
+                            press: () {
+                              FirebaseAuth.instance.signOut();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                });
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }
 }
 
 class ProfilePic extends StatelessWidget {
-  const ProfilePic({
-    Key? key,
-  }) : super(key: key);
+  final String profile;
+  final String name;
+  const ProfilePic({Key? key, required this.profile, required this.name})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 115,
-      width: 115,
-      child: Stack(
-        fit: StackFit.expand,
-        clipBehavior: Clip.none,
-        children: [
-          CircleAvatar(
-            backgroundImage:
-                NetworkImage("https://i.postimg.cc/0jqKB6mS/Profile-Image.png"),
+    return Column(
+      children: [
+        SizedBox(
+          height: 115,
+          width: 115,
+          child: Stack(
+            fit: StackFit.expand,
+            clipBehavior: Clip.none,
+            children: [
+              CircleAvatar(
+                backgroundImage: CachedNetworkImageProvider(profile),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Text(
+          name,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        )
+      ],
     );
   }
 }

@@ -5,12 +5,17 @@ import 'package:hidaya/service_locator.dart';
 
 class UserRepositoryImpl extends UserRepository {
   @override
-  Future<DocumentReference<Map<String, dynamic>>> getUser() async {
-    return await sl<UserService>().getUser();
+  DocumentReference<Map<String, dynamic>> getUser() {
+    return sl<UserService>().getUser();
   }
 
   @override
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserName() {
     return sl<UserService>().getUserName();
+  }
+
+  @override
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserData() {
+    return sl<UserService>().getUserData();
   }
 }

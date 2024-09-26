@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   appBar: AppBar(
                     centerTitle: false,
                     title: snapshot.hasData
-                        ? Text('Hello ${snapshot.data?['fullname'].toString()}')
+                        ? Text('Hello ${snapshot.data?['fullName'].toString()}')
                         : Text('User'),
                     actions: [
                       PageTransitionButton(
