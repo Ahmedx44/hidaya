@@ -128,7 +128,7 @@ class ProfilePic extends StatelessWidget {
         ),
         Text(
           name,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         )
       ],
     );

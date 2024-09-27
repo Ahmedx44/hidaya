@@ -8,15 +8,20 @@ import 'package:hidaya/presentation/quran/Bloc/quran_page_cubit.dart';
 import 'package:hidaya/presentation/quran/Bloc/quran_page_state.dart';
 import 'package:hidaya/service_locator.dart';
 
-class QuranPage extends StatelessWidget {
+class QuranPage extends StatefulWidget {
   final int surahNumber;
   const QuranPage({super.key, required this.surahNumber});
 
   @override
+  State<QuranPage> createState() => _QuranPageState();
+}
+
+class _QuranPageState extends State<QuranPage> {
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          QuranPageCubit(sl<GetPageDataUseCase>())..getSurahVerse(surahNumber),
+      create: (context) => QuranPageCubit(sl<GetPageDataUseCase>())
+        ..getSurahVerse(widget.surahNumber),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Quran Surahs'),

@@ -4,12 +4,12 @@ import 'package:hidaya/domain/usecase/user/get_user_usecase.dart';
 import 'package:hidaya/presentation/profile/bloc/profile_bloc/profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  GetUserDataUsecase getUserDataUsecase;
-  ProfileCubit(this.getUserDataUsecase) : super(ProfileStateInitial());
+  GetUserDataUsecase getUserUsecase;
+  ProfileCubit(this.getUserUsecase) : super(ProfileStateInitial());
 
   getUser() {
     emit(ProfileStateLoading());
-    final result = getUserDataUsecase();
+    final result = getUserUsecase();
     emit(ProfileStateLoaded(user: result));
   }
 }
