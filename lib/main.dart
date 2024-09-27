@@ -29,11 +29,11 @@ void main() async {
   await Quran.initialize();
   // QuranTool quranTool = QuranTool.init();
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => MyApp(),
-    ),
-  );
+      // DevicePreview(
+      //   enabled: !kReleaseMode,
+      //   builder: (context) => MyApp(),
+      // ),
+      MyApp());
 }
 
 class MyApp extends StatelessWidget {

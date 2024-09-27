@@ -15,212 +15,169 @@ class SignUpScreen extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
 
   SignUpScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                children: [
-                  SizedBox(height: constraints.maxHeight * 0.1),
-                  SizedBox(
-                      height: 110, child: SvgPicture.asset(Appvector.quran)),
-                  SizedBox(height: constraints.maxHeight * 0.05),
-                  Text("Sign up",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25)),
-                  SizedBox(height: constraints.maxHeight * 0.05),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _emailController,
-                          decoration: const InputDecoration(
-                            hintText: 'Email',
-                            filled: true,
-                            fillColor: Color.fromARGB(255, 250, 253, 234),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16.0 * 1.5, vertical: 16.0),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                            ),
-                          ),
-                          keyboardType: TextInputType.emailAddress,
-                          onSaved: (phone) {
-                            // Save it
-                          },
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              SizedBox(height: 40),
+              SizedBox(height: 110, child: SvgPicture.asset(Appvector.quran)),
+              SizedBox(height: 20),
+              Text("Sign up",
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25)),
+              SizedBox(height: 20),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        hintText: 'Email',
+                        filled: true,
+                        fillColor: Color.fromARGB(255, 250, 253, 234),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 24.0, vertical: 16.0),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: TextFormField(
-                            controller: _usernameController,
-                            decoration: const InputDecoration(
-                              hintText: 'Username',
-                              filled: true,
-                              fillColor: Color.fromARGB(255, 250, 253, 234),
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16.0 * 1.5, vertical: 16.0),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                              ),
-                            ),
-                            keyboardType: TextInputType.emailAddress,
-                            onSaved: (phone) {
-                              // Save it
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5.0),
-                          child: TextFormField(
-                            controller: _passwordController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                              hintText: 'Password',
-                              filled: true,
-                              fillColor: Color.fromARGB(255, 250, 253, 234),
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16.0 * 1.5, vertical: 16.0),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                              ),
-                            ),
-                            onSaved: (passaword) {
-                              // Save it
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 16.0),
-                        ElevatedButton(
-                          onPressed: () async {
-                            print(_emailController.text);
-
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                );
-                              },
-                            );
-
-                            var result = await sl<SignupUsecase>().call(
-                                params: CreateUserReq(
-                                    fullname: _usernameController.text,
-                                    email: _emailController.text,
-                                    password: _passwordController.text));
-
-                            Navigator.pop(context);
-
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) {
-                                return SignInScreen();
-                              },
-                            ));
-
-                            result.fold((ifLeft) {
-                              var snackbar = SnackBar(content: Text(ifLeft));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackbar);
-                            }, (ifRight) {
-                              var snackbar = SnackBar(content: Text(ifRight));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackbar);
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                            foregroundColor: Colors.white,
-                            minimumSize: const Size(double.infinity, 48),
-                            shape: const StadiumBorder(),
-                          ),
-                          child: const Text(
-                            "Sign up",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const SizedBox(height: 16.0),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .inversePrimary),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) {
-                                return SignInScreen();
-                              },
-                            ));
-                          },
-                          child: Text.rich(
-                            TextSpan(
-                              text: "Already have an Account? ",
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .inversePrimary),
-                              children: [
-                                TextSpan(
-                                  text: "Sign in",
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
-                                ),
-                              ],
-                            ),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .color!
-                                      .withOpacity(0.64),
-                                ),
-                          ),
-                        ),
-                      ],
+                      ),
+                      keyboardType: TextInputType.emailAddress,
                     ),
-                  ),
-                  ElevatedButton(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: TextFormField(
+                        controller: _usernameController,
+                        decoration: const InputDecoration(
+                          hintText: 'Username',
+                          filled: true,
+                          fillColor: Color.fromARGB(255, 250, 253, 234),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 24.0, vertical: 16.0),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      child: TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          hintText: 'Password',
+                          filled: true,
+                          fillColor: Color.fromARGB(255, 250, 253, 234),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 24.0, vertical: 16.0),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    ElevatedButton(
+                      onPressed: () async {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            );
+                          },
+                        );
+
+                        var result = await sl<SignupUsecase>().call(
+                          params: CreateUserReq(
+                            fullname: _usernameController.text,
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          ),
+                        );
+
+                        Navigator.pop(context);
+
+                        result.fold(
+                          (ifLeft) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(content: Text(ifLeft)));
+                          },
+                          (ifRight) {
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(
+                              builder: (context) {
+                                return SignInScreen();
+                              },
+                            ));
+                          },
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        minimumSize: const Size(double.infinity, 48),
+                        shape: const StadiumBorder(),
+                      ),
+                      child: const Text(
+                        "Sign up",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextButton(
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return SignUpWithPhone();
+                            return SignInScreen();
                           },
                         ));
                       },
-                      child: Text('Sign up with Phone number'))
-                ],
+                      child: Text.rich(
+                        TextSpan(
+                          text: "Already have an Account? ",
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).colorScheme.inversePrimary),
+                          children: [
+                            TextSpan(
+                              text: "Sign in",
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            );
-          },
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return SignUpWithPhone();
+                    },
+                  ));
+                },
+                child: Text('Sign up with Phone number'),
+              ),
+            ],
+          ),
         ),
       ),
     );
