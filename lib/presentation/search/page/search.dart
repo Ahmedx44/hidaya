@@ -1,89 +1,188 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hidaya/presentation/profile/page/user_profile.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  State<SearchPage> createState() => _ContactSearchScreenState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _ContactSearchScreenState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
-  List<DocumentSnapshot> _allUsers = [];
-  List<DocumentSnapshot> _filteredUsers = [];
+  Stream<QuerySnapshot>? _userStream;
 
   @override
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
-    _fetchAllUsers();
-  }
-
-  Future<void> _fetchAllUsers() async {
-    QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('User').get();
-    setState(() {
-      _allUsers = snapshot.docs;
-    });
   }
 
   void _onSearchChanged() {
-    setState(() {
-      if (_searchController.text.length >= 2) {
-        _filteredUsers = _allUsers.where((user) {
-          final fullName = user['fullName'].toString().toLowerCase();
-          final searchText = _searchController.text.toLowerCase();
-          return fullName.contains(searchText);
-        }).toList();
-      } else {
-        _filteredUsers = [];
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: _searchController.text.length < 3
-                  ? Center(child: Text('Type to search'))
-                  : _filteredUsers.isEmpty
-                      ? Center(child: Text('No results found'))
-                      : ListView.builder(
-                          itemCount: _filteredUsers.length,
-                          itemBuilder: (context, index) {
-                            final user = _filteredUsers[index];
-                            return ListTile(
-                              title: Text(user['fullName']),
-                            );
-                          },
-                        ),
-            ),
-          ],
-        ),
-      ),
-    );
+    if (_searchController.text.isNotEmpty) {
+      setState(() {
+        _userStream = FirebaseFirestore.instance
+            .collection('User')
+            .where('fullName', isGreaterThanOrEqualTo: _searchController.text)
+            .where('fullName',
+                isLessThanOrEqualTo: '${_searchController.text}\uf8ff')
+            .snapshots();
+      });
+    } else {
+      setState(() {
+        _userStream = null;
+      });
+    }
   }
 
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        centerTitle: false,
+        elevation: 0,
+        backgroundColor: const Color(0xFF00BF6D),
+        foregroundColor: Colors.white,
+        title: const Text("People"),
+      ),
+      body: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 16.0),
+            padding: const EdgeInsets.fromLTRB(
+              16.0,
+              0,
+              16.0,
+              16.0,
+            ),
+            color: const Color(0xFF00BF6D),
+            child: Form(
+              child: TextFormField(
+                controller: _searchController,
+                autofocus: true,
+                textInputAction: TextInputAction.search,
+                decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: const Color(0xFF1D1D35).withOpacity(0.64),
+                  ),
+                  hintText: "Search",
+                  hintStyle: TextStyle(
+                    color: const Color(0xFF1D1D35).withOpacity(0.64),
+                  ),
+                  filled: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16.0 * 1.5, vertical: 16.0),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: _userStream == null
+                ? Center(child: Text('Type to search for users'))
+                : StreamBuilder<QuerySnapshot>(
+                    stream: _userStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+
+                      if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      }
+
+                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return Center(child: Text('No results found'));
+                      }
+
+                      final users = snapshot.data!.docs;
+
+                      return ListView.builder(
+                        itemCount: users.length,
+                        itemBuilder: (context, index) {
+                          final user = users[index];
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return UserProfile(user: user);
+                                },
+                              ));
+                            },
+                            child: ContactCard(
+                              name: user['fullName'],
+
+                              image: user[
+                                  'imageUrl'], // Ensure this field exists in Firestore
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ContactCard extends StatelessWidget {
+  ContactCard({
+    super.key,
+    required this.name,
+    required this.image,
+  });
+
+  final String name, image;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0 / 2),
+      leading: CircleAvatarWithActiveIndicator(
+        image: image,
+        radius: 28,
+      ),
+      title: Text(name),
+    );
+  }
+}
+
+class CircleAvatarWithActiveIndicator extends StatelessWidget {
+  const CircleAvatarWithActiveIndicator({
+    super.key,
+    required this.image,
+    this.radius = 24,
+  });
+
+  final String image;
+  final double radius;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        CircleAvatar(
+          radius: radius,
+          backgroundImage: CachedNetworkImageProvider(image),
+        ),
+      ],
+    );
   }
 }
