@@ -108,7 +108,7 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
                 content: Text("Verification failed. Reason: ${e.message}")),
           );
           Navigator.pop(context);
-          print('Verification failed: ${e.message}'); // Log the error
+          print('Verification failed: ${e.message}');
         },
         codeSent: (String verificationId, int? resendToken) {
           setState(() {
@@ -131,7 +131,7 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: $e")),
       );
-      print('Error: $e'); // Log the error
+      print('Error: $e');
     }
   }
 

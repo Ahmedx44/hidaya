@@ -1,4 +1,6 @@
 import 'package:arabic_font/arabic_font.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,6 +19,53 @@ class QuranPage extends StatefulWidget {
 }
 
 class _QuranPageState extends State<QuranPage> {
+  final String userId = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateHeatmap();
+  }
+
+  Future<void> _updateHeatmap() async {
+    final userDoc = _firestore.collection('User').doc(userId);
+    final today = DateTime.now();
+    final todayDate = "${today.year}-${today.month}-${today.day}";
+
+    // Retrieve the user document snapshot
+    DocumentSnapshot<Map<String, dynamic>> userData = await userDoc.get();
+
+    // Check if the document exists and if the 'heatmap' field exists
+    if (userData.exists) {
+      List<Map<String, dynamic>> heatmap =
+          List<Map<String, dynamic>>.from(userData.data()?['heatmap'] ?? []);
+
+      // Update the heatmap list
+      bool dateExists = false;
+      for (var entry in heatmap) {
+        if (entry['date'] == todayDate) {
+          entry['count'] += 1;
+          dateExists = true;
+          break;
+        }
+      }
+
+      if (!dateExists) {
+        heatmap.add({"date": todayDate, "count": 1});
+      }
+
+      await userDoc.update({"heatmap": heatmap});
+    } else {
+      // If the document doesn't exist or the 'heatmap' field is missing, create a new entry
+      await userDoc.set({
+        "heatmap": [
+          {"date": todayDate, "count": 1}
+        ]
+      }, SetOptions(merge: true));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

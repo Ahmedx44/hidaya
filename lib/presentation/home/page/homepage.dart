@@ -13,8 +13,8 @@ import 'package:hidaya/presentation/home/bloc/get_user_bloc/get_username_state.d
 import 'package:hidaya/presentation/home/widget/features.dart';
 import 'package:hidaya/presentation/home/widget/home_card.dart';
 import 'package:hidaya/presentation/home/widget/randomVerse.dart';
-import 'package:hidaya/presentation/profile/bloc/edit_profile_bloc/edit_profile_cubit.dart';
-import 'package:hidaya/presentation/search/page/search.dart';
+import 'package:hidaya/presentation/surah_search/page/search.dart';
+
 import 'package:hidaya/service_locator.dart';
 
 class HomePage extends StatefulWidget {
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final remainingDuration =
         prayerTimes.timeForPrayer(nextPrayer)?.difference(currentDateTime);
 
-    if (remainingDuration != null && nextPrayer != null) {
+    if (remainingDuration != null && nextPrayer.name.isNotEmpty) {
       setState(() {
         nextPrayerText =
             '${nextPrayer.name} ${remainingDuration.inHours} hours ${remainingDuration.inMinutes % 60} minutes left';
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     actions: [
                       PageTransitionButton(
                           vsync: this,
-                          nextPage: const SearchPage(),
+                          nextPage: SearchPageSurah(),
                           child: Icon(Icons.search)),
                     ],
                   ),

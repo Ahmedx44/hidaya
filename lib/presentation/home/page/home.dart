@@ -1,9 +1,11 @@
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
+import 'package:hidaya/presentation/chat/page/chat_list.dart';
 import 'package:hidaya/presentation/home/page/homepage.dart';
 import 'package:hidaya/presentation/home/widget/my_drawer.dart';
 import 'package:hidaya/presentation/profile/page/profile.dart';
+import 'package:hidaya/presentation/search/page/search.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +25,14 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         page = HomePage();
       });
+    } else if (pageIndex == 1) {
+      setState(() {
+        page = SearchPage();
+      });
+    } else if (pageIndex == 2) {
+      setState(() {
+        page = ChatList();
+      });
     } else if (pageIndex == 3) {
       setState(() {
         page = ProfileScreen();
@@ -35,8 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
         bottomNavigationBar: BottomBarDefault(
           items: const [
             TabItem(icon: FlutterIslamicIcons.kaaba, title: 'Home'),
-            TabItem(icon: Icons.message_outlined, title: 'Chat'),
-            TabItem(icon: Icons.chat, title: 'Prayer'),
+            TabItem(icon: Icons.search, title: 'Search'),
+            TabItem(icon: Icons.chat, title: 'Chat'),
             TabItem(icon: Icons.person, title: 'Profile'),
           ],
           backgroundColor: Theme.of(context).colorScheme.surface,

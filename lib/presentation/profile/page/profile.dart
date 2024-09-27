@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +11,26 @@ import 'package:hidaya/presentation/profile/page/edit_profile.dart';
 import 'package:hidaya/service_locator.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final String userId = FirebaseAuth
+      .instance.currentUser!.uid; // Replace with your actual user ID
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<Map<DateTime, int>> _getHeatmapData() async {
+    final userDoc = await _firestore.collection('User').doc(userId).get();
+    List<Map<String, dynamic>> heatmap =
+        List<Map<String, dynamic>>.from(userDoc.get('heatmap') ?? []);
+
+    Map<DateTime, int> heatmapData = {};
+    for (var entry in heatmap) {
+      final dateParts = entry['date'].split('-');
+      final date = DateTime(int.parse(dateParts[0]), int.parse(dateParts[1]),
+          int.parse(dateParts[2]));
+      heatmapData[date] = entry['count'];
+    }
+
+    return heatmapData;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -18,46 +38,52 @@ class ProfileScreen extends StatelessWidget {
       child: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, state) {
           if (state is ProfileStateLoaded) {
-            return FutureBuilder(
-                future: state.user,
-                builder: (context, snapshot) {
-                  return Scaffold(
-                    backgroundColor: Theme.of(context).colorScheme.surface,
-                    appBar: AppBar(
-                      backgroundColor: Theme.of(context).colorScheme.surface,
-                      title: const Text("Profile"),
-                    ),
-                    body: SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Column(
+            return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              appBar: AppBar(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                title: const Text("Profile"),
+              ),
+              body: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: FutureBuilder<Map<DateTime, int>>(
+                  future: _getHeatmapData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Column(
                         children: [
-                          ProfilePic(
-                            profile: snapshot.hasData
-                                ? snapshot.data!['imageUrl']
-                                : '',
-                            name: snapshot.hasData
-                                ? snapshot.data!['fullName']
-                                : '',
+                          FutureBuilder(
+                            future: state.user,
+                            builder: (context, snapshot) {
+                              return ProfilePic(
+                                profile: snapshot.hasData
+                                    ? snapshot.data!['imageUrl']
+                                    : '',
+                                name: snapshot.hasData
+                                    ? snapshot.data!['fullName']
+                                    : '',
+                              );
+                            },
                           ),
                           HeatMap(
-                            datasets: {
-                              DateTime(2024, 9, 24): 3,
-                              DateTime(2024, 9, 23): 8,
-                              DateTime(2024, 9, 22): 7,
-                              DateTime(2024, 9, 22): 4,
-                              DateTime(2024, 9, 21): 2,
-                            },
-                            colorMode: ColorMode.opacity,
+                            colorMode: ColorMode.color,
                             showText: false,
                             textColor:
                                 Theme.of(context).colorScheme.inversePrimary,
                             scrollable: true,
                             colorsets: {
-                              1: Color.fromARGB(255, 153, 247, 116),
+                              1: const Color.fromARGB(255, 220, 247,
+                                  190)!, // Light color for low counts
+                              2: const Color.fromARGB(255, 202, 245, 152)!,
+                              3: const Color.fromARGB(255, 181, 248, 105)!,
+                              4: const Color.fromARGB(255, 143, 245, 54)!,
+                              5: const Color.fromARGB(255, 73, 252,
+                                  2)!, // Bright color for high counts
                             },
                             onClick: (value) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(value.toString())));
+                                SnackBar(content: Text(value.toString())),
+                              );
                             },
                           ),
                           const SizedBox(height: 20),
@@ -65,11 +91,10 @@ class ProfileScreen extends StatelessWidget {
                             text: "My Account",
                             icon: const Icon(Icons.person),
                             press: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return const EditProfileScreen();
-                                },
-                              ));
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return const EditProfileScreen();
+                              }));
                             },
                           ),
                           ProfileMenu(
@@ -90,10 +115,86 @@ class ProfileScreen extends StatelessWidget {
                             },
                           ),
                         ],
-                      ),
-                    ),
-                  );
-                });
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return const Center(
+                          child: Text('Error loading heatmap data'));
+                    }
+
+                    final heatmapData = snapshot.data ?? {};
+
+                    return Column(
+                      children: [
+                        FutureBuilder(
+                          future: state.user,
+                          builder: (context, snapshot) {
+                            return ProfilePic(
+                              profile: snapshot.hasData
+                                  ? snapshot.data!['imageUrl']
+                                  : '',
+                              name: snapshot.hasData
+                                  ? snapshot.data!['fullName']
+                                  : '',
+                            );
+                          },
+                        ),
+                        HeatMap(
+                          datasets: heatmapData,
+                          colorMode: ColorMode.color,
+                          showText: false,
+                          textColor:
+                              Theme.of(context).colorScheme.inversePrimary,
+                          scrollable: true,
+                          colorsets: {
+                            1: const Color.fromARGB(255, 220, 247,
+                                190)!, // Light color for low counts
+                            2: const Color.fromARGB(255, 202, 245, 152)!,
+                            3: const Color.fromARGB(255, 181, 248, 105)!,
+                            4: const Color.fromARGB(255, 143, 245, 54)!,
+                            5: const Color.fromARGB(255, 73, 252,
+                                2)!, // Bright color for high counts
+                          },
+                          onClick: (value) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(value.toString())),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        ProfileMenu(
+                          text: "My Account",
+                          icon: const Icon(Icons.person),
+                          press: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const EditProfileScreen();
+                            }));
+                          },
+                        ),
+                        ProfileMenu(
+                          text: "Settings",
+                          icon: Icon(Icons.settings),
+                          press: () {},
+                        ),
+                        ProfileMenu(
+                          text: "Help Center",
+                          icon: Icon(Icons.help),
+                          press: () {},
+                        ),
+                        ProfileMenu(
+                          text: "Log Out",
+                          icon: Icon(Icons.logout),
+                          press: () {
+                            FirebaseAuth.instance.signOut();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            );
           } else {
             return Container();
           }
@@ -128,7 +229,7 @@ class ProfilePic extends StatelessWidget {
         ),
         Text(
           name,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         )
       ],
     );
@@ -182,9 +283,3 @@ class ProfileMenu extends StatelessWidget {
     );
   }
 }
-
-const cameraIcon =
-    '''<svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M10 12.0152C8.49151 12.0152 7.26415 10.8137 7.26415 9.33902C7.26415 7.86342 8.49151 6.6619 10 6.6619C11.5085 6.6619 12.7358 7.86342 12.7358 9.33902C12.7358 10.8137 11.5085 12.0152 10 12.0152ZM10 5.55543C7.86698 5.55543 6.13208 7.25251 6.13208 9.33902C6.13208 11.4246 7.86698 13.1217 10 13.1217C12.133 13.1217 13.8679 11.4246 13.8679 9.33902C13.8679 7.25251 12.133 5.55543 10 5.55543ZM18.8679 13.3967C18.8679 14.2226 18.1811 14.8935 17.3368 14.8935H2.66321C1.81887 14.8935 1.13208 14.2226 1.13208 13.3967V5.42346C1.13208 4.59845 1.81887 3.92664 2.66321 3.92664H4.75C5.42453 3.92664 6.03396 3.50952 6.26604 2.88753L6.81321 1.41746C6.88113 1.23198 7.06415 1.10739 7.26604 1.10739H12.734C12.9358 1.10739 13.1189 1.23198 13.1877 1.41839L13.734 2.88845C13.966 3.50952 14.5755 3.92664 15.25 3.92664H17.3368C18.1811 3.92664 18.8679 4.59845 18.8679 5.42346V13.3967ZM17.3368 2.82016H15.25C15.0491 2.82016 14.867 2.69466 14.7972 2.50917L14.2519 1.04003C14.0217 0.418041 13.4113 0 12.734 0H7.26604C6.58868 0 5.9783 0.418041 5.74906 1.0391L5.20283 2.50825C5.13302 2.69466 4.95094 2.82016 4.75 2.82016H2.66321C1.19434 2.82016 0 3.98846 0 5.42346V13.3967C0 14.8326 1.19434 16 2.66321 16H17.3368C18.8057 16 20 14.8326 20 13.3967V5.42346C20 3.98846 18.8057 2.82016 17.3368 2.82016Z" fill="#757575"/>
-</svg>
-''';

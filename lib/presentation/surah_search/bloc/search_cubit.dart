@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hidaya/domain/usecase/quran/surah_search_usecase.dart';
-import 'package:hidaya/presentation/search/bloc/search_state.dart';
+import 'package:hidaya/presentation/surah_search/bloc/search_state.dart';
 
 class SurahSearchCubit extends Cubit<SearchState> {
   final SurahSearchUsecase surahSearchUsecase;

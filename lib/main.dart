@@ -11,7 +11,7 @@ import 'package:hidaya/firebase_options.dart';
 import 'package:hidaya/presentation/auth/pages/authgate.dart';
 import 'package:hidaya/presentation/profile/bloc/edit_profile_bloc/edit_profile_cubit.dart';
 import 'package:hidaya/presentation/quran_surah_list/Bloc/surah_state_cubit.dart';
-import 'package:hidaya/presentation/search/bloc/search_cubit.dart';
+import 'package:hidaya/presentation/surah_search/bloc/search_cubit.dart';
 import 'package:hidaya/service_locator.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
