@@ -1,23 +1,64 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
+import 'package:hidaya/core/config/assets/image/app_image.dart';
+import 'package:hidaya/domain/usecase/user/follow_user_usecase.dart';
+import 'package:hidaya/presentation/profile/bloc/user_profile_bloc/user_profile_cubit.dart';
+import 'package:hidaya/presentation/profile/bloc/user_profile_bloc/user_profile_state.dart';
+import 'package:hidaya/service_locator.dart';
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends StatefulWidget {
   final user;
   const UserProfile({super.key, required this.user});
+
+  @override
+  _UserProfileState createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
+  bool isFollowing = false; // Local state to track follow status
+  final currentUser = FirebaseAuth.instance.currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    isFollowing = widget.user['followers'] != null &&
+        widget.user['followers'].contains(currentUser!.uid);
+  }
 
   @override
   Widget build(BuildContext context) {
     _getHeatmapData() {
       Map<DateTime, int> heatmapData = {};
-      for (var entry in user['heatmap']) {
+      for (var entry in widget.user['heatmap']) {
         final dateParts = entry['date'].split('-');
-        final date = DateTime(int.parse(dateParts[0]), int.parse(dateParts[1]),
-            int.parse(dateParts[2]));
+        final date = DateTime(
+          int.parse(dateParts[0]),
+          int.parse(dateParts[1]),
+          int.parse(dateParts[2]),
+        );
         heatmapData[date] = entry['count'];
       }
-
       return heatmapData;
+    }
+
+    List follower = widget.user['followers'] ?? [];
+    List following = widget.user['following'] ?? [];
+
+    void showLoadingDialog(BuildContext context) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          );
+        },
+      );
     }
 
     return Scaffold(
@@ -26,99 +67,142 @@ class UserProfile extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(
-              height: 40,
-            ),
+            const SizedBox(height: 40),
             SizedBox(
               height: 150,
               width: 150,
               child: CircleAvatar(
-                backgroundImage: CachedNetworkImageProvider(user['imageUrl']),
+                backgroundImage: widget.user['imageUrl'] != null &&
+                        widget.user['imageUrl'].isNotEmpty
+                    ? CachedNetworkImageProvider(widget.user['imageUrl'])
+                    : AssetImage(AppImage.profile) as ImageProvider,
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             Text(
-              user['fullName'],
+              widget.user['fullName'] ?? 'Unknown User',
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Theme.of(context).colorScheme.inversePrimary),
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Theme.of(context).colorScheme.inversePrimary,
+              ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  child: Column(
-                    children: [
-                      Text(
-                        'Followers',
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color:
-                                Theme.of(context).colorScheme.inversePrimary),
+                _buildStatColumn('Followers', follower.length),
+                _buildStatColumn('Following', following.length),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (!isFollowing)
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).colorScheme.primary,
                       ),
-                      Text(
-                        '11',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color:
-                                Theme.of(context).colorScheme.inversePrimary),
-                      )
-                    ],
+                    ),
+                    onPressed: () async {
+                      showLoadingDialog(context);
+                      await sl<FollowUserUsecase>().call(widget.user['email']);
+                    },
+                    child: Text(
+                      'Follow',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                      ),
+                    ),
                   ),
-                ),
-                Container(
-                  child: Column(
-                    children: [
-                      Text(
-                        'Following',
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color:
-                                Theme.of(context).colorScheme.inversePrimary),
+                if (isFollowing)
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).colorScheme.tertiary,
                       ),
-                      Text(
-                        '9',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color:
-                                Theme.of(context).colorScheme.inversePrimary),
-                      )
-                    ],
+                    ),
+                    onPressed: () async {
+                      showLoadingDialog(context);
+                    },
+                    child: Text(
+                      'Unfollow',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                      ),
+                    ),
+                  ),
+                const SizedBox(width: 20),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      Theme.of(context).colorScheme.tertiary,
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    'Message',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                    ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
+            const SizedBox(height: 20),
+            Center(
+              child: Text(
+                'Quran Habit',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: HeatMap(
+                textColor: Theme.of(context).colorScheme.inversePrimary,
                 datasets: _getHeatmapData(),
                 colorMode: ColorMode.color,
                 scrollable: true,
                 colorsets: {
-                  1: const Color.fromARGB(
-                      255, 220, 247, 190), // Light color for low counts
-                  2: const Color.fromARGB(255, 202, 245, 152)!,
-                  3: const Color.fromARGB(255, 181, 248, 105)!,
-                  4: const Color.fromARGB(255, 143, 245, 54)!,
-                  5: const Color.fromARGB(
-                      255, 73, 252, 2), // Bright color for high counts
+                  1: const Color.fromARGB(255, 220, 247, 190),
+                  2: const Color.fromARGB(255, 202, 245, 152),
+                  3: const Color.fromARGB(255, 181, 248, 105),
+                  4: const Color.fromARGB(255, 143, 245, 54),
+                  5: const Color.fromARGB(255, 73, 252, 2),
                 },
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildStatColumn(String label, int count) {
+    return Column(
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        Text(
+          count.toString(),
+          style: const TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),
+        ),
+      ],
     );
   }
 }

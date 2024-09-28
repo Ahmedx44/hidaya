@@ -18,4 +18,9 @@ class UserRepositoryImpl extends UserRepository {
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserData() {
     return sl<UserService>().getUserData();
   }
+
+  @override
+  Future<String> followUser(String email) {
+    return sl<UserService>().followUser(email);
+  }
 }

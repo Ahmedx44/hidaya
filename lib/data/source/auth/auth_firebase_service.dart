@@ -45,6 +45,7 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
         'heatmap': [],
         'followers': [],
         'following': [],
+        'requests': [],
       });
 
       return const Right('Succefully created');

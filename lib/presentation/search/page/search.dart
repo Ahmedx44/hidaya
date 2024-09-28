@@ -50,7 +50,7 @@ class _ContactSearchScreenState extends State<SearchPage> {
       appBar: AppBar(
         centerTitle: false,
         elevation: 0,
-        backgroundColor: const Color(0xFF00BF6D),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
         title: const Text("People"),
       ),
@@ -64,7 +64,7 @@ class _ContactSearchScreenState extends State<SearchPage> {
               16.0,
               16.0,
             ),
-            color: const Color(0xFF00BF6D),
+            color: Theme.of(context).colorScheme.primary,
             child: Form(
               child: TextFormField(
                 controller: _searchController,

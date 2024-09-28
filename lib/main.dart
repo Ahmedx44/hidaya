@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/foundation.dart';
@@ -28,11 +27,11 @@ void main() async {
   );
   await Quran.initialize();
   // QuranTool quranTool = QuranTool.init();
-  runApp(DevicePreview(
-    enabled: !kReleaseMode,
-    builder: (context) => MyApp(),
-  ));
-  // MyApp());
+  // runApp(DevicePreview(
+  //   enabled: !kReleaseMode,
+  //   builder: (context) => MyApp(),
+  // ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -13,3 +13,5 @@ class ProfileStateLoaded extends ProfileState {
 }
 
 class ProfileStateError extends ProfileState {}
+
+class ProfileStateFollowSuccess extends ProfileState {}
