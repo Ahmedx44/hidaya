@@ -24,6 +24,7 @@ import 'package:hidaya/domain/usecase/user/follow_user_usecase.dart';
 import 'package:hidaya/domain/usecase/user/get_userName_useCase.dart';
 import 'package:hidaya/domain/usecase/user/get_user_data_usecase.dart';
 import 'package:hidaya/domain/usecase/user/get_user_usecase.dart';
+import 'package:hidaya/domain/usecase/user/unfollow_user_usecase.dart';
 import 'package:hidaya/domain/usecase/user/update_user.dart';
 
 final sl = GetIt.instance;
@@ -103,6 +104,9 @@ Future<void> initializedDependency() async {
   );
   sl.registerSingleton<FollowUserUsecase>(
     FollowUserUsecase(),
+  );
+  sl.registerSingleton<UnfollowUserUsecase>(
+    UnfollowUserUsecase(),
   );
 
 //REPOSITORYS

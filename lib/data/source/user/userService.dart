@@ -8,6 +8,7 @@ abstract class UserService {
   Future updateUser(Usermodel userModel);
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserName();
   Future<String> followUser(String email);
+  Future<String> unfollowuser(String email);
 }
 
 class UserServiceImpl extends UserService {
@@ -80,6 +81,42 @@ class UserServiceImpl extends UserService {
       });
 
       return 'Followed';
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  @override
+  Future<String> unfollowuser(String email) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      final profileUserSnapshot = await FirebaseFirestore.instance
+          .collection('User')
+          .where('email', isEqualTo: email)
+          .get();
+
+      if (profileUserSnapshot.docs.isEmpty) {
+        return 'User not found';
+      }
+
+      final profileUserId = profileUserSnapshot.docs.first.id;
+
+      // Update the follower's list for the profile user
+      await FirebaseFirestore.instance
+          .collection('User')
+          .doc(profileUserId)
+          .update({
+        'followers': FieldValue.arrayRemove([user!.uid]),
+      });
+
+      // Update the following list for the current user
+      await FirebaseFirestore.instance.collection('User').doc(user.uid).update({
+        'following': FieldValue.arrayRemove(
+          [profileUserId],
+        ),
+      });
+
+      return 'Unfollowed';
     } catch (e) {
       return e.toString();
     }
