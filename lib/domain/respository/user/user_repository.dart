@@ -5,4 +5,5 @@ abstract class UserRepository {
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserName();
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserData();
   Future<String> followUser(String email);
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserProfile(String userId);
 }

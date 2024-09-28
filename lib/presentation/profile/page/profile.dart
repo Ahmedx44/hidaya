@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
-import 'package:hidaya/domain/usecase/user/follow_user_usecase.dart';
 import 'package:hidaya/domain/usecase/user/get_user_data_usecase.dart';
 import 'package:hidaya/presentation/profile/bloc/profile_bloc/profile_cubit.dart';
 import 'package:hidaya/presentation/profile/bloc/profile_bloc/profile_state.dart';
@@ -74,12 +73,12 @@ class ProfileScreen extends StatelessWidget {
                             scrollable: true,
                             colorsets: {
                               1: const Color.fromARGB(255, 220, 247,
-                                  190)!, // Light color for low counts
-                              2: const Color.fromARGB(255, 202, 245, 152)!,
-                              3: const Color.fromARGB(255, 181, 248, 105)!,
-                              4: const Color.fromARGB(255, 143, 245, 54)!,
+                                  190), // Light color for low counts
+                              2: const Color.fromARGB(255, 202, 245, 152),
+                              3: const Color.fromARGB(255, 181, 248, 105),
+                              4: const Color.fromARGB(255, 143, 245, 54),
                               5: const Color.fromARGB(255, 73, 252,
-                                  2)!, // Bright color for high counts
+                                  2), // Bright color for high counts
                             },
                             onClick: (value) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -149,12 +148,12 @@ class ProfileScreen extends StatelessWidget {
                           scrollable: true,
                           colorsets: {
                             1: const Color.fromARGB(255, 220, 247,
-                                190)!, // Light color for low counts
-                            2: const Color.fromARGB(255, 202, 245, 152)!,
-                            3: const Color.fromARGB(255, 181, 248, 105)!,
-                            4: const Color.fromARGB(255, 143, 245, 54)!,
+                                190), // Light color for low counts
+                            2: const Color.fromARGB(255, 202, 245, 152),
+                            3: const Color.fromARGB(255, 181, 248, 105),
+                            4: const Color.fromARGB(255, 143, 245, 54),
                             5: const Color.fromARGB(255, 73, 252,
-                                2)!, // Bright color for high counts
+                                2), // Bright color for high counts
                           },
                           onClick: (value) {
                             ScaffoldMessenger.of(context).showSnackBar(

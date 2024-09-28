@@ -9,6 +9,7 @@ abstract class UserService {
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserName();
   Future<String> followUser(String email);
   Future<String> unfollowuser(String email);
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserProfile(String userId);
 }
 
 class UserServiceImpl extends UserService {
@@ -120,5 +121,14 @@ class UserServiceImpl extends UserService {
     } catch (e) {
       return e.toString();
     }
+  }
+
+  @override
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserProfile(String email) {
+    final result = FirebaseFirestore.instance
+        .collection('User')
+        .where('email', isEqualTo: email)
+        .snapshots();
+    return result;
   }
 }

@@ -23,4 +23,9 @@ class UserRepositoryImpl extends UserRepository {
   Future<String> followUser(String email) {
     return sl<UserService>().followUser(email);
   }
+
+  @override
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserProfile(String userId) {
+    return sl<UserService>().getUserProfile(userId);
+  }
 }

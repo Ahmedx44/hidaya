@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:hidaya/core/config/assets/image/app_image.dart';
 import 'package:hidaya/domain/usecase/user/follow_user_usecase.dart';
+import 'package:hidaya/domain/usecase/user/get_user_profile_usecase.dart';
 import 'package:hidaya/domain/usecase/user/unfollow_user_usecase.dart';
 import 'package:hidaya/service_locator.dart';
 
@@ -87,12 +88,26 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildStatColumn('Followers', follower.length),
-                  _buildStatColumn('Following', following.length),
-                ],
+              StreamBuilder(
+                stream: sl<GetUserProfileUsecase>().call(widget.user['email']),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator(); // Display a loading spinner while waiting for data
+                  }
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+                  final user = snapshot.data!.docs.first.data();
+                  final followerCount = user['followers'].length ?? 0;
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildStatColumn('Followers', followerCount),
+                      _buildStatColumn('Following', following.length),
+                    ],
+                  );
+                },
               ),
               const SizedBox(height: 20),
               Row(
