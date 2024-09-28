@@ -108,7 +108,18 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     onPressed: () async {
                       showLoadingDialog(context);
-                      await sl<FollowUserUsecase>().call(widget.user['email']);
+                      String result = await sl<FollowUserUsecase>()
+                          .call(widget.user['email']);
+
+                      // Close the loading dialog
+                      Navigator.pop(context);
+
+                      // Check the result and update the state accordingly
+                      if (result == 'Followed') {
+                        setState(() {
+                          isFollowing = true;
+                        });
+                      }
                     },
                     child: Text(
                       'Follow',
