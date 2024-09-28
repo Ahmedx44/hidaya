@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hidaya/core/config/assets/image/app_image.dart';
 import 'package:hidaya/presentation/profile/page/user_profile.dart';
 
 class SearchPage extends StatefulWidget {
@@ -120,6 +121,7 @@ class _ContactSearchScreenState extends State<SearchPage> {
                         itemCount: users.length,
                         itemBuilder: (context, index) {
                           final user = users[index];
+                          final userProfile = user['imageUrl'];
                           return InkWell(
                             onTap: () {
                               Navigator.push(context, MaterialPageRoute(
@@ -129,11 +131,7 @@ class _ContactSearchScreenState extends State<SearchPage> {
                               ));
                             },
                             child: ContactCard(
-                              name: user['fullName'],
-
-                              image: user[
-                                  'imageUrl'], // Ensure this field exists in Firestore
-                            ),
+                                name: user['fullName'], image: userProfile),
                           );
                         },
                       );
@@ -188,7 +186,9 @@ class CircleAvatarWithActiveIndicator extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: radius,
-          backgroundImage: CachedNetworkImageProvider(image),
+          backgroundImage: image.isNotEmpty
+              ? CachedNetworkImageProvider(image)
+              : AssetImage(AppImage.profile) as ImageProvider,
         ),
       ],
     );

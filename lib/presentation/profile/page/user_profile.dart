@@ -6,6 +6,8 @@ import 'package:hidaya/core/config/assets/image/app_image.dart';
 import 'package:hidaya/domain/usecase/user/follow_user_usecase.dart';
 import 'package:hidaya/domain/usecase/user/get_user_profile_usecase.dart';
 import 'package:hidaya/domain/usecase/user/unfollow_user_usecase.dart';
+import 'package:hidaya/presentation/profile/page/list_of_follow.dart';
+import 'package:hidaya/presentation/profile/page/list_of_following.dart';
 import 'package:hidaya/service_locator.dart';
 
 class UserProfile extends StatefulWidget {
@@ -42,9 +44,6 @@ class _UserProfileState extends State<UserProfile> {
       }
       return heatmapData;
     }
-
-    List follower = widget.user['followers'] ?? [];
-    List following = widget.user['following'] ?? [];
 
     void showLoadingDialog(BuildContext context) {
       showDialog(
@@ -99,12 +98,29 @@ class _UserProfileState extends State<UserProfile> {
                   }
                   final user = snapshot.data!.docs.first.data();
                   final followerCount = user['followers'].length ?? 0;
+                  final followingCount = user['following'].length ?? 0;
 
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildStatColumn('Followers', followerCount),
-                      _buildStatColumn('Following', following.length),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return ListOfFollower();
+                              },
+                            ));
+                          },
+                          child: _buildStatColumn('Followers', followerCount)),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return ListOfFollowing();
+                              },
+                            ));
+                          },
+                          child: _buildStatColumn('Following', followingCount)),
                     ],
                   );
                 },
@@ -158,7 +174,7 @@ class _UserProfileState extends State<UserProfile> {
                         Navigator.pop(context);
 
                         // Check the result and update the state accordingly
-                        if (result == 'UnFollow') {
+                        if (result == 'Unfollowed') {
                           setState(() {
                             isFollowing = false;
                           });
@@ -206,12 +222,12 @@ class _UserProfileState extends State<UserProfile> {
                   datasets: _getHeatmapData(),
                   colorMode: ColorMode.color,
                   scrollable: true,
-                  colorsets: {
-                    1: const Color.fromARGB(255, 220, 247, 190),
-                    2: const Color.fromARGB(255, 202, 245, 152),
-                    3: const Color.fromARGB(255, 181, 248, 105),
-                    4: const Color.fromARGB(255, 143, 245, 54),
-                    5: const Color.fromARGB(255, 73, 252, 2),
+                  colorsets: const {
+                    1: Color.fromARGB(255, 220, 247, 190),
+                    2: Color.fromARGB(255, 202, 245, 152),
+                    3: Color.fromARGB(255, 181, 248, 105),
+                    4: Color.fromARGB(255, 143, 245, 54),
+                    5: Color.fromARGB(255, 73, 252, 2),
                   },
                 ),
               ),

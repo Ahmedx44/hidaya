@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
+import 'package:hidaya/core/config/assets/image/app_image.dart';
 import 'package:hidaya/domain/usecase/user/get_user_data_usecase.dart';
 import 'package:hidaya/presentation/profile/bloc/profile_bloc/profile_cubit.dart';
 import 'package:hidaya/presentation/profile/bloc/profile_bloc/profile_state.dart';
@@ -222,7 +223,9 @@ class ProfilePic extends StatelessWidget {
             clipBehavior: Clip.none,
             children: [
               CircleAvatar(
-                backgroundImage: CachedNetworkImageProvider(profile),
+                backgroundImage: profile.isNotEmpty
+                    ? CachedNetworkImageProvider(profile)
+                    : AssetImage(AppImage.profile) as ImageProvider,
               ),
             ],
           ),
