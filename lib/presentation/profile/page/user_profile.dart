@@ -30,8 +30,8 @@ class UserProfile extends StatelessWidget {
               height: 40,
             ),
             SizedBox(
-              height: 100,
-              width: 100,
+              height: 150,
+              width: 150,
               child: CircleAvatar(
                 backgroundImage: CachedNetworkImageProvider(user['imageUrl']),
               ),
@@ -46,6 +46,59 @@ class UserProfile extends StatelessWidget {
                   fontSize: 18,
                   color: Theme.of(context).colorScheme.inversePrimary),
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  child: Column(
+                    children: [
+                      Text(
+                        'Followers',
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color:
+                                Theme.of(context).colorScheme.inversePrimary),
+                      ),
+                      Text(
+                        '11',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color:
+                                Theme.of(context).colorScheme.inversePrimary),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  child: Column(
+                    children: [
+                      Text(
+                        'Following',
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color:
+                                Theme.of(context).colorScheme.inversePrimary),
+                      ),
+                      Text(
+                        '9',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color:
+                                Theme.of(context).colorScheme.inversePrimary),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: HeatMap(
@@ -54,15 +107,15 @@ class UserProfile extends StatelessWidget {
                 scrollable: true,
                 colorsets: {
                   1: const Color.fromARGB(
-                      255, 220, 247, 190)!, // Light color for low counts
+                      255, 220, 247, 190), // Light color for low counts
                   2: const Color.fromARGB(255, 202, 245, 152)!,
                   3: const Color.fromARGB(255, 181, 248, 105)!,
                   4: const Color.fromARGB(255, 143, 245, 54)!,
                   5: const Color.fromARGB(
-                      255, 73, 252, 2)!, // Bright color for high counts
+                      255, 73, 252, 2), // Bright color for high counts
                 },
               ),
-            )
+            ),
           ],
         ),
       ),

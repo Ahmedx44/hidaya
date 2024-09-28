@@ -46,7 +46,7 @@ class _ContactSearchScreenState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         centerTitle: false,
         elevation: 0,
@@ -93,7 +93,12 @@ class _ContactSearchScreenState extends State<SearchPage> {
           ),
           Expanded(
             child: _userStream == null
-                ? Center(child: Text('Type to search for users'))
+                ? Center(
+                    child: Text(
+                    'Type to search for users',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.inversePrimary),
+                  ))
                 : StreamBuilder<QuerySnapshot>(
                     stream: _userStream,
                     builder: (context, snapshot) {
@@ -159,7 +164,10 @@ class ContactCard extends StatelessWidget {
         image: image,
         radius: 28,
       ),
-      title: Text(name),
+      title: Text(
+        name,
+        style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+      ),
     );
   }
 }

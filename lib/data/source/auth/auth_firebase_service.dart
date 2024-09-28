@@ -41,7 +41,10 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
         'fullName': createinUserReq.fullname,
         'email': createinUserReq.email,
         'phone': '',
-        'imageUrl': ''
+        'imageUrl': '',
+        'heatmap': [],
+        'followers': [],
+        'following': [],
       });
 
       return const Right('Succefully created');
