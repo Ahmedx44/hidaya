@@ -69,6 +69,7 @@ dependencies:
   animated_page_transition: ^0.0.1+2
   device_preview: ^1.2.0
   cached_network_image: ^3.4.0
+  fluttertoast: ^8.2.8
  
 
 

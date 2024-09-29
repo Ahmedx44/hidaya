@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } else if (pageIndex == 2) {
       setState(() {
-        page = ChatList();
+        page = ChatListPage();
       });
     } else if (pageIndex == 3) {
       setState(() {

@@ -32,7 +32,12 @@ class ListOfFollowing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Following')),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+          title: Text(
+        'Following',
+        style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+      )),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: getUserDocument(),
         builder: (context, userSnapshot) {
@@ -41,11 +46,17 @@ class ListOfFollowing extends StatelessWidget {
           }
 
           if (userSnapshot.hasError) {
-            return const Center(child: Text('Error fetching user data'));
+            return Center(
+                child: Text('Error fetching user data',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.inversePrimary)));
           }
 
           if (!userSnapshot.hasData || userSnapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No user data found'));
+            return Center(
+                child: Text('No user data found',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.inversePrimary)));
           }
 
           // Extract following IDs from the user document
@@ -61,13 +72,20 @@ class ListOfFollowing extends StatelessWidget {
               }
 
               if (followingSnapshot.hasError) {
-                return const Center(
-                    child: Text('Error fetching following users'));
+                return Center(
+                    child: Text('Error fetching following users',
+                        style: TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.inversePrimary)));
               }
 
               if (!followingSnapshot.hasData ||
                   followingSnapshot.data!.isEmpty) {
-                return const Center(child: Text('No following users found'));
+                return Center(
+                    child: Text('Not  following anyone',
+                        style: TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.inversePrimary)));
               }
 
               // Build the list of following users

@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:hidaya/core/config/assets/image/app_image.dart';
+import 'package:hidaya/data/source/chat/chat_service.dart';
 import 'package:hidaya/domain/usecase/user/follow_user_usecase.dart';
 import 'package:hidaya/domain/usecase/user/get_user_profile_usecase.dart';
 import 'package:hidaya/domain/usecase/user/unfollow_user_usecase.dart';
+import 'package:hidaya/presentation/chat/page/chat_page.dart';
 import 'package:hidaya/presentation/profile/page/list_of_follow.dart';
 import 'package:hidaya/presentation/profile/page/list_of_following.dart';
 import 'package:hidaya/service_locator.dart';
@@ -28,6 +30,8 @@ class _UserProfileState extends State<UserProfile> {
     isFollowing = widget.user['followers'] != null &&
         widget.user['followers'].contains(currentUser!.uid);
   }
+
+  final ChatService _chatService = ChatService();
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +202,20 @@ class _UserProfileState extends State<UserProfile> {
                         Theme.of(context).colorScheme.tertiary,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final chatRoomId = await _chatService
+                          .createOrGetChatRoomId(widget.user['email']);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatPage(
+                            chatRoomId: chatRoomId,
+                            userName: widget.user['fullName'] ?? 'Unknown User',
+                            userImageUrl: widget.user['imageUrl'],
+                          ),
+                        ),
+                      );
+                    },
                     child: Text(
                       'Message',
                       style: TextStyle(
@@ -211,7 +228,7 @@ class _UserProfileState extends State<UserProfile> {
               const SizedBox(height: 20),
               Center(
                 child: Text(
-                  'Quran Habit',
+                  'Quran Reading Habit',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -247,18 +264,17 @@ class _UserProfileState extends State<UserProfile> {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
+          style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.inversePrimary),
         ),
         Text(
           count.toString(),
-          style: const TextStyle(
-            fontSize: 20,
-            color: Colors.black,
-          ),
+          style: TextStyle(
+              fontSize: 20,
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold),
         ),
       ],
     );

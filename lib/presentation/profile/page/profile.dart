@@ -9,6 +9,7 @@ import 'package:hidaya/domain/usecase/user/get_user_data_usecase.dart';
 import 'package:hidaya/presentation/profile/bloc/profile_bloc/profile_cubit.dart';
 import 'package:hidaya/presentation/profile/bloc/profile_bloc/profile_state.dart';
 import 'package:hidaya/presentation/profile/page/edit_profile.dart';
+import 'package:hidaya/presentation/setting/page/setting.dart';
 import 'package:hidaya/service_locator.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -176,7 +177,13 @@ class ProfileScreen extends StatelessWidget {
                         ProfileMenu(
                           text: "Settings",
                           icon: Icon(Icons.settings),
-                          press: () {},
+                          press: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return SettingPage();
+                              },
+                            ));
+                          },
                         ),
                         ProfileMenu(
                           text: "Help Center",

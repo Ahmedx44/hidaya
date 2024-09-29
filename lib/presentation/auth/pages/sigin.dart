@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hidaya/core/config/assets/vector/app_vector.dart';
 import 'package:hidaya/data/model/auth/signin_user_req.dart';
 import 'package:hidaya/domain/usecase/auth/siginin_usecase.dart';
 import 'package:hidaya/presentation/auth/pages/forget_password.dart';
 import 'package:hidaya/presentation/auth/pages/signup.dart';
 import 'package:hidaya/presentation/home/page/home.dart';
+import 'package:hidaya/presentation/home/page/homepage.dart';
 import 'package:hidaya/service_locator.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -94,21 +96,31 @@ class SignInScreen extends StatelessWidget {
                           Navigator.pop(context);
 
                           result.fold((ifLeft) {
-                            var snackbar = SnackBar(content: Text(ifLeft));
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackbar);
+                            Fluttertoast.showToast(
+                                msg: ifLeft,
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
                           }, (ifRight) {
-                            var snackbar = SnackBar(content: Text(ifRight));
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackbar);
-
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(
-                              builder: (context) {
-                                return const HomeScreen();
-                              },
-                            ));
+                            Fluttertoast.showToast(
+                                msg: ifRight,
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM_RIGHT,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
                           });
+
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(context, MaterialPageRoute(
+                            builder: (context) {
+                              return HomeScreen();
+                            },
+                          ));
                         },
                         style: ElevatedButton.styleFrom(
                           elevation: 0,

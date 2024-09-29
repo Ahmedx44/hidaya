@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:adhan/adhan.dart';
-import 'package:animated_page_transition/animated_page_transition.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,8 +12,6 @@ import 'package:hidaya/presentation/home/bloc/get_user_bloc/get_username_state.d
 import 'package:hidaya/presentation/home/widget/features.dart';
 import 'package:hidaya/presentation/home/widget/home_card.dart';
 import 'package:hidaya/presentation/home/widget/randomVerse.dart';
-import 'package:hidaya/presentation/surah_search/page/search.dart';
-
 import 'package:hidaya/service_locator.dart';
 
 class HomePage extends StatefulWidget {
@@ -46,9 +43,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           _calculatePrayerTimes();
         }
       });
-    }).catchError((error) {
-      print('Failed to get location: $error');
-    });
+    }).catchError((error) {});
 
     Timer.periodic(const Duration(seconds: 2), (Timer t) {
       setState(() {
@@ -97,13 +92,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     centerTitle: false,
                     title: snapshot.hasData
                         ? Text('Hello ${snapshot.data?['fullName'].toString()}')
-                        : Text('User'),
-                    actions: [
-                      PageTransitionButton(
-                          vsync: this,
-                          nextPage: SearchPageSurah(),
-                          child: Icon(Icons.search)),
-                    ],
+                        : const Text('User'),
                   ),
                   body: SingleChildScrollView(
                     child: Column(

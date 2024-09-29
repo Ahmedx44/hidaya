@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hidaya/core/config/assets/image/app_image.dart';
 
 class ListOfFollowers extends StatelessWidget {
   final String email;
@@ -15,16 +17,12 @@ class ListOfFollowers extends StatelessWidget {
   Stream<List<Map<String, dynamic>>> getFollowingUsers(
       List<String> followingIds) {
     if (followingIds.isEmpty) {
-      return Stream.value(
-          []); // Return an empty stream if there are no following IDs
+      return Stream.value([]);
     }
 
     return FirebaseFirestore.instance
         .collection('User')
-        .where(FieldPath.documentId,
-            whereIn: followingIds
-                .take(10)
-                .toList()) // Limit to 10 for Firestore constraints
+        .where(FieldPath.documentId, whereIn: followingIds.take(10).toList())
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
@@ -48,7 +46,6 @@ class ListOfFollowers extends StatelessWidget {
             return const Center(child: Text('No user data found'));
           }
 
-          // Extract following IDs from the user document
           final followingIds = List<String>.from(
               userSnapshot.data!.docs.first['followers'] ?? []);
 
@@ -70,14 +67,32 @@ class ListOfFollowers extends StatelessWidget {
                 return const Center(child: Text('No following users found'));
               }
 
-              // Build the list of following users
               return ListView.builder(
                 itemCount: followingSnapshot.data!.length,
                 itemBuilder: (context, index) {
                   final userData = followingSnapshot.data![index];
-                  return ListTile(
-                    title: Text(userData['fullName'] ?? 'Unnamed User'),
-                    subtitle: Text(userData['email'] ?? 'No email'),
+                  return Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: userData['imageUrl'] != null
+                              ? CachedNetworkImageProvider(userData['imageUrl'])
+                                  as ImageProvider
+                              : AssetImage(AppImage.profile),
+                          radius: 30,
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          userData['fullName'],
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600),
+                        )
+                      ],
+                    ),
                   );
                 },
               );
