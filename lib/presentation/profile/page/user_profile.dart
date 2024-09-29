@@ -107,7 +107,9 @@ class _UserProfileState extends State<UserProfile> {
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) {
-                                return ListOfFollower();
+                                return ListOfFollowers(
+                                  email: user['email'],
+                                );
                               },
                             ));
                           },
@@ -116,7 +118,9 @@ class _UserProfileState extends State<UserProfile> {
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) {
-                                return ListOfFollowing();
+                                return ListOfFollowing(
+                                  email: user['email'],
+                                );
                               },
                             ));
                           },
