@@ -1,7 +1,3 @@
-Here's a GitHub README template for your Flutter Islamic app project:
-
----
-
 # 📱 Hidaya
 
 An Islamic mobile application built using Flutter, allowing users to read the Quran and Hadith, listen to Quranic audio, find the Qibla direction, and interact with friends through a user-friendly experience. The app tracks Quran reading activity and provides a heatmap of user activity. This app is developed using **Clean Architecture**.
