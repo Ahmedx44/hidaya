@@ -43,13 +43,13 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (_) => ThemeCubit()),
           BlocProvider(create: (_) => SurahCubit()),
-          BlocProvider(create: (_) => EditProfileCubit(sl<GetUserUsecase>())),
         ],
-        child: BlocBuilder<ThemeCubit, ThemeData>(
+        child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, theme) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
-              theme: theme,
+              themeMode: theme,
+              theme: lightMode,
               darkTheme: darkMode,
               home: const AuthGate(),
             );

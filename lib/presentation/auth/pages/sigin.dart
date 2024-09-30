@@ -7,7 +7,6 @@ import 'package:hidaya/domain/usecase/auth/siginin_usecase.dart';
 import 'package:hidaya/presentation/auth/pages/forget_password.dart';
 import 'package:hidaya/presentation/auth/pages/signup.dart';
 import 'package:hidaya/presentation/home/page/home.dart';
-import 'package:hidaya/presentation/home/page/homepage.dart';
 import 'package:hidaya/service_locator.dart';
 
 class SignInScreen extends StatelessWidget {

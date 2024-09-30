@@ -1,15 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hidaya/core/config/assets/theme/app_theme.dart';
+import 'package:flutter/material.dart';
 
-class ThemeCubit extends Cubit<ThemeData> {
-  ThemeCubit() : super(lightMode);
+class ThemeCubit extends Cubit<ThemeMode> {
+  ThemeCubit() : super(ThemeMode.light);
 
   void changeTheme() {
-    if (state == lightMode) {
-      emit(darkMode);
-    } else {
-      emit(lightMode);
-    }
+    emit(state == ThemeMode.light ? ThemeMode.dark : ThemeMode.light);
   }
 }

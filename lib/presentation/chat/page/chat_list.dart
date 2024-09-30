@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hidaya/core/config/assets/image/app_image.dart';
+import 'package:hidaya/presentation/chat/widget/chat_list_skeleton.dart';
 import 'chat_page.dart'; // Make sure to import your ChatPage file
 
 class ChatListPage extends StatelessWidget {
@@ -20,7 +21,18 @@ class ChatListPage extends StatelessWidget {
         future: getChatRooms(user?.email),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  ChatListSkeleton(),
+                  SizedBox(height: 10),
+                  ChatListSkeleton(),
+                  SizedBox(height: 10),
+                  ChatListSkeleton()
+                ],
+              ),
+            );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
@@ -41,7 +53,18 @@ class ChatListPage extends StatelessWidget {
                   builder: (context, userSnapshot) {
                     if (userSnapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return const ListTile(title: Text('Loading...'));
+                      return const Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            ChatListSkeleton(),
+                            SizedBox(height: 10),
+                            ChatListSkeleton(),
+                            SizedBox(height: 10),
+                            ChatListSkeleton()
+                          ],
+                        ),
+                      );
                     } else if (userSnapshot.hasError) {
                       return const ListTile(title: Text('Error loading user'));
                     } else if (!userSnapshot.hasData ||
