@@ -45,8 +45,11 @@ class QuranSurahList extends StatelessWidget {
                       final surah = successState.surhas[index + 1];
 
                       return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        color: Theme.of(context).colorScheme.onTertiary,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.onTertiary,
+                            borderRadius: BorderRadius.circular(20)),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
                         child: GestureDetector(
                           onTap: () {
                             context

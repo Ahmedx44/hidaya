@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hidaya/common/bloc/theme_cubit.dart';
 import 'package:hidaya/core/config/assets/theme/app_theme.dart';
-import 'package:hidaya/domain/usecase/user/get_user_usecase.dart';
 import 'package:hidaya/firebase_options.dart';
 import 'package:hidaya/presentation/auth/pages/authgate.dart';
-import 'package:hidaya/presentation/profile/bloc/edit_profile_bloc/edit_profile_cubit.dart';
 import 'package:hidaya/presentation/quran_surah_list/Bloc/surah_state_cubit.dart';
 import 'package:hidaya/service_locator.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -30,7 +28,7 @@ void main() async {
   //   enabled: !kReleaseMode,
   //   builder: (context) => MyApp(),
   // ));
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
