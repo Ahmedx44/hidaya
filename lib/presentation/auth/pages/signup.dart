@@ -132,9 +132,10 @@ class SignUpScreen extends StatelessWidget {
                         minimumSize: const Size(double.infinity, 48),
                         shape: const StadiumBorder(),
                       ),
-                      child: const Text(
+                      child: Text(
                         "Sign up",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ),
                     const SizedBox(height: 16.0),

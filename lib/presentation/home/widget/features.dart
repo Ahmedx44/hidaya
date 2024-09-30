@@ -55,7 +55,7 @@ class Features extends StatelessWidget {
                       ));
                     },
                     child: const MiniCard(
-                        icon: Icons.audio_file, feature: 'Hadith')),
+                        icon: FlutterIslamicIcons.islam, feature: 'Hadith')),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(

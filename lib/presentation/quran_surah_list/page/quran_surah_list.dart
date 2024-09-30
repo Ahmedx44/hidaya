@@ -108,7 +108,7 @@ class QuranSurahList extends StatelessWidget {
                                       builder: (context) {
                                         return QuranAudio(
                                           surah: surah!,
-                                          surahNumber: surah!.number,
+                                          surahNumber: surah.number,
                                         );
                                       },
                                     ));

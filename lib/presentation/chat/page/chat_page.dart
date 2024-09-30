@@ -79,7 +79,7 @@ class ChatPage extends StatelessWidget {
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: isCurrentUser
-                              ? Colors.blueAccent
+                              ? Theme.of(context).colorScheme.primary
                               : Colors.grey[300],
                           borderRadius: BorderRadius.circular(10),
                         ),

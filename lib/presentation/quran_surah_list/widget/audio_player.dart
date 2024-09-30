@@ -13,7 +13,6 @@ class QuranAudio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isPlaying = false;
     return BlocProvider(
       create: (context) => AudioPlayerCubit()..loadSong(surahNumber),
       child: Scaffold(
@@ -88,30 +87,38 @@ class QuranAudio extends StatelessWidget {
                       height: 40,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(
-                          Icons.arrow_circle_left,
-                          size: 70,
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                        ),
-                        const SizedBox(width: 50),
-                        GestureDetector(
-                          onTap: () {
-                            context.read<AudioPlayerCubit>().pladOrPauseSOng();
+                        IconButton(
+                          onPressed: () {
+                            context.read<AudioPlayerCubit>().backward();
                           },
-                          child: Icon(
-                            isPlaying ? Icons.pause : Icons.play_circle_fill,
+                          icon: const Icon(
+                            Icons.arrow_circle_left,
                             size: 70,
-                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
-                        const SizedBox(width: 50),
-                        Icon(
-                          Icons.arrow_circle_right,
-                          size: 70,
-                          color: Theme.of(context).colorScheme.inversePrimary,
+                        IconButton(
+                          color: Theme.of(context).colorScheme.primary,
+                          icon: Icon(
+                            context.watch<AudioPlayerCubit>().isPlaying
+                                ? Icons.pause_circle
+                                : Icons.play_circle,
+                            size: 70,
+                          ),
+                          onPressed: () {
+                            context.read<AudioPlayerCubit>().pladOrPauseSOng();
+                          },
                         ),
+                        IconButton(
+                          onPressed: () {
+                            context.read<AudioPlayerCubit>().forward();
+                          },
+                          icon: Icon(
+                            Icons.arrow_circle_right,
+                            size: 70,
+                          ),
+                        )
                       ],
                     ),
                   ],

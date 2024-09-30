@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hadith/hadith.dart';
 import 'package:hidaya/domain/usecase/hadith/get_hadith.dart';
 import 'package:hidaya/presentation/hadith/bloc/hadith_book_bloc/hadith_book_cubit.dart';
@@ -69,7 +68,7 @@ class HadithBook extends StatelessWidget {
                                   hadithBook.hadith[0].body
                                       .replaceAll('</p>', '')
                                       .replaceAll('<p>', ''),
-                                  style: GoogleFonts.amiri(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     height: 1.8,
@@ -84,7 +83,7 @@ class HadithBook extends StatelessWidget {
                                   hadithBook.hadith[1].body
                                       .replaceAll('</p>', '')
                                       .replaceAll('<p>', ''),
-                                  style: GoogleFonts.openSans(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                     height: 1.3,

@@ -8,6 +8,9 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
   AudioPlayer audioPlayer = AudioPlayer();
   Duration songDuration = Duration.zero;
   Duration songPosition = Duration.zero;
+
+  bool isPlaying = false;
+
   AudioPlayerCubit() : super(AudioPlayerLoading()) {
     audioPlayer.positionStream.listen((position) {
       songPosition = position;
@@ -40,8 +43,10 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
   void pladOrPauseSOng() {
     if (audioPlayer.playing) {
       audioPlayer.stop();
+      isPlaying = false;
     } else {
       audioPlayer.play();
+      isPlaying = true;
     }
     emit(AudioPlayerLoaded());
   }
@@ -52,6 +57,28 @@ class AudioPlayerCubit extends Cubit<AudioPlayerState> {
 
   void nextAudio() {
     audioPlayer.seekToNext();
+  }
+
+  void forward() {
+    final newPosition = songPosition + const Duration(seconds: 10);
+
+    // Ensure we don't seek past the end of the song
+    if (newPosition < songDuration) {
+      audioPlayer.seek(newPosition);
+    } else {
+      audioPlayer.seek(songDuration);
+    }
+  }
+
+  void backward() {
+    final newPosition = songPosition - const Duration(seconds: 10);
+
+    // Ensure we don't seek past the end of the song
+    if (newPosition < songDuration) {
+      audioPlayer.seek(newPosition);
+    } else {
+      audioPlayer.seek(songDuration);
+    }
   }
 
   @override

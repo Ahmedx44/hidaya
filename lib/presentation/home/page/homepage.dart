@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool isSearchActive = false;
   final TextEditingController searchController = TextEditingController();
   String currentTime = '';
-  String nextPrayerText = 'Calculating...';
+  String nextPrayerText = '';
   final user = FirebaseAuth.instance;
 
   @override
@@ -115,15 +115,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Text(
-                                      nextPrayerText,
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .inversePrimary,
-                                        fontSize: 20,
-                                      ),
-                                    ),
+                                    nextPrayerText.isNotEmpty
+                                        ? Text(
+                                            nextPrayerText,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .inversePrimary,
+                                              fontSize: 20,
+                                            ),
+                                          )
+                                        : CircularProgressIndicator(),
                                   ],
                                 ),
                               ),
