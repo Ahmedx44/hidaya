@@ -8,8 +8,7 @@ An Islamic mobile application built using Flutter, allowing users to read the Qu
 
 ## 📸 Screenshots
 
-**Homepage**
-![image](https://github.com/user-attachments/assets/c71a1d84-3f5a-4a34-af76-4ea9704e4ffb)
+**Homepage** ![image](https://github.com/user-attachments/assets/c71a1d84-3f5a-4a34-af76-4ea9704e4ffb)
 
 
 
