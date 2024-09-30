@@ -48,7 +48,7 @@ class HadithsList extends StatelessWidget {
                               vertical: 10, horizontal: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              color: Theme.of(context).colorScheme.tertiary),
+                              color: Theme.of(context).colorScheme.onTertiary),
                           padding: const EdgeInsets.all(10),
                           child: GestureDetector(
                             onTap: () {
@@ -86,20 +86,24 @@ class HadithsList extends StatelessWidget {
                                         fontSize: 16,
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .surface,
+                                            .inversePrimary,
                                         fontWeight: FontWeight.w500),
                                   ),
                                   Text(hadith.totalAvailableHadith.toString(),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 16,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .inversePrimary,
                                           fontWeight: FontWeight.bold)),
                                 ],
                               ),
                               title: Text(
                                 '${hadith.name[0].toUpperCase()}${hadith.name.substring(1)}',
                                 style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.surface,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .inversePrimary,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20),
                               ),

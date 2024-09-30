@@ -107,6 +107,7 @@ class QuranSurahList extends StatelessWidget {
                                     Navigator.push(context, MaterialPageRoute(
                                       builder: (context) {
                                         return QuranAudio(
+                                          surah: surah!,
                                           surahNumber: surah!.number,
                                         );
                                       },

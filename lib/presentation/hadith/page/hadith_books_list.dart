@@ -39,7 +39,7 @@ class HadithBooksList extends StatelessWidget {
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Theme.of(context).colorScheme.tertiary),
+                        color: Theme.of(context).colorScheme.onTertiary),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(
@@ -54,18 +54,37 @@ class HadithBooksList extends StatelessWidget {
                       },
                       child: ListTile(
                         leading: Text(book.bookNumber,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 25)),
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25)),
                         title: Text(book.book[0].name,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                                fontWeight: FontWeight.bold)),
                         subtitle: Row(
                           children: [
-                            Text('Hadith start: ${book.hadithStartNumber}'),
+                            Text(
+                              'Hadith start: ${book.hadithStartNumber}',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary),
+                            ),
                             const SizedBox(
                               width: 20,
                             ),
-                            Text('Hadith start: ${book.hadithEndNumber}')
+                            Text(
+                              'Hadith start: ${book.hadithEndNumber}',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary),
+                            )
                           ],
                         ),
                       ),

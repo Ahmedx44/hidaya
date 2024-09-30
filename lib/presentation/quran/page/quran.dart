@@ -72,6 +72,7 @@ class _QuranPageState extends State<QuranPage> {
       create: (context) => QuranPageCubit(sl<GetPageDataUseCase>())
         ..getSurahVerse(widget.surahNumber),
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           title: const Text('Quran Surahs'),
         ),
@@ -94,16 +95,20 @@ class _QuranPageState extends State<QuranPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    SvgPicture.asset(height: 50, Appvector.bismillah),
+                    SvgPicture.asset(
+                      height: 50,
+                      Appvector.bismillah,
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                    ),
                     RichText(
                       textAlign: TextAlign.justify,
                       textDirection: TextDirection.rtl,
                       text: TextSpan(
-                        style: const ArabicTextStyle(
+                        style: ArabicTextStyle(
                           arabicFont: ArabicFont.scheherazade,
                           fontSize: 27,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                          color: Theme.of(context).colorScheme.inversePrimary,
                         ),
                         children: successState.verse.map((verse) {
                           return TextSpan(
