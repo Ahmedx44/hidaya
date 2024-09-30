@@ -11,14 +11,22 @@ An Islamic mobile application built using Flutter, allowing users to read the Qu
 **Homepage**
 ![image](https://github.com/user-attachments/assets/c71a1d84-3f5a-4a34-af76-4ea9704e4ffb)
 
+
+
 **Quran Surah List**
 ![image](https://github.com/user-attachments/assets/48d6b035-dc38-43d8-889a-b605657e3ce7)
+
+
 
 **Quran**
 ![image](https://github.com/user-attachments/assets/5c1a3288-b15c-454c-bb72-8fe97170dd41)
 
+
+
 **User Profile**
 ![image](https://github.com/user-attachments/assets/dbad0cda-b3c3-44c6-a199-3725d05e2f01)
+
+
 
 **Dark Mode**
 ![image](https://github.com/user-attachments/assets/bb7ddf98-a8a1-4252-9861-ed564936b5de)
