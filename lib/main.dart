@@ -11,6 +11,7 @@ import 'package:hidaya/presentation/quran_surah_list/Bloc/surah_state_cubit.dart
 import 'package:hidaya/service_locator.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:quran_flutter/quran.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +22,7 @@ void main() async {
         ? HydratedStorage.webStorageDirectory
         : await getApplicationDocumentsDirectory(),
   );
-
+  await Quran.initialize();
   // QuranTool quranTool = QuranTool.init();
   // runApp(DevicePreview(
   //   enabled: !kReleaseMode,

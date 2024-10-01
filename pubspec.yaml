@@ -70,6 +70,8 @@ dependencies:
   cached_network_image: ^3.4.0
   fluttertoast: ^8.2.8
   shimmer: ^3.0.0
+  google_sign_in: ^6.2.1
+  the_apple_sign_in: ^1.1.1
  
 
 

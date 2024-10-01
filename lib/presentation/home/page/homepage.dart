@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:adhan/adhan.dart';
-import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool isSearchActive = false;
   final TextEditingController searchController = TextEditingController();
   String currentTime = '';
-  String nextPrayerText = '';
+  String nextPrayerText = 'Fetching prayer times...';
   final user = FirebaseAuth.instance;
 
   @override
@@ -43,7 +43,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           _calculatePrayerTimes();
         }
       });
-    }).catchError((error) {});
+    }).catchError((error) {
+      // Handle location fetching error
+      setState(() {
+        nextPrayerText = 'Failed to fetch location';
+      });
+    });
 
     Timer.periodic(const Duration(seconds: 2), (Timer t) {
       setState(() {
@@ -56,6 +61,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   void _calculatePrayerTimes() {
+    if (position == null) return; // Ensure position is not null
+
     final coordinates = Coordinates(position!.latitude, position!.longitude);
     final params = CalculationMethod.karachi.getParameters();
     params.madhab = Madhab.hanafi;
@@ -67,10 +74,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final remainingDuration =
         prayerTimes.timeForPrayer(nextPrayer)?.difference(currentDateTime);
 
-    if (remainingDuration != null && nextPrayer.name.isNotEmpty) {
+    print('Position: $position'); // Debugging statement
+    print('Next Prayer: ${nextPrayer.name}'); // Debugging statement
+    print('Remaining Duration: $remainingDuration'); // Debugging statement
+
+    if (nextPrayer != Prayer.none && remainingDuration != null) {
       setState(() {
         nextPrayerText =
-            '${nextPrayer.name} ${remainingDuration.inHours} hours ${remainingDuration.inMinutes % 60} minutes left';
+            '${nextPrayer.name} in ${remainingDuration.inHours} hours and ${remainingDuration.inMinutes % 60} minutes';
+      });
+    } else {
+      setState(() {
+        nextPrayerText = 'No more prayers today'; // Show a meaningful message
       });
     }
   }
@@ -115,17 +130,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    nextPrayerText.isNotEmpty
-                                        ? Text(
-                                            nextPrayerText,
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .inversePrimary,
-                                              fontSize: 20,
-                                            ),
-                                          )
-                                        : CircularProgressIndicator(),
+                                    Text(
+                                      nextPrayerText,
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .inversePrimary,
+                                        fontSize: 20,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -142,7 +155,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               },
             );
           } else {
-            return Container();
+            return const Center(
+              child:
+                  CircularProgressIndicator(), // Show a loader while fetching data
+            );
           }
         },
       ),
