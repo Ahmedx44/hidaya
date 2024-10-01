@@ -2,9 +2,6 @@
 
 An Islamic mobile application built using Flutter, allowing users to read the Quran and Hadith, listen to Quranic audio, find the Qibla direction, and interact with friends through a user-friendly experience. The app tracks Quran reading activity and provides a heatmap of user activity. This app is developed using **Clean Architecture**.
 
-## 📸 Gif
-
-https://github.com/user-attachments/assets/b5b5022b-cc8d-4a75-b3ff-6f68ff361d60
 
 
 ## 🌟 Features
