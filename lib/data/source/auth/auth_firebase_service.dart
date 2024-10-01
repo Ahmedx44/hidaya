@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hidaya/data/model/auth/create_user_req.dart';
 import 'package:hidaya/data/model/auth/signin_user_req.dart';
@@ -99,7 +98,6 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
           'email': userDetail.email,
           'fullName': userDetail.displayName,
           'imageUrl': userDetail.photoURL,
-          'id': userDetail.uid,
           'heatmap': [],
           'followers': [],
           'following': [],
@@ -141,28 +139,48 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
 
           final firebaseUser = userCredential.user;
 
-          if (scopes.contains(Scope.fullName)) {
-            final fullName = AppleIdCredential.fullName;
-
-            if (fullName != null &&
-                fullName.givenName != null &&
-                fullName.familyName != null) {
-              final displayName =
-                  '${fullName.givenName} ${fullName.familyName}';
-              await firebaseUser!.updateDisplayName(displayName);
+          if (firebaseUser != null) {
+            // Extract the user's full name if available
+            String? fullName;
+            if (scopes.contains(Scope.fullName)) {
+              final name = AppleIdCredential.fullName;
+              if (name != null &&
+                  name.givenName != null &&
+                  name.familyName != null) {
+                fullName = '${name.givenName} ${name.familyName}';
+                await firebaseUser.updateDisplayName(fullName);
+              }
             }
-          }
 
-          return Right(firebaseUser!);
+            // Prepare user data to be stored in Firestore
+            Map<String, dynamic> userInfoMap = {
+              'email': AppleIdCredential.email ?? firebaseUser.email,
+              'fullName': fullName ?? firebaseUser.displayName ?? '',
+              'imageUrl': '',
+              'heatmap': [],
+              'followers': [],
+              'following': [],
+              'requests': [],
+            };
+
+            await FirebaseFirestore.instance
+                .collection('User')
+                .doc(firebaseUser.uid)
+                .set(userInfoMap, SetOptions(merge: true));
+
+            return Right(firebaseUser);
+          } else {
+            return const Left('Apple Sign-In failed');
+          }
 
         case AuthorizationStatus.error:
           return Left('Authorization error: ${result.error.toString()}');
 
         case AuthorizationStatus.cancelled:
-          return Left('Sign-in aborted by the user');
+          return const Left('Sign-in aborted by the user');
 
         default:
-          return Left('Unexpected error during Apple sign-in');
+          return const Left('Unexpected error during Apple sign-in');
       }
     } catch (e) {
       return Left(e.toString());
