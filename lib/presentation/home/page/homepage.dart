@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:adhan/adhan.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,9 +75,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final remainingDuration =
         prayerTimes.timeForPrayer(nextPrayer)?.difference(currentDateTime);
 
-    print('Position: $position'); // Debugging statement
-    print('Next Prayer: ${nextPrayer.name}'); // Debugging statement
-    print('Remaining Duration: $remainingDuration'); // Debugging statement
+    print('Position: $position');
+    print('Next Prayer: ${nextPrayer.name}');
+    print('Remaining Duration: $remainingDuration');
 
     if (nextPrayer != Prayer.none && remainingDuration != null) {
       setState(() {
@@ -105,9 +106,40 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   appBar: AppBar(
                     centerTitle: false,
-                    title: snapshot.hasData
-                        ? Text('Hello ${snapshot.data?['fullName'].toString()}')
-                        : const Text('User'),
+                    title: snapshot.connectionState == ConnectionState.waiting
+                        ? const Text(
+                            'Loading...') // Show loading text while waiting
+                        : snapshot.hasData && snapshot.data != null
+                            ? Row(
+                                children: [
+                                  const Text(
+                                    'Hello ',
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    '${snapshot.data?['fullName']?.toString() ?? 'User'}',
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : const Text('Welcome'),
+                    actions: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          backgroundImage:
+                              snapshot.hasData && snapshot.data != null
+                                  ? CachedNetworkImageProvider(
+                                      snapshot.data!['imageUrl'] ??
+                                          '') // Provide a default image URL
+                                  : null, // Set to null while loading
+                        ),
+                      )
+                    ],
                   ),
                   body: SingleChildScrollView(
                     child: Column(

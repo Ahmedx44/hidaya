@@ -9,6 +9,8 @@ import 'package:hidaya/data/source/user/userService.dart';
 import 'package:hidaya/domain/respository/auth/auth_repsoitory.dart';
 import 'package:hidaya/domain/respository/quran/surah_reposiotry.dart';
 import 'package:hidaya/domain/usecase/auth/siginin_usecase.dart';
+import 'package:hidaya/domain/usecase/auth/signinwithApple.dart';
+import 'package:hidaya/domain/usecase/auth/signinwithGoogle.dart';
 import 'package:hidaya/domain/usecase/auth/signup_usecase.dart';
 import 'package:hidaya/domain/usecase/hadith/get_books.dart';
 import 'package:hidaya/domain/usecase/hadith/get_collection.dart';
@@ -111,6 +113,12 @@ Future<void> initializedDependency() async {
   );
   sl.registerSingleton<GetUserProfileUsecase>(
     GetUserProfileUsecase(),
+  );
+  sl.registerSingleton<SignInWithApple>(
+    SignInWithApple(),
+  );
+  sl.registerSingleton<SignInWithGoogle>(
+    SignInWithGoogle(),
   );
 
 //REPOSITORYS

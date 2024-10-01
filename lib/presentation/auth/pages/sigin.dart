@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hidaya/core/config/assets/image/app_image.dart';
 import 'package:hidaya/core/config/assets/vector/app_vector.dart';
 import 'package:hidaya/data/model/auth/signin_user_req.dart';
 import 'package:hidaya/domain/usecase/auth/siginin_usecase.dart';
+import 'package:hidaya/domain/usecase/auth/signinwithApple.dart';
+import 'package:hidaya/domain/usecase/auth/signinwithGoogle.dart';
 import 'package:hidaya/presentation/auth/pages/forget_password.dart';
 import 'package:hidaya/presentation/auth/pages/signup.dart';
 import 'package:hidaya/presentation/home/page/home.dart';
@@ -38,6 +41,7 @@ class SignInScreen extends StatelessWidget {
             return SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   SizedBox(height: constraints.maxHeight * 0.1),
                   SizedBox(
@@ -139,7 +143,7 @@ class SignInScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(context, MaterialPageRoute(
                             builder: (context) {
-                              return ForgotPasswordScreen();
+                              return const ForgotPasswordScreen();
                             },
                           ));
                         },
@@ -149,6 +153,68 @@ class SignInScreen extends StatelessWidget {
                               color:
                                   Theme.of(context).colorScheme.inversePrimary),
                         ),
+                      ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              color: Colors.black,
+                              height: 1,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Or Sign in with'),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              color: Colors.black,
+                              height: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              showDialogg(context);
+                              await sl<SignInWithGoogle>().call();
+                              Navigator.pop(context);
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(
+                                builder: (context) {
+                                  return HomeScreen();
+                                },
+                              ));
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color:
+                                      Theme.of(context).colorScheme.onTertiary),
+                              child: Image.asset(height: 100, AppImage.google),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              showDialogg(context);
+                              await sl<SignInWithApple>().call();
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color:
+                                      Theme.of(context).colorScheme.onTertiary),
+                              child: Image.asset(height: 100, AppImage.apple),
+                            ),
+                          )
+                        ],
                       ),
                       TextButton(
                         onPressed: () {

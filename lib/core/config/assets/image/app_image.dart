@@ -8,4 +8,6 @@ class AppImage {
   static String pattern_left = '${address}pattern-left$format';
   static String qibla_compass = '${address}qibla$format';
   static String profile = '${address}profile$format';
+  static String google = '${address}google$format';
+  static String apple = '${address}apple$format';
 }
