@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   void _calculatePrayerTimes() {
-    if (position == null) return; // Ensure position is not null
+    if (position == null) return;
 
     final coordinates = Coordinates(position!.latitude, position!.longitude);
     final params = CalculationMethod.karachi.getParameters();
@@ -75,10 +75,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final remainingDuration =
         prayerTimes.timeForPrayer(nextPrayer)?.difference(currentDateTime);
 
-    print('Position: $position');
-    print('Next Prayer: ${nextPrayer.name}');
-    print('Remaining Duration: $remainingDuration');
-
     if (nextPrayer != Prayer.none && remainingDuration != null) {
       setState(() {
         nextPrayerText =
@@ -86,7 +82,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       });
     } else {
       setState(() {
-        nextPrayerText = 'No more prayers today'; // Show a meaningful message
+        nextPrayerText = 'No more prayers today';
       });
     }
   }
