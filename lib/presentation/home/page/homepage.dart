@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Aselamalyekum Werhamtulahi',
+                                'Aselamalyekum Werhamtulahi ahmed',
                                 style: TextStyle(fontSize: 14),
                               ),
                               Text('Hello ${snapshot.data!['fullName']}',
