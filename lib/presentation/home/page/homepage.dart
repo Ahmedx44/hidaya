@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'package:adhan/adhan.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hidaya/core/config/assets/image/app_image.dart';
 import 'package:hidaya/domain/usecase/location/getLocation.dart';
-import 'package:hidaya/domain/usecase/time/time_usecase.dart';
 import 'package:hidaya/domain/usecase/user/get_userName_useCase.dart';
 import 'package:hidaya/presentation/home/bloc/get_user_bloc/get_username_cubit.dart';
 import 'package:hidaya/presentation/home/bloc/get_user_bloc/get_username_state.dart';
@@ -23,18 +24,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  String timezone = DateTime.now().timeZoneName;
   Position? position;
-  bool isSearchActive = false;
-  final TextEditingController searchController = TextEditingController();
-  String currentTime = '';
-  String nextPrayerText = 'Fetching prayer times...';
+  String nextPrayerText = '';
+  String lastKnownNextPrayerText = '';
   final user = FirebaseAuth.instance;
 
   @override
   void initState() {
     super.initState();
-    currentTime = sl<TimeUsecase>().getCurrentTIme();
 
     final location = sl<GetlocationUseCase>();
     location().then((value) {
@@ -45,18 +42,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         }
       });
     }).catchError((error) {
-      // Handle location fetching error
       setState(() {
         nextPrayerText = 'Failed to fetch location';
-      });
-    });
-
-    Timer.periodic(const Duration(seconds: 2), (Timer t) {
-      setState(() {
-        currentTime = sl<TimeUsecase>().getCurrentTIme();
-        if (position != null) {
-          _calculatePrayerTimes();
-        }
       });
     });
   }
@@ -69,22 +56,28 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     params.madhab = Madhab.hanafi;
 
     final prayerTimes = PrayerTimes.today(coordinates, params);
-
     final currentDateTime = DateTime.now();
     final nextPrayer = prayerTimes.nextPrayer();
     final remainingDuration =
         prayerTimes.timeForPrayer(nextPrayer)?.difference(currentDateTime);
 
     if (nextPrayer != Prayer.none && remainingDuration != null) {
+      final newNextPrayerText =
+          '${nextPrayer.name} in ${remainingDuration.inHours} hours and ${remainingDuration.inMinutes % 60} minutes';
       setState(() {
-        nextPrayerText =
-            '${nextPrayer.name} in ${remainingDuration.inHours} hours and ${remainingDuration.inMinutes % 60} minutes';
+        lastKnownNextPrayerText = nextPrayerText;
+        nextPrayerText = newNextPrayerText;
       });
     } else {
       setState(() {
         nextPrayerText = 'No more prayers today';
       });
     }
+  }
+
+  String _getCurrentTime() {
+    final now = DateTime.now();
+    return '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -103,8 +96,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   appBar: AppBar(
                     centerTitle: false,
                     title: snapshot.connectionState == ConnectionState.waiting
-                        ? const Text(
-                            'Loading...') // Show loading text while waiting
+                        ? const Text('Hello',
+                            style: TextStyle(
+                              fontSize: 17,
+                            ))
                         : snapshot.hasData && snapshot.data != null
                             ? Row(
                                 children: [
@@ -129,10 +124,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: CircleAvatar(
                           backgroundImage:
                               snapshot.hasData && snapshot.data != null
-                                  ? CachedNetworkImageProvider(
-                                      snapshot.data!['imageUrl'] ??
-                                          '') // Provide a default image URL
-                                  : null, // Set to null while loading
+                                  ? ExtendedNetworkImageProvider(
+                                      cache: true, snapshot.data!['imageUrl'])
+                                  : AssetImage(AppImage.profile),
                         ),
                       )
                     ],
@@ -149,7 +143,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 child: Column(
                                   children: [
                                     Text(
-                                      currentTime,
+                                      _getCurrentTime(), // Get the current time instantly
                                       style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme
@@ -159,7 +153,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       ),
                                     ),
                                     Text(
-                                      nextPrayerText,
+                                      nextPrayerText.isNotEmpty
+                                          ? nextPrayerText
+                                          : lastKnownNextPrayerText, // Use last known time if nextPrayerText is empty
                                       style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme

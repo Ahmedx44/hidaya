@@ -38,7 +38,7 @@ dependencies:
   intro_screen_onboarding_flutter: ^1.0.0
   flutter_svg: ^2.0.10+1
   path_provider: ^2.1.4
-  get_it: ^7.7.0
+  get_it: ^8.0.0
   intl:
   dartz: ^0.10.1
   cloud_firestore: ^4.17.5
@@ -53,9 +53,8 @@ dependencies:
   awesome_bottom_bar: ^1.2.4
   just_audio: ^0.9.40
   hadith: ^1.0.0
-  geolocator: ^9.0.1
+  geolocator: ^11.1.0
   permission_handler: ^11.3.1
-  flutter_qiblah: ^2.2.0
   share_plus: ^10.0.0
   http:
   firebase_phone_auth_handler:
@@ -72,6 +71,11 @@ dependencies:
   shimmer: ^3.0.0
   google_sign_in: ^6.2.1
   the_apple_sign_in: ^1.1.1
+  extended_image: ^8.3.0
+  flutter_qiblah:
+  
+
+ 
  
 
 
@@ -87,7 +91,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

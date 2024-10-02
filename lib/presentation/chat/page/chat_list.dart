@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hidaya/core/config/assets/image/app_image.dart';
 import 'package:hidaya/presentation/chat/widget/chat_list_skeleton.dart';
 import 'chat_page.dart'; // Make sure to import your ChatPage file
@@ -66,7 +67,9 @@ class ChatListPage extends StatelessWidget {
                         ),
                       );
                     } else if (userSnapshot.hasError) {
-                      return const ListTile(title: Text('Error loading user'));
+                      return Center(
+                        child: Text('Error loading user'),
+                      );
                     } else if (!userSnapshot.hasData ||
                         userSnapshot.data!.docs.isEmpty) {
                       return const ListTile(title: Text('User not found'));
@@ -89,7 +92,11 @@ class ChatListPage extends StatelessWidget {
                           );
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.onTertiary,
+                              borderRadius: BorderRadius.circular(20)),
                           child: Row(
                             children: [
                               CircleAvatar(

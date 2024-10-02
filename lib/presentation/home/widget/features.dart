@@ -60,7 +60,7 @@ class Features extends StatelessWidget {
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return QiblaCompass();
+                        return Qibla();
                       },
                     ));
                   },
