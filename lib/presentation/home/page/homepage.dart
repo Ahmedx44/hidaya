@@ -115,16 +115,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Aselamalyekum Werhamtulahi ahmed',
-                                style: TextStyle(fontSize: 14),
-                              ),
-                              Text('Hello ${snapshot.data!['fullName']}',
-                                  style: const TextStyle(fontSize: 14))
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Aselamalyekum Werhamtulahi',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text('Hello ${snapshot.data!['fullName']}',
+                                    style: const TextStyle(fontSize: 14))
+                              ],
+                            ),
                           )
                         ],
                       ),

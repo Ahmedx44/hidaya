@@ -12,6 +12,7 @@ import 'package:hidaya/domain/usecase/user/update_user.dart';
 import 'package:hidaya/presentation/profile/bloc/edit_profile_bloc/edit_profile_cubit.dart';
 import 'package:hidaya/presentation/profile/bloc/edit_profile_bloc/edit_profile_state.dart';
 import 'package:hidaya/service_locator.dart';
+import 'package:image_editor_plus/image_editor_plus.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -110,10 +111,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               setState(() {
                                 imageData = imageByte;
                               });
-                              if (pickedImage != null) {
+
+                              var editedImage = await Navigator.push(context,
+                                  MaterialPageRoute(
+                                builder: (context) {
+                                  return ImageEditor(
+                                    image: imageData,
+                                  );
+                                },
+                              ));
+
+                              if (editedImage != null) {
+                                final tempFile = File(pickedImage.path);
+                                await tempFile.writeAsBytes(editedImage);
+
                                 setState(() {
-                                  imagefile = pickedImage;
-                                  imagePath = pickedImage.path;
+                                  imagePath = tempFile.path;
                                 });
                               }
                             },
