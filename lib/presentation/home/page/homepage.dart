@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:adhan/adhan.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +94,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 return Scaffold(
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   appBar: AppBar(
-                    elevation: 0,
                     centerTitle: false,
                     title: Container(
                       width: 300,
@@ -114,33 +115,43 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Asssalamu Alakum',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text('Welcome ${snapshot.data?['fullName']}',
-                                    style: const TextStyle(fontSize: 13))
-                              ],
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Aselamalyekum Werhamtulahi ahmed',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              Text('Hello ${snapshot.data!['fullName']}',
+                                  style: const TextStyle(fontSize: 14))
+                            ],
                           )
                         ],
                       ),
                     ),
-                    actions: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.notifications)),
-                      )
-                    ],
+                    // snapshot.connectionState == ConnectionState.waiting
+                    //     ? const Text('Hello',
+                    //         style: TextStyle(
+                    //           fontSize: 17,
+                    //         ))
+                    //     : snapshot.hasData && snapshot.data != null
+                    //         ? Row(
+                    //             children: [
+                    //               const Text(
+                    //                 'Hello ',
+                    //                 style: TextStyle(
+                    //                     fontSize: 17,
+                    //                     fontWeight: FontWeight.bold),
+                    //               ),
+                    //               Text(
+                    //                 '${snapshot.data?['fullName']?.toString() ?? 'User'}',
+                    //                 style: const TextStyle(
+                    //                   fontSize: 17,
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           )
+                    //         : const Text('Welcome'),
                   ),
                   body: SingleChildScrollView(
                     child: Column(
