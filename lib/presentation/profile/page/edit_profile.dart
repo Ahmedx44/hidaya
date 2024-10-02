@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,6 +59,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Uint8List? imageData;
     ImagePicker imagePicker = ImagePicker();
     XFile imagefile;
 
@@ -101,6 +103,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             imageUploadBtnPress: () async {
                               final pickedImage = await imagePicker.pickImage(
                                   source: ImageSource.gallery);
+
+                              File image = File(pickedImage!.path);
+                              Uint8List imageByte = await image.readAsBytes();
+
+                              setState(() {
+                                imageData = imageByte;
+                              });
                               if (pickedImage != null) {
                                 setState(() {
                                   imagefile = pickedImage;
