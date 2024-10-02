@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 fit: BoxFit.cover,
                                 image: snapshot.hasData && snapshot.data != null
                                     ? ExtendedNetworkImageProvider(
-                                        cache: true, snapshot.data!['imageUrl'])
+                                        cache: true, snapshot.data?['imageUrl'])
                                     : AssetImage(AppImage.profile),
                               ),
                             ),
@@ -121,12 +121,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'Aselamalyekum Werhamtulahi',
+                                  'Asselamu Alyekum',
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                Text('Hello ${snapshot.data!['fullName']}',
+                                Text('Welcome ${snapshot.data?['fullName']}',
                                     style: const TextStyle(fontSize: 14))
                               ],
                             ),

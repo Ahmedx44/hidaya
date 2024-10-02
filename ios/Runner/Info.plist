@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to demonstrate image picker plugin</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to demonstrate image picker plugin</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to capture audio for image picker plugin</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera to take photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

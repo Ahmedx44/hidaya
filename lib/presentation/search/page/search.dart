@@ -51,8 +51,7 @@ class _ContactSearchScreenState extends State<SearchPage> {
       appBar: AppBar(
         centerTitle: false,
         elevation: 0,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         title: const Text("People"),
       ),
       body: Column(
@@ -65,14 +64,14 @@ class _ContactSearchScreenState extends State<SearchPage> {
               16.0,
               16.0,
             ),
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.surface,
             child: Form(
               child: TextFormField(
                 controller: _searchController,
                 autofocus: true,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
-                  fillColor: Colors.white,
+                  fillColor: Color.fromARGB(255, 201, 201, 201),
                   prefixIcon: Icon(
                     Icons.search,
                     color: const Color(0xFF1D1D35).withOpacity(0.64),

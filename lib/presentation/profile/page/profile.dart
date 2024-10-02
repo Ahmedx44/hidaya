@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -229,10 +232,25 @@ class ProfilePic extends StatelessWidget {
             fit: StackFit.expand,
             clipBehavior: Clip.none,
             children: [
-              CircleAvatar(
-                backgroundImage: profile.isNotEmpty
-                    ? CachedNetworkImageProvider(profile)
-                    : AssetImage(AppImage.profile) as ImageProvider,
+              ClipOval(
+                child: ExtendedImage(
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                  image: profile.startsWith('http')
+                      ? ExtendedNetworkImageProvider(profile)
+                      : FileImage(File(profile)) as ImageProvider,
+                  loadStateChanged: (state) {
+                    if (state.extendedImageLoadState == LoadState.loading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state.extendedImageLoadState ==
+                        LoadState.completed) {
+                      return null;
+                    } else {
+                      return const Center(child: Icon(Icons.error));
+                    }
+                  },
+                ),
               ),
             ],
           ),

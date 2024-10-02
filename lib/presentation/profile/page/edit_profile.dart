@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -115,8 +116,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               var editedImage = await Navigator.push(context,
                                   MaterialPageRoute(
                                 builder: (context) {
-                                  return ImageEditor(
-                                    image: imageData,
+                                  return ImageCropper(
+                                    image: imageByte,
                                   );
                                 },
                               ));
@@ -322,11 +323,25 @@ class ProfilePic extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomRight,
         children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: image.startsWith('http')
-                ? CachedNetworkImageProvider(image)
-                : FileImage(File(image)) as ImageProvider,
+          ClipOval(
+            child: ExtendedImage(
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
+              image: image.startsWith('http')
+                  ? ExtendedNetworkImageProvider(image)
+                  : FileImage(File(image)) as ImageProvider,
+              loadStateChanged: (state) {
+                if (state.extendedImageLoadState == LoadState.loading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state.extendedImageLoadState ==
+                    LoadState.completed) {
+                  return null;
+                } else {
+                  return const Center(child: Icon(Icons.error));
+                }
+              },
+            ),
           ),
           InkWell(
             onTap: imageUploadBtnPress,
