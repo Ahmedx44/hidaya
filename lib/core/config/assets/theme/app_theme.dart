@@ -33,6 +33,6 @@ ThemeData darkMode = ThemeData(
     inversePrimary: AppColors.white,
     secondary: AppColors.secondary,
     tertiary: AppColors.tertiary,
-    onTertiary: Color.fromARGB(255, 13, 17, 10),
+    onTertiary: Color.fromARGB(255, 39, 39, 39),
   ),
 );

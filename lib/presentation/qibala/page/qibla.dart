@@ -100,7 +100,9 @@ class _QiblaCompassState extends State<Qibla> {
             //we use Transform widget with rotatate method to make the image move direction based on the provided _currentDirection
             child: Transform.rotate(
               angle: _currentDirection *
-                  (3.141592653589793 / 180), // Convert to radians
+                  (3.141592653589793 /
+                      180), // Convert to radians,beacuse the angle propety expect rotation angle based on radian not degree
+              //we convert the degree to radian using pi/180
               child: Image.asset(height: 300, AppImage.qibla_compass),
             ),
           ),

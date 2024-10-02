@@ -15,8 +15,9 @@ class ChatListPage extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text('Chat List'),
+        title: const Text('Chats'),
       ),
       body: FutureBuilder<List<String>>(
         future: getChatRooms(user?.email),
@@ -111,8 +112,12 @@ class ChatListPage extends StatelessWidget {
                               ),
                               Text(
                                 fullName,
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w500),
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .inversePrimary),
                               )
                             ],
                           ),

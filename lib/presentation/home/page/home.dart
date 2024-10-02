@@ -19,19 +19,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget page = HomePage();
+    Widget page = const HomePage();
 
     if (pageIndex == 0) {
       setState(() {
-        page = HomePage();
+        page = const HomePage();
       });
     } else if (pageIndex == 1) {
       setState(() {
-        page = SearchPage();
+        page = const SearchPage();
       });
     } else if (pageIndex == 2) {
       setState(() {
-        page = ChatListPage();
+        page = const ChatListPage();
       });
     } else if (pageIndex == 3) {
       setState(() {

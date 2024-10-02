@@ -95,41 +95,63 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   backgroundColor: Theme.of(context).colorScheme.surface,
                   appBar: AppBar(
                     centerTitle: false,
-                    title: snapshot.connectionState == ConnectionState.waiting
-                        ? const Text('Hello',
-                            style: TextStyle(
-                              fontSize: 17,
-                            ))
-                        : snapshot.hasData && snapshot.data != null
-                            ? Row(
-                                children: [
-                                  const Text(
-                                    'Hello ',
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    '${snapshot.data?['fullName']?.toString() ?? 'User'}',
-                                    style: const TextStyle(
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : const Text('Welcome'),
-                    actions: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CircleAvatar(
-                          backgroundImage:
-                              snapshot.hasData && snapshot.data != null
-                                  ? ExtendedNetworkImageProvider(
-                                      cache: true, snapshot.data!['imageUrl'])
-                                  : AssetImage(AppImage.profile),
-                        ),
-                      )
-                    ],
+                    title: Container(
+                      width: 300,
+                      child: Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5)),
+                            height: 50,
+                            width: 50,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image(
+                                fit: BoxFit.cover,
+                                image: snapshot.hasData && snapshot.data != null
+                                    ? ExtendedNetworkImageProvider(
+                                        cache: true, snapshot.data!['imageUrl'])
+                                    : AssetImage(AppImage.profile),
+                              ),
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Aselamalyekum Werhamtulahi',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              Text('Hello ${snapshot.data!['fullName']}',
+                                  style: const TextStyle(fontSize: 14))
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    // snapshot.connectionState == ConnectionState.waiting
+                    //     ? const Text('Hello',
+                    //         style: TextStyle(
+                    //           fontSize: 17,
+                    //         ))
+                    //     : snapshot.hasData && snapshot.data != null
+                    //         ? Row(
+                    //             children: [
+                    //               const Text(
+                    //                 'Hello ',
+                    //                 style: TextStyle(
+                    //                     fontSize: 17,
+                    //                     fontWeight: FontWeight.bold),
+                    //               ),
+                    //               Text(
+                    //                 '${snapshot.data?['fullName']?.toString() ?? 'User'}',
+                    //                 style: const TextStyle(
+                    //                   fontSize: 17,
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           )
+                    //         : const Text('Welcome'),
                   ),
                   body: SingleChildScrollView(
                     child: Column(

@@ -7,28 +7,28 @@ class ChatListSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: Colors.grey[500]!,
+      highlightColor: Colors.grey[50]!,
       child: Row(
         children: [
-          // Circle placeholder for image
           Container(
-            width: 60, // Diameter of the CircleAvatar
-            height: 60, // Diameter of the CircleAvatar
+            width: 60,
+            height: 60,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: Colors.grey[100],
               shape: BoxShape.circle,
             ),
           ),
           const SizedBox(width: 20),
-          // Container placeholder for text
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(20)),
                 width: 150,
                 height: 20,
-                color: Colors.grey[300],
               ),
               const SizedBox(height: 10),
             ],
