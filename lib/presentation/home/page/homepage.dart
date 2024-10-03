@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'package:adhan/adhan.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

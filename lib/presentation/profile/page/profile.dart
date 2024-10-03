@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
-
 import 'package:hidaya/domain/usecase/user/get_user_data_usecase.dart';
 import 'package:hidaya/domain/usecase/user/get_user_profile_usecase.dart';
 import 'package:hidaya/presentation/profile/bloc/profile_bloc/profile_cubit.dart';

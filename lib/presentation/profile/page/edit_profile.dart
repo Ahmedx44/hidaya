@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -115,8 +115,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               var editedImage = await Navigator.push(context,
                                   MaterialPageRoute(
                                 builder: (context) {
-                                  return ImageCropper(
-                                    image: imageByte,
+                                  return ImageEditor(
+                                    image: imageData,
                                   );
                                 },
                               ));
@@ -131,7 +131,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               }
                             },
                           ),
-                          const Divider(),
                           Form(
                             child: Column(
                               children: [
@@ -139,17 +138,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   text: 'Name',
                                   child: TextFormField(
                                     controller: _nameController,
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                       filled: true,
-                                      fillColor:
-                                          Color.fromARGB(255, 155, 248, 158),
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 16.0 * 1.5,
-                                          vertical: 16.0),
-                                      border: OutlineInputBorder(
+                                      fillColor: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 16.0 * 1.5,
+                                              vertical: 16.0),
+                                      border: const OutlineInputBorder(
                                         borderSide: BorderSide.none,
                                         borderRadius: BorderRadius.all(
-                                            Radius.circular(50)),
+                                            Radius.circular(20)),
                                       ),
                                     ),
                                   ),
@@ -158,17 +159,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   text: "Email",
                                   child: TextFormField(
                                     controller: _emailController,
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                       filled: true,
-                                      fillColor:
-                                          Color.fromARGB(255, 155, 248, 158),
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 16.0 * 1.5,
-                                          vertical: 16.0),
-                                      border: OutlineInputBorder(
+                                      fillColor: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 16.0 * 1.5,
+                                              vertical: 16.0),
+                                      border: const OutlineInputBorder(
                                         borderSide: BorderSide.none,
                                         borderRadius: BorderRadius.all(
-                                            Radius.circular(50)),
+                                            Radius.circular(20)),
                                       ),
                                     ),
                                   ),
@@ -177,17 +180,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   text: "Phone",
                                   child: TextFormField(
                                     controller: _phoneController,
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                       filled: true,
-                                      fillColor:
-                                          Color.fromARGB(255, 155, 248, 158),
+                                      fillColor: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                       contentPadding: EdgeInsets.symmetric(
                                           horizontal: 16.0 * 1.5,
                                           vertical: 16.0),
                                       border: OutlineInputBorder(
                                         borderSide: BorderSide.none,
                                         borderRadius: BorderRadius.all(
-                                            Radius.circular(50)),
+                                            Radius.circular(20)),
                                       ),
                                     ),
                                   ),
@@ -322,25 +326,11 @@ class ProfilePic extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomRight,
         children: [
-          ClipOval(
-            child: ExtendedImage(
-              width: 100,
-              height: 100,
-              fit: BoxFit.cover,
-              image: image.startsWith('http')
-                  ? ExtendedNetworkImageProvider(image)
-                  : FileImage(File(image)) as ImageProvider,
-              loadStateChanged: (state) {
-                if (state.extendedImageLoadState == LoadState.loading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state.extendedImageLoadState ==
-                    LoadState.completed) {
-                  return null;
-                } else {
-                  return const Center(child: Icon(Icons.error));
-                }
-              },
-            ),
+          CircleAvatar(
+            radius: 50,
+            backgroundImage: image.startsWith('http')
+                ? CachedNetworkImageProvider(image)
+                : FileImage(File(image)) as ImageProvider,
           ),
           InkWell(
             onTap: imageUploadBtnPress,
@@ -374,19 +364,16 @@ class UserInfoEditField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0 / 2),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              text,
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                  fontWeight: FontWeight.bold),
-            ),
+          Text(
+            text,
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                fontWeight: FontWeight.bold),
           ),
-          Expanded(
-            flex: 3,
+          SizedBox(
             child: child,
           ),
         ],
