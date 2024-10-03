@@ -21,7 +21,7 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  bool isFollowing = false; // Local state to track follow status
+  bool isFollowing = false;
   final currentUser = FirebaseAuth.instance.currentUser;
 
   @override
@@ -94,8 +94,10 @@ class _UserProfileState extends State<UserProfile> {
               StreamBuilder(
                 stream: sl<GetUserProfileUsecase>().call(widget.user['email']),
                 builder: (context, snapshot) {
+                  print('heloooooooooooooooooooooooooo');
+                  print(snapshot);
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(); // Display a loading spinner while waiting for data
+                    return CircularProgressIndicator();
                   }
                   if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
@@ -149,10 +151,8 @@ class _UserProfileState extends State<UserProfile> {
                         String result = await sl<FollowUserUsecase>()
                             .call(widget.user['email']);
 
-                        // Close the loading dialog
                         Navigator.pop(context);
 
-                        // Check the result and update the state accordingly
                         if (result == 'Followed') {
                           setState(() {
                             isFollowing = true;
@@ -178,10 +178,8 @@ class _UserProfileState extends State<UserProfile> {
                         String result = await sl<UnfollowUserUsecase>()
                             .call(widget.user['email']);
 
-                        // Close the loading dialog
                         Navigator.pop(context);
 
-                        // Check the result and update the state accordingly
                         if (result == 'Unfollowed') {
                           setState(() {
                             isFollowing = false;
