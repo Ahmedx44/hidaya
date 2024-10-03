@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
@@ -27,6 +28,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
   String? imagePath;
+  ImagePicker imagePicker = ImagePicker();
+
+  // Add a state variable to track the selected radio button
+  String _selectedGender = 'male'; // Default value
 
   @override
   void initState() {
@@ -36,14 +41,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _phoneController = TextEditingController();
   }
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    super.dispose();
-  }
-
+  // Show loading dialog function as before
   void showLoadingDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -62,16 +60,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     Uint8List? imageData;
     ImagePicker imagePicker = ImagePicker();
-    XFile imagefile;
-
     return BlocProvider(
       create: (context) => EditProfileCubit(sl<GetUserUsecase>())..getUser(),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          title: const Text("Edit Profile"),
-        ),
         body: BlocBuilder<EditProfileCubit, EditProfileState>(
           builder: (context, state) {
             if (state is EditProfileLoading) {
@@ -93,145 +85,41 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       _nameController.text = userData['fullName'] ?? '';
                       _emailController.text = userData['email'] ?? '';
                       _phoneController.text = userData['phone'] ?? '';
+                      _selectedGender = userData['gender'] ?? '';
                     }
 
-                    return SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Column(
-                        children: [
-                          ProfilePic(
-                            image: imagePath ?? userData?['imageUrl'] ?? '',
-                            imageUploadBtnPress: () async {
-                              final pickedImage = await imagePicker.pickImage(
-                                  source: ImageSource.gallery);
-
-                              File image = File(pickedImage!.path);
-                              Uint8List imageByte = await image.readAsBytes();
-
-                              setState(() {
-                                imageData = imageByte;
-                              });
-
-                              var editedImage = await Navigator.push(context,
-                                  MaterialPageRoute(
-                                builder: (context) {
-                                  return ImageEditor(
-                                    image: imageData,
-                                  );
-                                },
-                              ));
-
-                              if (editedImage != null) {
-                                final tempFile = File(pickedImage.path);
-                                await tempFile.writeAsBytes(editedImage);
-
-                                setState(() {
-                                  imagePath = tempFile.path;
-                                });
-                              }
-                            },
-                          ),
-                          Form(
-                            child: Column(
+                    return SafeArea(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                UserInfoEditField(
-                                  text: 'Name',
-                                  child: TextFormField(
-                                    controller: _nameController,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Theme.of(context)
-                                          .colorScheme
-                                          .tertiary,
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 16.0 * 1.5,
-                                              vertical: 16.0),
-                                      border: const OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                UserInfoEditField(
-                                  text: "Email",
-                                  child: TextFormField(
-                                    controller: _emailController,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Theme.of(context)
-                                          .colorScheme
-                                          .tertiary,
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 16.0 * 1.5,
-                                              vertical: 16.0),
-                                      border: const OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                UserInfoEditField(
-                                  text: "Phone",
-                                  child: TextFormField(
-                                    controller: _phoneController,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Theme.of(context)
-                                          .colorScheme
-                                          .tertiary,
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 16.0 * 1.5,
-                                          vertical: 16.0),
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 16.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SizedBox(
-                                width: 120,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context); // Cancel action
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
                                   },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.tertiary,
-                                    foregroundColor: Colors.white,
-                                    minimumSize:
-                                        const Size(double.infinity, 48),
-                                    shape: const StadiumBorder(),
-                                  ),
-                                  child: const Text("Cancel"),
+                                  child: Container(
+                                      margin: const EdgeInsets.all(10),
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Icon(Icons.arrow_back_ios_new,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .inversePrimary)),
                                 ),
-                              ),
-                              const SizedBox(width: 16.0),
-                              SizedBox(
-                                width: 160,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.primary,
-                                    foregroundColor: Colors.white,
-                                    minimumSize:
-                                        const Size(double.infinity, 48),
-                                    shape: const StadiumBorder(),
-                                  ),
+                                Text(
+                                  'Edit Profile',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .inversePrimary),
+                                ),
+                                IconButton(
                                   onPressed: () async {
                                     showLoadingDialog(context);
                                     try {
@@ -277,23 +165,152 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       );
                                     }
                                   },
-                                  child: const Text("Save Update"),
+                                  icon: Icon(Icons.check,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .inversePrimary),
+                                )
+                              ],
+                            ),
+                            ProfilePic(
+                              image: imagePath ?? userData?['imageUrl'] ?? '',
+                              imageUploadBtnPress: () async {
+                                final pickedImage = await imagePicker.pickImage(
+                                    source: ImageSource.gallery);
+
+                                if (pickedImage != null) {
+                                  File image = File(pickedImage.path);
+                                  Uint8List imageByte =
+                                      await image.readAsBytes();
+
+                                  setState(() {
+                                    imageData = imageByte;
+                                  });
+
+                                  var editedImage = await Navigator.push(
+                                      context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return ImageCropper(
+                                        image: imageByte,
+                                      );
+                                    },
+                                  ));
+
+                                  if (editedImage != null) {
+                                    final tempFile = File(pickedImage.path);
+                                    await tempFile.writeAsBytes(editedImage);
+
+                                    setState(() {
+                                      imagePath = tempFile.path;
+                                    });
+                                  }
+                                }
+                              },
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary),
+                                    child: ListTile(
+                                      title: const Text(
+                                        'Male',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.black),
+                                      ),
+                                      leading: Radio<String>(
+                                        value:
+                                            'male', // Value for the male option
+                                        groupValue:
+                                            _selectedGender, // Track the selected value
+                                        onChanged: (String? value) {
+                                          setState(() {
+                                            _selectedGender =
+                                                value!; // Update selected value
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary, // Container background color
+                                    ),
+                                    child: ListTile(
+                                      title: const Text(
+                                        'Female',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.black),
+                                      ),
+                                      leading: Radio<String>(
+                                        value: 'female',
+                                        groupValue: _selectedGender,
+                                        onChanged: (String? value) {
+                                          setState(() {
+                                            _selectedGender = value!;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            _textfieldinput('Name', _nameController),
+                            _textfieldinput('Email', _emailController),
+                            _textfieldinput('Phone', _phoneController)
+                          ],
+                        ),
                       ),
                     );
                   }
-                  return const Center(child: Text("No user data found"));
+                  return const Center(child: Text("No user data available"));
                 },
               );
-            } else {
-              return Container();
             }
+            return const Center(child: Text("State not handled"));
           },
         ),
+      ),
+    );
+  }
+
+  Widget _textfieldinput(String nameofinput, TextEditingController controller) {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            nameofinput,
+            textAlign: TextAlign.start,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.inversePrimary),
+          ),
+          TextField(
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)))),
+            controller: controller,
+          )
+        ],
       ),
     );
   }
@@ -326,55 +343,25 @@ class ProfilePic extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomRight,
         children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: image.startsWith('http')
-                ? CachedNetworkImageProvider(image)
-                : FileImage(File(image)) as ImageProvider,
-          ),
-          InkWell(
-            onTap: imageUploadBtnPress,
-            child: CircleAvatar(
-              radius: 13,
-              backgroundColor: Theme.of(context).primaryColor,
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 20,
-              ),
+          ClipOval(
+            child: ExtendedImage(
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
+              image: image.startsWith('http')
+                  ? ExtendedNetworkImageProvider(image)
+                  : FileImage(File(image)) as ImageProvider,
+              loadStateChanged: (state) {
+                if (state.extendedImageLoadState == LoadState.loading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state.extendedImageLoadState ==
+                    LoadState.completed) {
+                  return null;
+                } else {
+                  return const Center(child: Icon(Icons.error));
+                }
+              },
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class UserInfoEditField extends StatelessWidget {
-  const UserInfoEditField({
-    super.key,
-    required this.text,
-    required this.child,
-  });
-
-  final String text;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0 / 2),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            text,
-            style: TextStyle(
-                color: Theme.of(context).colorScheme.inversePrimary,
-                fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            child: child,
           ),
         ],
       ),
