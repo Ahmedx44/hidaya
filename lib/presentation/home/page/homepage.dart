@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    context.read<NotificationCubit>().getPermission();
+    context.read<NotificationCubit>().initNotification();
 
     final location = sl<GetlocationUseCase>();
     location().then((value) {

@@ -9,15 +9,18 @@ import 'chat_page.dart'; // Make sure to import your ChatPage file
 
 class ChatListPage extends StatelessWidget {
   const ChatListPage({super.key});
+  static const route = '/chat-list';
 
   @override
   Widget build(BuildContext context) {
+    final message = ModalRoute.of(context)!.settings.arguments;
     final user = FirebaseAuth.instance.currentUser;
+    print(message);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text('Chats'),
+        title: Text('${message}'),
       ),
       body: FutureBuilder<List<String>>(
         future: getChatRooms(user?.email),

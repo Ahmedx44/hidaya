@@ -8,6 +8,7 @@ import 'package:hidaya/common/bloc/theme_cubit.dart';
 import 'package:hidaya/core/config/assets/theme/app_theme.dart';
 import 'package:hidaya/firebase_options.dart';
 import 'package:hidaya/presentation/auth/pages/authgate.dart';
+import 'package:hidaya/presentation/chat/page/chat_list.dart';
 import 'package:hidaya/presentation/home/bloc/notification_bloc/notification_cubit.dart';
 import 'package:hidaya/presentation/quran_surah_list/Bloc/surah_state_cubit.dart';
 import 'package:hidaya/service_locator.dart';
@@ -15,6 +16,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quran_flutter/quran.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -50,6 +52,11 @@ class MyApp extends StatelessWidget {
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, theme) {
             return MaterialApp(
+              navigatorKey: navigatorKey,
+              routes: {
+                ChatListPage.route: (context) => const ChatListPage(),
+                // Other routes
+              },
               debugShowCheckedModeBanner: false,
               themeMode: theme,
               theme: lightMode,

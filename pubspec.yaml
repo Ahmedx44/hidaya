@@ -75,7 +75,7 @@ dependencies:
   flutter_qiblah:
   image_editor_plus: ^1.0.6
   firebase_messaging: ^14.9.4
-  flutter_local_notifications:
+  flutter_local_notifications: ^17.2.3
   
 
  
