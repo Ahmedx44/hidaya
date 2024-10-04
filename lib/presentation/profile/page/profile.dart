@@ -223,7 +223,9 @@ class ProfileScreen extends StatelessWidget {
                         const SizedBox(height: 20),
                         ProfileMenu(
                           text: "My Account",
-                          icon: const Icon(Icons.person),
+                          icon: Icon(Icons.person,
+                              color:
+                                  Theme.of(context).colorScheme.inversePrimary),
                           press: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -233,7 +235,9 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         ProfileMenu(
                           text: "Settings",
-                          icon: Icon(Icons.settings),
+                          icon: Icon(Icons.settings,
+                              color:
+                                  Theme.of(context).colorScheme.inversePrimary),
                           press: () {
                             Navigator.push(context, MaterialPageRoute(
                               builder: (context) {
@@ -244,14 +248,20 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         ProfileMenu(
                           text: "Help Center",
-                          icon: Icon(Icons.help),
+                          icon: Icon(
+                            Icons.help,
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          ),
                           press: () {},
                         ),
                         ProfileMenu(
                           text: "Log Out",
-                          icon: Icon(Icons.logout),
+                          icon: const Icon(
+                            Icons.logout,
+                            color: Colors.red,
+                          ),
                           press: () {
-                            FirebaseAuth.instance.signOut();
+                            showD(context);
                           },
                         ),
                       ],
@@ -265,6 +275,33 @@ class ProfileScreen extends StatelessWidget {
           }
         },
       ),
+    );
+  }
+
+  showD(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Do you want logout?'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  FirebaseAuth.instance.signOut();
+                },
+                child: Text(
+                  'Confirm',
+                  style: TextStyle(color: Colors.red),
+                )),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Cancel')),
+          ],
+        );
+      },
     );
   }
 

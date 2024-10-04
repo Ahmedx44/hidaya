@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hidaya/core/config/assets/image/app_image.dart';
 import 'package:hidaya/data/model/user/userModel.dart';
 import 'package:hidaya/domain/usecase/user/get_user_usecase.dart';
 import 'package:hidaya/domain/usecase/user/update_user.dart';
@@ -85,7 +86,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       _nameController.text = userData['fullName'] ?? '';
                       _emailController.text = userData['email'] ?? '';
                       _phoneController.text = userData['phone'] ?? '';
-                      _selectedGender = userData['gender'] ?? '';
                     }
 
                     return SafeArea(
@@ -358,9 +358,21 @@ class ProfilePic extends StatelessWidget {
                     LoadState.completed) {
                   return null;
                 } else {
-                  return const Center(child: Icon(Icons.error));
+                  return Image.asset(AppImage.profile);
                 }
               },
+            ),
+          ),
+          InkWell(
+            onTap: imageUploadBtnPress,
+            child: CircleAvatar(
+              radius: 13,
+              backgroundColor: Theme.of(context).primaryColor,
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 20,
+              ),
             ),
           ),
         ],

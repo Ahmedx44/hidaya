@@ -74,6 +74,8 @@ dependencies:
   extended_image: ^8.3.0
   flutter_qiblah:
   image_editor_plus: ^1.0.6
+  firebase_messaging: ^14.9.4
+  flutter_local_notifications:
   
 
  

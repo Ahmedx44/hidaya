@@ -9,6 +9,7 @@ import 'package:hidaya/domain/usecase/location/getLocation.dart';
 import 'package:hidaya/domain/usecase/user/get_userName_useCase.dart';
 import 'package:hidaya/presentation/home/bloc/get_user_bloc/get_username_cubit.dart';
 import 'package:hidaya/presentation/home/bloc/get_user_bloc/get_username_state.dart';
+import 'package:hidaya/presentation/home/bloc/notification_bloc/notification_cubit.dart';
 import 'package:hidaya/presentation/home/widget/features.dart';
 import 'package:hidaya/presentation/home/widget/home_card.dart';
 import 'package:hidaya/presentation/home/widget/randomVerse.dart';
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    context.read<NotificationCubit>().getPermission();
 
     final location = sl<GetlocationUseCase>();
     location().then((value) {
