@@ -21,26 +21,16 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  // Initialize dependency injection
   await initializedDependency();
-
-  // Set up storage for hydrated_bloc
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
         ? HydratedStorage.webStorageDirectory
         : await getApplicationDocumentsDirectory(),
   );
 
-  // Initialize Quran
   await Quran.initialize();
-
-  // Initialize notifications
   await initializeNotifications();
-
   runApp(const MyApp());
 }
 
