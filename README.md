@@ -24,7 +24,7 @@ An Islamic mobile application built using Flutter, allowing users to read the Qu
 
 Watch the demo below to see Hidaya in action!
 
-https://github.com/user-attachments/assets/a7a65dea-030c-4ff3-9e1c-4082cc2df6a8
+
 
 
 
