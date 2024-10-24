@@ -19,6 +19,15 @@ An Islamic mobile application built using Flutter, allowing users to read the Qu
 - 📤 **Share:** Share Quranic verses and other content with friends.
 - 📲 **Phone Authentication:** Secure authentication using phone numbers.
 
+
+## 🎥 Demo
+
+Watch the demo below to see Hidaya in action!
+
+https://github.com/user-attachments/assets/a7a65dea-030c-4ff3-9e1c-4082cc2df6a8
+
+
+
 ## 🛠 Packages Used
 
 | Package                             | Description                                             |
